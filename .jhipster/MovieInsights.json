@@ -1,0 +1,164 @@
+{
+  "name": "MovieInsights",
+  "fields": [
+    {
+      "fieldName": "averageRating",
+      "fieldType": "Double",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "averageBudget",
+      "fieldType": "Double",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "averageRevenue",
+      "fieldType": "Double",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "totalMovies",
+      "fieldType": "Integer",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "mostPopularGenreMovieCount",
+      "fieldType": "Integer",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "mostPopularActorMovieCount",
+      "fieldType": "Integer",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "mostPopularWriterMovieCount",
+      "fieldType": "Integer",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "mostPopularProducerMovieCount",
+      "fieldType": "Integer",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "mostPopularDirectorMovieCount",
+      "fieldType": "Integer",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "mostPopularProductionCompanyMovieCount",
+      "fieldType": "Integer",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "mostPopularProductionCountryMovieCount",
+      "fieldType": "Integer",
+      "fieldValidateRules": ["required"]
+    }
+  ],
+  "relationships": [
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "movie",
+      "otherEntityRelationshipName": "movieInsights",
+      "relationshipName": "highestRatedMovie",
+      "otherEntityField": "id"
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "movie",
+      "otherEntityRelationshipName": "movieInsights",
+      "relationshipName": "lowestRatedMovie",
+      "otherEntityField": "id"
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "movie",
+      "otherEntityRelationshipName": "movieInsights",
+      "relationshipName": "highestBudgetMovie",
+      "otherEntityField": "id"
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "movie",
+      "otherEntityRelationshipName": "movieInsights",
+      "relationshipName": "lowestBudgetMovie",
+      "otherEntityField": "id"
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "movie",
+      "otherEntityRelationshipName": "movieInsights",
+      "relationshipName": "highestRevenueMovie",
+      "otherEntityField": "id"
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "movie",
+      "otherEntityRelationshipName": "movieInsights",
+      "relationshipName": "lowestRevenueMovie",
+      "otherEntityField": "id"
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "genre",
+      "otherEntityRelationshipName": "movieInsights",
+      "relationshipName": "mostPopularGenre",
+      "otherEntityField": "id"
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "person",
+      "otherEntityRelationshipName": "movieInsights",
+      "relationshipName": "mostPopularActor",
+      "otherEntityField": "id"
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "person",
+      "otherEntityRelationshipName": "movieInsights",
+      "relationshipName": "mostPopularProducer",
+      "otherEntityField": "id"
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "person",
+      "otherEntityRelationshipName": "movieInsights",
+      "relationshipName": "mostPopularWriter",
+      "otherEntityField": "id"
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "person",
+      "otherEntityRelationshipName": "movieInsights",
+      "relationshipName": "mostPopularDirector",
+      "otherEntityField": "id"
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "productionCountry",
+      "otherEntityRelationshipName": "movieInsights",
+      "relationshipName": "mostPopularProductionCountry",
+      "otherEntityField": "id"
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "productionCompany",
+      "otherEntityRelationshipName": "movieInsights",
+      "relationshipName": "mostPopularProductionCompany",
+      "otherEntityField": "id"
+    }
+  ],
+  "changelogDate": "20200807165149",
+  "entityTableName": "movie_insights",
+  "dto": "mapstruct",
+  "pagination": "no",
+  "service": "serviceClass",
+  "jpaMetamodelFiltering": false,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "clientRootFolder": "",
+  "applications": "*"
+}

@@ -1,0 +1,28 @@
+{
+  "movieInsightsApp": {
+    "productionCompany": {
+      "home": {
+        "title": "Production Companies",
+        "createLabel": "Δημιουργήστε ένα νέο Production Company",
+        "createOrEditLabel": "Δημιουργήστε η επεξεργαστείτε ένα Production Company",
+        "search": "Αναζήτηση για Production Company",
+        "notFound": "No Production Companies found"
+      },
+      "created": "Ένα νέο Production Company έχει δημιουργηθεί με αναγνωριστικό {{ param }}",
+      "updated": "Ένα Production Company έχει ενημερωθεί με αναγνωριστικό {{ param }}",
+      "deleted": "Ένα Production Company έχει διαγραφτεί με αναγνωριστικό {{ param }}",
+      "delete": {
+        "question": "Είστε βέβαιοι όταν θέλετε να διαγράψετε το ακόλουθο Production Company {{ id }};"
+      },
+      "detail": {
+        "title": "Production Company"
+      },
+      "name": "Name",
+      "tmdbId": "Tmdb Id",
+      "logoPath": "Logo Path",
+      "originCountry": "Origin Country",
+      "banReasons": "Ban Reasons",
+      "movies": "Movies"
+    }
+  }
+}

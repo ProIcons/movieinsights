@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
+    <!--
+        Added the constraints for entity MovieInsights.
+    -->
+    <changeSet id="20200807165149-2" author="jhipster">
+        
+        <addForeignKeyConstraint baseColumnNames="highest_rated_movie_id"
+                                 baseTableName="movie_insights"
+                                 constraintName="fk_movie_insights_highest_rated_movie_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="movie"/>
+
+        <addForeignKeyConstraint baseColumnNames="lowest_rated_movie_id"
+                                 baseTableName="movie_insights"
+                                 constraintName="fk_movie_insights_lowest_rated_movie_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="movie"/>
+
+        <addForeignKeyConstraint baseColumnNames="highest_budget_movie_id"
+                                 baseTableName="movie_insights"
+                                 constraintName="fk_movie_insights_highest_budget_movie_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="movie"/>
+
+        <addForeignKeyConstraint baseColumnNames="lowest_budget_movie_id"
+                                 baseTableName="movie_insights"
+                                 constraintName="fk_movie_insights_lowest_budget_movie_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="movie"/>
+
+        <addForeignKeyConstraint baseColumnNames="highest_revenue_movie_id"
+                                 baseTableName="movie_insights"
+                                 constraintName="fk_movie_insights_highest_revenue_movie_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="movie"/>
+
+        <addForeignKeyConstraint baseColumnNames="lowest_revenue_movie_id"
+                                 baseTableName="movie_insights"
+                                 constraintName="fk_movie_insights_lowest_revenue_movie_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="movie"/>
+
+        <addForeignKeyConstraint baseColumnNames="most_popular_genre_id"
+                                 baseTableName="movie_insights"
+                                 constraintName="fk_movie_insights_most_popular_genre_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="genre"/>
+
+        <addForeignKeyConstraint baseColumnNames="most_popular_actor_id"
+                                 baseTableName="movie_insights"
+                                 constraintName="fk_movie_insights_most_popular_actor_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="person"/>
+
+        <addForeignKeyConstraint baseColumnNames="most_popular_producer_id"
+                                 baseTableName="movie_insights"
+                                 constraintName="fk_movie_insights_most_popular_producer_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="person"/>
+
+        <addForeignKeyConstraint baseColumnNames="most_popular_writer_id"
+                                 baseTableName="movie_insights"
+                                 constraintName="fk_movie_insights_most_popular_writer_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="person"/>
+
+        <addForeignKeyConstraint baseColumnNames="most_popular_director_id"
+                                 baseTableName="movie_insights"
+                                 constraintName="fk_movie_insights_most_popular_director_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="person"/>
+
+        <addForeignKeyConstraint baseColumnNames="most_popular_production_country_id"
+                                 baseTableName="movie_insights"
+                                 constraintName="fk_movie_insights_most_popular_production_country_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="production_country"/>
+
+        <addForeignKeyConstraint baseColumnNames="most_popular_production_company_id"
+                                 baseTableName="movie_insights"
+                                 constraintName="fk_movie_insights_most_popular_production_company_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="production_company"/>
+
+    </changeSet>
+</databaseChangeLog>

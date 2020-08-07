@@ -1,0 +1,37 @@
+{
+  "name": "BannedEntity",
+  "fields": [
+    {
+      "fieldName": "tmdbId",
+      "fieldType": "Long",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "type",
+      "fieldType": "EntityType",
+      "fieldValues": "MOVIE,PERSON,COMPANY,GENRE,COUNTRY,CREDIT,VOTE",
+      "fieldValidateRules": ["required"]
+    }
+  ],
+  "relationships": [
+    {
+      "relationshipType": "one-to-one",
+      "otherEntityName": "bannedPersistentEntity",
+      "otherEntityRelationshipName": "bannedEntity",
+      "relationshipName": "bannedPersistentEntity",
+      "otherEntityField": "id",
+      "ownerSide": true
+    }
+  ],
+  "changelogDate": "20200807164449",
+  "entityTableName": "banned_entity",
+  "dto": "mapstruct",
+  "pagination": "no",
+  "service": "serviceClass",
+  "jpaMetamodelFiltering": false,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "clientRootFolder": "",
+  "applications": "*"
+}

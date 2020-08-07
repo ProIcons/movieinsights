@@ -1,0 +1,29 @@
+{
+  "movieInsightsApp": {
+    "bannedPersistentEntity": {
+      "home": {
+        "title": "Banned Persistent Entities",
+        "createLabel": "Create a new Banned Persistent Entity",
+        "createOrEditLabel": "Create or edit a Banned Persistent Entity",
+        "search": "Search for Banned Persistent Entity",
+        "notFound": "No Banned Persistent Entities found"
+      },
+      "created": "A new Banned Persistent Entity is created with identifier {{ param }}",
+      "updated": "A Banned Persistent Entity is updated with identifier {{ param }}",
+      "deleted": "A Banned Persistent Entity is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Banned Persistent Entity {{ id }}?"
+      },
+      "detail": {
+        "title": "Banned Persistent Entity"
+      },
+      "reason": "Reason",
+      "reasonText": "Reason Text",
+      "timestamp": "Timestamp",
+      "bannedEntity": "Banned Entity",
+      "movie": "Movie",
+      "person": "Person",
+      "productionCompany": "Production Company"
+    }
+  }
+}

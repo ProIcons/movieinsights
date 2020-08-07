@@ -1,0 +1,125 @@
+{
+  "name": "Movie",
+  "fields": [
+    {
+      "fieldName": "tmdbId",
+      "fieldType": "Long",
+      "fieldValidateRules": ["required", "unique"]
+    },
+    {
+      "fieldName": "name",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "tagline",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "description",
+      "fieldType": "byte[]",
+      "fieldTypeBlobContent": "text"
+    },
+    {
+      "fieldName": "revenue",
+      "fieldType": "Long"
+    },
+    {
+      "fieldName": "budget",
+      "fieldType": "Long"
+    },
+    {
+      "fieldName": "imdbId",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "popularity",
+      "fieldType": "Double",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "runtime",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "posterPath",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "backdropPath",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "releaseDate",
+      "fieldType": "LocalDate"
+    },
+    {
+      "fieldName": "isBanned",
+      "fieldType": "Boolean",
+      "fieldValidateRules": ["required"]
+    }
+  ],
+  "relationships": [
+    {
+      "relationshipType": "one-to-one",
+      "otherEntityName": "vote",
+      "otherEntityRelationshipName": "movie",
+      "relationshipName": "vote",
+      "otherEntityField": "id",
+      "ownerSide": true
+    },
+    {
+      "relationshipType": "one-to-many",
+      "otherEntityName": "credit",
+      "otherEntityRelationshipName": "movie",
+      "relationshipName": "credits"
+    },
+    {
+      "relationshipType": "one-to-many",
+      "otherEntityName": "image",
+      "otherEntityRelationshipName": "movie",
+      "relationshipName": "images"
+    },
+    {
+      "relationshipType": "one-to-many",
+      "otherEntityName": "bannedPersistentEntity",
+      "otherEntityRelationshipName": "movie",
+      "relationshipName": "banReasons"
+    },
+    {
+      "relationshipType": "many-to-many",
+      "otherEntityName": "productionCompany",
+      "otherEntityRelationshipName": "movies",
+      "relationshipName": "companies",
+      "otherEntityField": "id",
+      "ownerSide": true
+    },
+    {
+      "relationshipType": "many-to-many",
+      "otherEntityName": "productionCountry",
+      "otherEntityRelationshipName": "movies",
+      "relationshipName": "countries",
+      "otherEntityField": "id",
+      "ownerSide": true
+    },
+    {
+      "relationshipType": "many-to-many",
+      "otherEntityName": "genre",
+      "otherEntityRelationshipName": "movies",
+      "relationshipName": "genres",
+      "otherEntityField": "id",
+      "ownerSide": true
+    }
+  ],
+  "changelogDate": "20200807164149",
+  "entityTableName": "movie",
+  "dto": "mapstruct",
+  "pagination": "no",
+  "service": "serviceClass",
+  "jpaMetamodelFiltering": false,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "clientRootFolder": "",
+  "applications": "*"
+}

@@ -1,0 +1,40 @@
+{
+  "name": "MovieInsightsPerCountry",
+  "fields": [],
+  "relationships": [
+    {
+      "relationshipType": "one-to-one",
+      "otherEntityName": "movieInsights",
+      "otherEntityRelationshipName": "movieInsightsPerCountry",
+      "relationshipValidateRules": "required",
+      "relationshipName": "movieInsights",
+      "otherEntityField": "id",
+      "ownerSide": true
+    },
+    {
+      "relationshipType": "one-to-many",
+      "otherEntityName": "movieInsightsPerYear",
+      "otherEntityRelationshipName": "movieInsightsPerCountry",
+      "relationshipName": "movieInsightsPerYear"
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "productionCountry",
+      "otherEntityRelationshipName": "movieInsightsPerCountry",
+      "relationshipValidateRules": "required",
+      "relationshipName": "country",
+      "otherEntityField": "id"
+    }
+  ],
+  "changelogDate": "20200807165249",
+  "entityTableName": "movie_insights_per_country",
+  "dto": "mapstruct",
+  "pagination": "no",
+  "service": "serviceClass",
+  "jpaMetamodelFiltering": false,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "clientRootFolder": "",
+  "applications": "*"
+}

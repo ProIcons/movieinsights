@@ -1,0 +1,67 @@
+{
+  "name": "Person",
+  "fields": [
+    {
+      "fieldName": "tmdbId",
+      "fieldType": "Long",
+      "fieldValidateRules": ["required", "unique"]
+    },
+    {
+      "fieldName": "name",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "imdbId",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "popularity",
+      "fieldType": "Double"
+    },
+    {
+      "fieldName": "biography",
+      "fieldType": "byte[]",
+      "fieldTypeBlobContent": "text"
+    },
+    {
+      "fieldName": "birthDay",
+      "fieldType": "LocalDate"
+    },
+    {
+      "fieldName": "profilePath",
+      "fieldType": "String"
+    }
+  ],
+  "relationships": [
+    {
+      "relationshipType": "one-to-many",
+      "otherEntityName": "credit",
+      "otherEntityRelationshipName": "person",
+      "relationshipName": "credits"
+    },
+    {
+      "relationshipType": "one-to-many",
+      "otherEntityName": "image",
+      "otherEntityRelationshipName": "person",
+      "relationshipName": "images"
+    },
+    {
+      "relationshipType": "one-to-many",
+      "otherEntityName": "bannedPersistentEntity",
+      "otherEntityRelationshipName": "person",
+      "relationshipName": "banReasons"
+    }
+  ],
+  "changelogDate": "20200807164249",
+  "entityTableName": "person",
+  "dto": "mapstruct",
+  "pagination": "no",
+  "service": "serviceClass",
+  "jpaMetamodelFiltering": false,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "clientRootFolder": "",
+  "applications": "*"
+}

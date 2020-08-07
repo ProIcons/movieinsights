@@ -1,0 +1,29 @@
+{
+  "movieInsightsApp": {
+    "credit": {
+      "home": {
+        "title": "Credits",
+        "createLabel": "Δημιουργήστε ένα νέο Credit",
+        "createOrEditLabel": "Δημιουργήστε η επεξεργαστείτε ένα Credit",
+        "search": "Αναζήτηση για Credit",
+        "notFound": "No Credits found"
+      },
+      "created": "Ένα νέο Credit έχει δημιουργηθεί με αναγνωριστικό {{ param }}",
+      "updated": "Ένα Credit έχει ενημερωθεί με αναγνωριστικό {{ param }}",
+      "deleted": "Ένα Credit έχει διαγραφτεί με αναγνωριστικό {{ param }}",
+      "delete": {
+        "question": "Είστε βέβαιοι όταν θέλετε να διαγράψετε το ακόλουθο Credit {{ id }};"
+      },
+      "detail": {
+        "title": "Credit"
+      },
+      "creditId": "Credit Id",
+      "personTmdbId": "Person Tmdb Id",
+      "movieTmdbId": "Movie Tmdb Id",
+      "role": "Role",
+      "images": "Images",
+      "movie": "Movie",
+      "person": "Person"
+    }
+  }
+}

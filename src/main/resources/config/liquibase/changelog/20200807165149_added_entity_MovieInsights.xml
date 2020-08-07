@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    
+    <!--
+        Added the entity MovieInsights.
+    -->
+    <changeSet id="20200807165149-1" author="jhipster">
+        <createTable tableName="movie_insights">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="average_rating" type="double">
+                <constraints nullable="false" />
+            </column>
+            <column name="average_budget" type="double">
+                <constraints nullable="false" />
+            </column>
+            <column name="average_revenue" type="double">
+                <constraints nullable="false" />
+            </column>
+            <column name="total_movies" type="integer">
+                <constraints nullable="false" />
+            </column>
+            <column name="most_popular_genre_movie_count" type="integer">
+                <constraints nullable="false" />
+            </column>
+            <column name="most_popular_actor_movie_count" type="integer">
+                <constraints nullable="false" />
+            </column>
+            <column name="most_popular_writer_movie_count" type="integer">
+                <constraints nullable="false" />
+            </column>
+            <column name="most_popular_producer_movie_count" type="integer">
+                <constraints nullable="false" />
+            </column>
+            <column name="most_popular_director_movie_count" type="integer">
+                <constraints nullable="false" />
+            </column>
+            <column name="most_popular_production_company_movie_count" type="integer">
+                <constraints nullable="false" />
+            </column>
+            <column name="most_popular_production_country_movie_count" type="integer">
+                <constraints nullable="false" />
+            </column>
+            <column name="highest_rated_movie_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
+            <column name="lowest_rated_movie_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
+            <column name="highest_budget_movie_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
+            <column name="lowest_budget_movie_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
+            <column name="highest_revenue_movie_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
+            <column name="lowest_revenue_movie_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
+            <column name="most_popular_genre_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
+            <column name="most_popular_actor_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
+            <column name="most_popular_producer_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
+            <column name="most_popular_writer_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
+            <column name="most_popular_director_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
+            <column name="most_popular_production_country_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
+            <column name="most_popular_production_company_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
+            <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
+        </createTable>
+    </changeSet>
+
+    <changeSet id="20200807165149-1-relations" author="jhipster">
+
+    </changeSet>
+    <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here -->
+
+    <!--
+        Load sample data generated with Faker.js
+        - This data can be easily edited using a CSV editor (or even MS Excel) and
+          is located in the 'src/main/resources/config/liquibase/fake-data' directory
+        - By default this data is applied when running with the JHipster 'dev' profile.
+          This can be customized by adding or removing 'faker' in the 'spring.liquibase.contexts'
+          Spring Boot configuration key.
+    -->
+    <changeSet id="20200807165149-1-data" author="jhipster" context="faker">
+        <loadData
+                  file="config/liquibase/fake-data/movie_insights.csv"
+                  separator=";"
+                  tableName="movie_insights">
+            <column name="id" type="numeric"/>
+            <column name="average_rating" type="numeric"/>
+            <column name="average_budget" type="numeric"/>
+            <column name="average_revenue" type="numeric"/>
+            <column name="total_movies" type="numeric"/>
+            <column name="most_popular_genre_movie_count" type="numeric"/>
+            <column name="most_popular_actor_movie_count" type="numeric"/>
+            <column name="most_popular_writer_movie_count" type="numeric"/>
+            <column name="most_popular_producer_movie_count" type="numeric"/>
+            <column name="most_popular_director_movie_count" type="numeric"/>
+            <column name="most_popular_production_company_movie_count" type="numeric"/>
+            <column name="most_popular_production_country_movie_count" type="numeric"/>
+            <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
+        </loadData>
+    </changeSet>
+
+</databaseChangeLog>

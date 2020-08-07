@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
+    <!--
+        Added the constraints for entity Image.
+    -->
+    <changeSet id="20200807164749-2" author="jhipster">
+        
+        <addForeignKeyConstraint baseColumnNames="vote_id"
+                                 baseTableName="image"
+                                 constraintName="fk_image_vote_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="vote"/>
+
+        <addForeignKeyConstraint baseColumnNames="movie_id"
+                                 baseTableName="image"
+                                 constraintName="fk_image_movie_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="movie"/>
+
+        <addForeignKeyConstraint baseColumnNames="person_id"
+                                 baseTableName="image"
+                                 constraintName="fk_image_person_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="person"/>
+
+        <addForeignKeyConstraint baseColumnNames="credit_id"
+                                 baseTableName="image"
+                                 constraintName="fk_image_credit_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="credit"/>
+
+    </changeSet>
+</databaseChangeLog>

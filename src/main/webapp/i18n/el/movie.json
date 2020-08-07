@@ -1,0 +1,42 @@
+{
+  "movieInsightsApp": {
+    "movie": {
+      "home": {
+        "title": "Movies",
+        "createLabel": "Δημιουργήστε ένα νέο Movie",
+        "createOrEditLabel": "Δημιουργήστε η επεξεργαστείτε ένα Movie",
+        "search": "Αναζήτηση για Movie",
+        "notFound": "No Movies found"
+      },
+      "created": "Ένα νέο Movie έχει δημιουργηθεί με αναγνωριστικό {{ param }}",
+      "updated": "Ένα Movie έχει ενημερωθεί με αναγνωριστικό {{ param }}",
+      "deleted": "Ένα Movie έχει διαγραφτεί με αναγνωριστικό {{ param }}",
+      "delete": {
+        "question": "Είστε βέβαιοι όταν θέλετε να διαγράψετε το ακόλουθο Movie {{ id }};"
+      },
+      "detail": {
+        "title": "Movie"
+      },
+      "tmdbId": "Tmdb Id",
+      "name": "Name",
+      "tagline": "Tagline",
+      "description": "Description",
+      "revenue": "Revenue",
+      "budget": "Budget",
+      "imdbId": "Imdb Id",
+      "popularity": "Popularity",
+      "runtime": "Runtime",
+      "posterPath": "Poster Path",
+      "backdropPath": "Backdrop Path",
+      "releaseDate": "Release Date",
+      "isBanned": "Is Banned",
+      "vote": "Vote",
+      "credits": "Credits",
+      "images": "Images",
+      "banReasons": "Ban Reasons",
+      "companies": "Companies",
+      "countries": "Countries",
+      "genres": "Genres"
+    }
+  }
+}

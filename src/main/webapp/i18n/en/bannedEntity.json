@@ -1,0 +1,25 @@
+{
+  "movieInsightsApp": {
+    "bannedEntity": {
+      "home": {
+        "title": "Banned Entities",
+        "createLabel": "Create a new Banned Entity",
+        "createOrEditLabel": "Create or edit a Banned Entity",
+        "search": "Search for Banned Entity",
+        "notFound": "No Banned Entities found"
+      },
+      "created": "A new Banned Entity is created with identifier {{ param }}",
+      "updated": "A Banned Entity is updated with identifier {{ param }}",
+      "deleted": "A Banned Entity is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Banned Entity {{ id }}?"
+      },
+      "detail": {
+        "title": "Banned Entity"
+      },
+      "tmdbId": "Tmdb Id",
+      "type": "Type",
+      "bannedPersistentEntity": "Banned Persistent Entity"
+    }
+  }
+}

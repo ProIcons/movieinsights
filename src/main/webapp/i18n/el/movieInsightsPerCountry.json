@@ -1,0 +1,25 @@
+{
+  "movieInsightsApp": {
+    "movieInsightsPerCountry": {
+      "home": {
+        "title": "Movie Insights Per Countries",
+        "createLabel": "Δημιουργήστε ένα νέο Movie Insights Per Country",
+        "createOrEditLabel": "Δημιουργήστε η επεξεργαστείτε ένα Movie Insights Per Country",
+        "search": "Αναζήτηση για Movie Insights Per Country",
+        "notFound": "No Movie Insights Per Countries found"
+      },
+      "created": "Ένα νέο Movie Insights Per Country έχει δημιουργηθεί με αναγνωριστικό {{ param }}",
+      "updated": "Ένα Movie Insights Per Country έχει ενημερωθεί με αναγνωριστικό {{ param }}",
+      "deleted": "Ένα Movie Insights Per Country έχει διαγραφτεί με αναγνωριστικό {{ param }}",
+      "delete": {
+        "question": "Είστε βέβαιοι όταν θέλετε να διαγράψετε το ακόλουθο Movie Insights Per Country {{ id }};"
+      },
+      "detail": {
+        "title": "Movie Insights Per Country"
+      },
+      "movieInsights": "Movie Insights",
+      "movieInsightsPerYear": "Movie Insights Per Year",
+      "country": "Country"
+    }
+  }
+}

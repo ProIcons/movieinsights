@@ -1,0 +1,50 @@
+{
+  "name": "ProductionCompany",
+  "fields": [
+    {
+      "fieldName": "name",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "tmdbId",
+      "fieldType": "Long",
+      "fieldValidateRules": ["required", "unique"]
+    },
+    {
+      "fieldName": "logoPath",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "originCountry",
+      "fieldType": "String"
+    }
+  ],
+  "relationships": [
+    {
+      "relationshipType": "one-to-many",
+      "otherEntityName": "bannedPersistentEntity",
+      "otherEntityRelationshipName": "productionCompany",
+      "relationshipName": "banReasons"
+    },
+    {
+      "relationshipType": "many-to-many",
+      "otherEntityName": "movie",
+      "otherEntityRelationshipName": "companies",
+      "relationshipName": "movies",
+      "otherEntityField": "id",
+      "ownerSide": false
+    }
+  ],
+  "changelogDate": "20200807165049",
+  "entityTableName": "production_company",
+  "dto": "mapstruct",
+  "pagination": "no",
+  "service": "serviceClass",
+  "jpaMetamodelFiltering": false,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "clientRootFolder": "",
+  "applications": "*"
+}

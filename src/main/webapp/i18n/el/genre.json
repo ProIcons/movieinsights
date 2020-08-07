@@ -1,0 +1,25 @@
+{
+  "movieInsightsApp": {
+    "genre": {
+      "home": {
+        "title": "Genres",
+        "createLabel": "Δημιουργήστε ένα νέο Genre",
+        "createOrEditLabel": "Δημιουργήστε η επεξεργαστείτε ένα Genre",
+        "search": "Αναζήτηση για Genre",
+        "notFound": "No Genres found"
+      },
+      "created": "Ένα νέο Genre έχει δημιουργηθεί με αναγνωριστικό {{ param }}",
+      "updated": "Ένα Genre έχει ενημερωθεί με αναγνωριστικό {{ param }}",
+      "deleted": "Ένα Genre έχει διαγραφτεί με αναγνωριστικό {{ param }}",
+      "delete": {
+        "question": "Είστε βέβαιοι όταν θέλετε να διαγράψετε το ακόλουθο Genre {{ id }};"
+      },
+      "detail": {
+        "title": "Genre"
+      },
+      "tmdbId": "Tmdb Id",
+      "name": "Name",
+      "movies": "Movies"
+    }
+  }
+}

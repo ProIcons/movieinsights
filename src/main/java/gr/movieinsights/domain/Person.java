@@ -1,0 +1,275 @@
+package gr.movieinsights.domain;
+
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Type;
+
+import javax.persistence.*;
+import javax.validation.constraints.*;
+
+import org.springframework.data.elasticsearch.annotations.FieldType;
+import java.io.Serializable;
+import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
+
+/**
+ * A Person.
+ */
+@Entity
+@Table(name = "person")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+@org.springframework.data.elasticsearch.annotations.Document(indexName = "person")
+public class Person implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
+    @SequenceGenerator(name = "sequenceGenerator")
+    private Long id;
+
+    @NotNull
+    @Column(name = "tmdb_id", nullable = false, unique = true)
+    private Long tmdbId;
+
+    @NotNull
+    @Column(name = "name", nullable = false)
+    private String name;
+
+    @Column(name = "imdb_id")
+    private String imdbId;
+
+    @Column(name = "popularity")
+    private Double popularity;
+
+    @Lob
+    @Type(type = "org.hibernate.type.TextType")
+    @Column(name = "biography")
+    private String biography;
+
+    @Column(name = "birth_day")
+    private LocalDate birthDay;
+
+    @Column(name = "profile_path")
+    private String profilePath;
+
+    @OneToMany(mappedBy = "person")
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    private Set<Credit> credits = new HashSet<>();
+
+    @OneToMany(mappedBy = "person")
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    private Set<Image> images = new HashSet<>();
+
+    @OneToMany(mappedBy = "person")
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    private Set<BannedPersistentEntity> banReasons = new HashSet<>();
+
+    // jhipster-needle-entity-add-field - JHipster will add fields here
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getTmdbId() {
+        return tmdbId;
+    }
+
+    public Person tmdbId(Long tmdbId) {
+        this.tmdbId = tmdbId;
+        return this;
+    }
+
+    public void setTmdbId(Long tmdbId) {
+        this.tmdbId = tmdbId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public Person name(String name) {
+        this.name = name;
+        return this;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getImdbId() {
+        return imdbId;
+    }
+
+    public Person imdbId(String imdbId) {
+        this.imdbId = imdbId;
+        return this;
+    }
+
+    public void setImdbId(String imdbId) {
+        this.imdbId = imdbId;
+    }
+
+    public Double getPopularity() {
+        return popularity;
+    }
+
+    public Person popularity(Double popularity) {
+        this.popularity = popularity;
+        return this;
+    }
+
+    public void setPopularity(Double popularity) {
+        this.popularity = popularity;
+    }
+
+    public String getBiography() {
+        return biography;
+    }
+
+    public Person biography(String biography) {
+        this.biography = biography;
+        return this;
+    }
+
+    public void setBiography(String biography) {
+        this.biography = biography;
+    }
+
+    public LocalDate getBirthDay() {
+        return birthDay;
+    }
+
+    public Person birthDay(LocalDate birthDay) {
+        this.birthDay = birthDay;
+        return this;
+    }
+
+    public void setBirthDay(LocalDate birthDay) {
+        this.birthDay = birthDay;
+    }
+
+    public String getProfilePath() {
+        return profilePath;
+    }
+
+    public Person profilePath(String profilePath) {
+        this.profilePath = profilePath;
+        return this;
+    }
+
+    public void setProfilePath(String profilePath) {
+        this.profilePath = profilePath;
+    }
+
+    public Set<Credit> getCredits() {
+        return credits;
+    }
+
+    public Person credits(Set<Credit> credits) {
+        this.credits = credits;
+        return this;
+    }
+
+    public Person addCredits(Credit credit) {
+        this.credits.add(credit);
+        credit.setPerson(this);
+        return this;
+    }
+
+    public Person removeCredits(Credit credit) {
+        this.credits.remove(credit);
+        credit.setPerson(null);
+        return this;
+    }
+
+    public void setCredits(Set<Credit> credits) {
+        this.credits = credits;
+    }
+
+    public Set<Image> getImages() {
+        return images;
+    }
+
+    public Person images(Set<Image> images) {
+        this.images = images;
+        return this;
+    }
+
+    public Person addImages(Image image) {
+        this.images.add(image);
+        image.setPerson(this);
+        return this;
+    }
+
+    public Person removeImages(Image image) {
+        this.images.remove(image);
+        image.setPerson(null);
+        return this;
+    }
+
+    public void setImages(Set<Image> images) {
+        this.images = images;
+    }
+
+    public Set<BannedPersistentEntity> getBanReasons() {
+        return banReasons;
+    }
+
+    public Person banReasons(Set<BannedPersistentEntity> bannedPersistentEntities) {
+        this.banReasons = bannedPersistentEntities;
+        return this;
+    }
+
+    public Person addBanReasons(BannedPersistentEntity bannedPersistentEntity) {
+        this.banReasons.add(bannedPersistentEntity);
+        bannedPersistentEntity.setPerson(this);
+        return this;
+    }
+
+    public Person removeBanReasons(BannedPersistentEntity bannedPersistentEntity) {
+        this.banReasons.remove(bannedPersistentEntity);
+        bannedPersistentEntity.setPerson(null);
+        return this;
+    }
+
+    public void setBanReasons(Set<BannedPersistentEntity> bannedPersistentEntities) {
+        this.banReasons = bannedPersistentEntities;
+    }
+    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof Person)) {
+            return false;
+        }
+        return id != null && id.equals(((Person) o).id);
+    }
+
+    @Override
+    public int hashCode() {
+        return 31;
+    }
+
+    // prettier-ignore
+    @Override
+    public String toString() {
+        return "Person{" +
+            "id=" + getId() +
+            ", tmdbId=" + getTmdbId() +
+            ", name='" + getName() + "'" +
+            ", imdbId='" + getImdbId() + "'" +
+            ", popularity=" + getPopularity() +
+            ", biography='" + getBiography() + "'" +
+            ", birthDay='" + getBirthDay() + "'" +
+            ", profilePath='" + getProfilePath() + "'" +
+            "}";
+    }
+}

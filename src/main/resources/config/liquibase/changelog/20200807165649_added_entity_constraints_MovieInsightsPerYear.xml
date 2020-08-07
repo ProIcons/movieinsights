@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
+    <!--
+        Added the constraints for entity MovieInsightsPerYear.
+    -->
+    <changeSet id="20200807165649-2" author="jhipster">
+        
+        <addForeignKeyConstraint baseColumnNames="movie_insights_id"
+                                 baseTableName="movie_insights_per_year"
+                                 constraintName="fk_movie_insights_per_year_movie_insights_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="movie_insights"/>
+
+        <addForeignKeyConstraint baseColumnNames="movie_insights_per_country_id"
+                                 baseTableName="movie_insights_per_year"
+                                 constraintName="fk_movie_insights_per_year_movie_insights_per_country_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="movie_insights_per_country"/>
+
+        <addForeignKeyConstraint baseColumnNames="movie_insights_per_company_id"
+                                 baseTableName="movie_insights_per_year"
+                                 constraintName="fk_movie_insights_per_year_movie_insights_per_company_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="movie_insights_per_company"/>
+
+        <addForeignKeyConstraint baseColumnNames="movie_insights_per_person_id"
+                                 baseTableName="movie_insights_per_year"
+                                 constraintName="fk_movie_insights_per_year_movie_insights_per_person_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="movie_insights_per_person"/>
+
+        <addForeignKeyConstraint baseColumnNames="movie_insights_per_genre_id"
+                                 baseTableName="movie_insights_per_year"
+                                 constraintName="fk_movie_insights_per_year_movie_insights_per_genre_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="movie_insights_per_genre"/>
+
+    </changeSet>
+</databaseChangeLog>

@@ -1,0 +1,13 @@
+{
+  "movieInsightsApp": {
+    "BanReason": {
+      "null": "",
+      "UNDEFINED": "UNDEFINED",
+      "NOBUDGET": "NOBUDGET",
+      "NOREVENUE": "NOREVENUE",
+      "NORELEASEDATE": "NORELEASEDATE",
+      "NOVOTE": "NOVOTE",
+      "CUSTOM": "CUSTOM"
+    }
+  }
+}

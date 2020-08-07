@@ -1,0 +1,60 @@
+{
+  "name": "MovieInsightsPerYear",
+  "fields": [
+    {
+      "fieldName": "year",
+      "fieldType": "Integer",
+      "fieldValidateRules": ["required"]
+    }
+  ],
+  "relationships": [
+    {
+      "relationshipType": "one-to-one",
+      "otherEntityName": "movieInsights",
+      "otherEntityRelationshipName": "movieInsightsPerYear",
+      "relationshipValidateRules": "required",
+      "relationshipName": "movieInsights",
+      "otherEntityField": "id",
+      "ownerSide": true
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "movieInsightsPerCountry",
+      "otherEntityRelationshipName": "movieInsightsPerYear",
+      "relationshipName": "movieInsightsPerCountry",
+      "otherEntityField": "id"
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "movieInsightsPerCompany",
+      "otherEntityRelationshipName": "movieInsightsPerYear",
+      "relationshipName": "movieInsightsPerCompany",
+      "otherEntityField": "id"
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "movieInsightsPerPerson",
+      "otherEntityRelationshipName": "movieInsightsPerYear",
+      "relationshipName": "movieInsightsPerPerson",
+      "otherEntityField": "id"
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "movieInsightsPerGenre",
+      "otherEntityRelationshipName": "movieInsightsPerYear",
+      "relationshipName": "movieInsightsPerGenre",
+      "otherEntityField": "id"
+    }
+  ],
+  "changelogDate": "20200807165649",
+  "entityTableName": "movie_insights_per_year",
+  "dto": "mapstruct",
+  "pagination": "no",
+  "service": "serviceClass",
+  "jpaMetamodelFiltering": false,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "clientRootFolder": "",
+  "applications": "*"
+}

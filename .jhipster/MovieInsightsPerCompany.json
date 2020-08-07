@@ -1,0 +1,40 @@
+{
+  "name": "MovieInsightsPerCompany",
+  "fields": [],
+  "relationships": [
+    {
+      "relationshipType": "one-to-one",
+      "otherEntityName": "movieInsights",
+      "otherEntityRelationshipName": "movieInsightsPerCompany",
+      "relationshipValidateRules": "required",
+      "relationshipName": "movieInsights",
+      "otherEntityField": "id",
+      "ownerSide": true
+    },
+    {
+      "relationshipType": "one-to-many",
+      "otherEntityName": "movieInsightsPerYear",
+      "otherEntityRelationshipName": "movieInsightsPerCompany",
+      "relationshipName": "movieInsightsPerYear"
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "productionCompany",
+      "otherEntityRelationshipName": "movieInsightsPerCompany",
+      "relationshipValidateRules": "required",
+      "relationshipName": "company",
+      "otherEntityField": "id"
+    }
+  ],
+  "changelogDate": "20200807165349",
+  "entityTableName": "movie_insights_per_company",
+  "dto": "mapstruct",
+  "pagination": "no",
+  "service": "serviceClass",
+  "jpaMetamodelFiltering": false,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "clientRootFolder": "",
+  "applications": "*"
+}

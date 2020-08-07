@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
+    <!--
+        Added the constraints for entity BannedPersistentEntity.
+    -->
+    <changeSet id="20200807164549-2" author="jhipster">
+        
+        <addForeignKeyConstraint baseColumnNames="movie_id"
+                                 baseTableName="banned_persistent_entity"
+                                 constraintName="fk_banned_persistent_entity_movie_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="movie"/>
+
+        <addForeignKeyConstraint baseColumnNames="person_id"
+                                 baseTableName="banned_persistent_entity"
+                                 constraintName="fk_banned_persistent_entity_person_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="person"/>
+
+        <addForeignKeyConstraint baseColumnNames="production_company_id"
+                                 baseTableName="banned_persistent_entity"
+                                 constraintName="fk_banned_persistent_entity_production_company_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="production_company"/>
+
+    </changeSet>
+</databaseChangeLog>

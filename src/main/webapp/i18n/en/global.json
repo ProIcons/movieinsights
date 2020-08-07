@@ -7,6 +7,22 @@
       "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",
       "entities": {
         "main": "Entities",
+        "movie": "Movie",
+        "person": "Person",
+        "credit": "Credit",
+        "bannedEntity": "Banned Entity",
+        "bannedPersistentEntity": "Banned Persistent Entity",
+        "genre": "Genre",
+        "image": "Image",
+        "vote": "Vote",
+        "productionCountry": "Production Country",
+        "productionCompany": "Production Company",
+        "movieInsights": "Movie Insights",
+        "movieInsightsPerCountry": "Movie Insights Per Country",
+        "movieInsightsPerCompany": "Movie Insights Per Company",
+        "movieInsightsPerPerson": "Movie Insights Per Person",
+        "movieInsightsPerGenre": "Movie Insights Per Genre",
+        "movieInsightsPerYear": "Movie Insights Per Year",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {

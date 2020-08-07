@@ -1,0 +1,25 @@
+{
+  "movieInsightsApp": {
+    "movieInsightsPerCompany": {
+      "home": {
+        "title": "Movie Insights Per Companies",
+        "createLabel": "Δημιουργήστε ένα νέο Movie Insights Per Company",
+        "createOrEditLabel": "Δημιουργήστε η επεξεργαστείτε ένα Movie Insights Per Company",
+        "search": "Αναζήτηση για Movie Insights Per Company",
+        "notFound": "No Movie Insights Per Companies found"
+      },
+      "created": "Ένα νέο Movie Insights Per Company έχει δημιουργηθεί με αναγνωριστικό {{ param }}",
+      "updated": "Ένα Movie Insights Per Company έχει ενημερωθεί με αναγνωριστικό {{ param }}",
+      "deleted": "Ένα Movie Insights Per Company έχει διαγραφτεί με αναγνωριστικό {{ param }}",
+      "delete": {
+        "question": "Είστε βέβαιοι όταν θέλετε να διαγράψετε το ακόλουθο Movie Insights Per Company {{ id }};"
+      },
+      "detail": {
+        "title": "Movie Insights Per Company"
+      },
+      "movieInsights": "Movie Insights",
+      "movieInsightsPerYear": "Movie Insights Per Year",
+      "company": "Company"
+    }
+  }
+}

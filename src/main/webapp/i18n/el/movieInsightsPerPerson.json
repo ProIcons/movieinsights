@@ -1,0 +1,26 @@
+{
+  "movieInsightsApp": {
+    "movieInsightsPerPerson": {
+      "home": {
+        "title": "Movie Insights Per People",
+        "createLabel": "Δημιουργήστε ένα νέο Movie Insights Per Person",
+        "createOrEditLabel": "Δημιουργήστε η επεξεργαστείτε ένα Movie Insights Per Person",
+        "search": "Αναζήτηση για Movie Insights Per Person",
+        "notFound": "No Movie Insights Per People found"
+      },
+      "created": "Ένα νέο Movie Insights Per Person έχει δημιουργηθεί με αναγνωριστικό {{ param }}",
+      "updated": "Ένα Movie Insights Per Person έχει ενημερωθεί με αναγνωριστικό {{ param }}",
+      "deleted": "Ένα Movie Insights Per Person έχει διαγραφτεί με αναγνωριστικό {{ param }}",
+      "delete": {
+        "question": "Είστε βέβαιοι όταν θέλετε να διαγράψετε το ακόλουθο Movie Insights Per Person {{ id }};"
+      },
+      "detail": {
+        "title": "Movie Insights Per Person"
+      },
+      "as": "As",
+      "movieInsights": "Movie Insights",
+      "movieInsightsPerYear": "Movie Insights Per Year",
+      "person": "Person"
+    }
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "movieInsightsApp": {
+    "movieInsightsPerPerson": {
+      "home": {
+        "title": "Movie Insights Per People",
+        "createLabel": "Create a new Movie Insights Per Person",
+        "createOrEditLabel": "Create or edit a Movie Insights Per Person",
+        "search": "Search for Movie Insights Per Person",
+        "notFound": "No Movie Insights Per People found"
+      },
+      "created": "A new Movie Insights Per Person is created with identifier {{ param }}",
+      "updated": "A Movie Insights Per Person is updated with identifier {{ param }}",
+      "deleted": "A Movie Insights Per Person is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Movie Insights Per Person {{ id }}?"
+      },
+      "detail": {
+        "title": "Movie Insights Per Person"
+      },
+      "as": "As",
+      "movieInsights": "Movie Insights",
+      "movieInsightsPerYear": "Movie Insights Per Year",
+      "person": "Person"
+    }
+  }
+}

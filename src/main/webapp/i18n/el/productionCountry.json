@@ -1,0 +1,25 @@
+{
+  "movieInsightsApp": {
+    "productionCountry": {
+      "home": {
+        "title": "Production Countries",
+        "createLabel": "Δημιουργήστε ένα νέο Production Country",
+        "createOrEditLabel": "Δημιουργήστε η επεξεργαστείτε ένα Production Country",
+        "search": "Αναζήτηση για Production Country",
+        "notFound": "No Production Countries found"
+      },
+      "created": "Ένα νέο Production Country έχει δημιουργηθεί με αναγνωριστικό {{ param }}",
+      "updated": "Ένα Production Country έχει ενημερωθεί με αναγνωριστικό {{ param }}",
+      "deleted": "Ένα Production Country έχει διαγραφτεί με αναγνωριστικό {{ param }}",
+      "delete": {
+        "question": "Είστε βέβαιοι όταν θέλετε να διαγράψετε το ακόλουθο Production Country {{ id }};"
+      },
+      "detail": {
+        "title": "Production Country"
+      },
+      "name": "Name",
+      "iso31661": "Iso 31661",
+      "movies": "Movies"
+    }
+  }
+}

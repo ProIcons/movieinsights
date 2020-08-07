@@ -1,0 +1,47 @@
+{
+  "name": "MovieInsightsPerPerson",
+  "fields": [
+    {
+      "fieldName": "as",
+      "fieldType": "CreditRole",
+      "fieldValues": "ACTOR,PRODUCER,WRITER,DIRECTOR",
+      "fieldValidateRules": ["required"]
+    }
+  ],
+  "relationships": [
+    {
+      "relationshipType": "one-to-one",
+      "otherEntityName": "movieInsights",
+      "otherEntityRelationshipName": "movieInsightsPerPerson",
+      "relationshipValidateRules": "required",
+      "relationshipName": "movieInsights",
+      "otherEntityField": "id",
+      "ownerSide": true
+    },
+    {
+      "relationshipType": "one-to-many",
+      "otherEntityName": "movieInsightsPerYear",
+      "otherEntityRelationshipName": "movieInsightsPerPerson",
+      "relationshipName": "movieInsightsPerYear"
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "person",
+      "otherEntityRelationshipName": "movieInsightsPerPerson",
+      "relationshipValidateRules": "required",
+      "relationshipName": "person",
+      "otherEntityField": "id"
+    }
+  ],
+  "changelogDate": "20200807165449",
+  "entityTableName": "movie_insights_per_person",
+  "dto": "mapstruct",
+  "pagination": "no",
+  "service": "serviceClass",
+  "jpaMetamodelFiltering": false,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "clientRootFolder": "",
+  "applications": "*"
+}
