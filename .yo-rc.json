@@ -1,0 +1,43 @@
+{
+  "generator-jhipster": {
+    "promptValues": {
+      "packageName": "gr.movieinsights",
+      "nativeLanguage": "en"
+    },
+    "jhipsterVersion": "6.10.1",
+    "applicationType": "monolith",
+    "baseName": "MovieInsights",
+    "packageName": "gr.movieinsights",
+    "packageFolder": "gr/movieinsights",
+    "serverPort": "8080",
+    "authenticationType": "jwt",
+    "cacheProvider": "ehcache",
+    "enableHibernateCache": true,
+    "websocket": "spring-websocket",
+    "databaseType": "sql",
+    "devDatabaseType": "postgresql",
+    "prodDatabaseType": "postgresql",
+    "searchEngine": "elasticsearch",
+    "messageBroker": false,
+    "serviceDiscoveryType": false,
+    "buildTool": "maven",
+    "enableSwaggerCodegen": false,
+    "jwtSecretKey": "YmYxNGI5MmMzZTU4ZmE0OWNiNmMzZTI3ZTUzMjA4NzFiMmU3ZGUyNDRkYTZiYTkzZmZhZjAxZTU5YzdhYzFjOWJhZTg2YTE1ODJkNDQxMjc5NmY1M2VlYjYzNWMzYmJmODkwMDg0MTg0ZTU0NjViNzhiMmNlODYxMDBiNDFmMGY=",
+    "embeddableLaunchScript": false,
+    "useSass": true,
+    "clientPackageManager": "npm",
+    "clientFramework": "react",
+    "clientTheme": "flatly",
+    "clientThemeVariant": "primary",
+    "creationTimestamp": 1596818287812,
+    "testFrameworks": ["gatling", "cucumber", "protractor"],
+    "jhiPrefix": "jhi",
+    "entitySuffix": "",
+    "dtoSuffix": "DTO",
+    "otherModules": [],
+    "enableTranslation": true,
+    "nativeLanguage": "en",
+    "languages": ["en", "el"],
+    "blueprints": []
+  }
+}
