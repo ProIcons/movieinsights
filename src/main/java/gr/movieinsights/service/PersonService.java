@@ -5,9 +5,9 @@ import gr.movieinsights.repository.PersonRepository;
 import gr.movieinsights.repository.search.PersonSearchRepository;
 import gr.movieinsights.service.dto.PersonDTO;
 import gr.movieinsights.service.mapper.PersonMapper;
+import gr.movieinsights.service.util.ImdbIdentifiedBaseService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -15,14 +15,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
-import static org.elasticsearch.index.query.QueryBuilders.*;
+import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 
 /**
  * Service Implementation for managing {@link Person}.
  */
 @Service
 @Transactional
-public class PersonService extends ImdbIdentifiedBaseService<Person, PersonDTO, PersonRepository, PersonMapper>  {
+public class PersonService extends ImdbIdentifiedBaseService<Person, PersonDTO, PersonRepository, PersonMapper> {
 
     private final Logger log = LoggerFactory.getLogger(PersonService.class);
 

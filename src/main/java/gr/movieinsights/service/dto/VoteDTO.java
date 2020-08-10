@@ -1,13 +1,13 @@
 package gr.movieinsights.service.dto;
 
-import javax.validation.constraints.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 /**
  * A DTO for the {@link gr.movieinsights.domain.Vote} entity.
  */
 public class VoteDTO implements Serializable {
-    
+
     private Long id;
 
     @NotNull
@@ -16,7 +16,7 @@ public class VoteDTO implements Serializable {
     @NotNull
     private Integer votes;
 
-    
+
     public Long getId() {
         return id;
     }

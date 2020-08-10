@@ -1,20 +1,19 @@
 package gr.movieinsights.service.dto;
 
-import javax.validation.constraints.*;
 import java.io.Serializable;
 
 /**
  * A DTO for the {@link gr.movieinsights.domain.MovieInsightsPerCompany} entity.
  */
 public class MovieInsightsPerCompanyDTO implements Serializable {
-    
+
     private Long id;
 
 
     private Long movieInsightsId;
 
     private Long companyId;
-    
+
     public Long getId() {
         return id;
     }

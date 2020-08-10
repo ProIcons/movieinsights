@@ -1,13 +1,13 @@
 package gr.movieinsights.service.dto;
 
-import javax.validation.constraints.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 /**
  * A DTO for the {@link gr.movieinsights.domain.MovieInsightsPerYear} entity.
  */
 public class MovieInsightsPerYearDTO implements Serializable {
-    
+
     private Long id;
 
     @NotNull
@@ -23,7 +23,7 @@ public class MovieInsightsPerYearDTO implements Serializable {
     private Long movieInsightsPerPersonId;
 
     private Long movieInsightsPerGenreId;
-    
+
     public Long getId() {
         return id;
     }

@@ -1,4 +1,4 @@
-package gr.movieinsights.models;
+package gr.movieinsights.service.util.wrappers.dataimport;
 
 import gr.movieinsights.domain.Genre;
 import gr.movieinsights.domain.ProductionCompany;
@@ -9,7 +9,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArraySet;
 
-public class MovieWrapper {
+public class MovieImportWrapper {
     private final Map<Long, Genre> pendingGenres;
     private final Map<Long, ProductionCompany> pendingCompanies;
     private final Map<String, ProductionCountry> pendingCountries;
@@ -18,7 +18,7 @@ public class MovieWrapper {
     private final Set<String> countryIds;
     private final Set<Long> genreIds;
 
-    public MovieWrapper(Map<Long, Genre> pendingGenres, Map<Long, ProductionCompany> pendingCompanies, Map<String, ProductionCountry> pendingCountries, gr.movieinsights.domain.Movie movie) {
+    public MovieImportWrapper(Map<Long, Genre> pendingGenres, Map<Long, ProductionCompany> pendingCompanies, Map<String, ProductionCountry> pendingCountries, gr.movieinsights.domain.Movie movie) {
         this.pendingGenres = pendingGenres;
         this.pendingCompanies = pendingCompanies;
         this.pendingCountries = pendingCountries;

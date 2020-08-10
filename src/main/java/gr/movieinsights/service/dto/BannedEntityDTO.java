@@ -1,16 +1,17 @@
 package gr.movieinsights.service.dto;
 
-import java.time.LocalDate;
-import javax.validation.constraints.*;
-import java.io.Serializable;
-import gr.movieinsights.domain.enumeration.TmdbEntityType;
 import gr.movieinsights.domain.enumeration.BanReason;
+import gr.movieinsights.domain.enumeration.TmdbEntityType;
+
+import javax.validation.constraints.NotNull;
+import java.io.Serializable;
+import java.time.LocalDate;
 
 /**
  * A DTO for the {@link gr.movieinsights.domain.BannedEntity} entity.
  */
 public class BannedEntityDTO implements Serializable {
-    
+
     private Long id;
 
     private Long tmdbId;
@@ -28,7 +29,7 @@ public class BannedEntityDTO implements Serializable {
     @NotNull
     private LocalDate timestamp;
 
-    
+
     public Long getId() {
         return id;
     }

@@ -1,10 +1,5 @@
 package gr.movieinsights.models;
 
-import org.supercsv.cellprocessor.ParseDouble;
-import org.supercsv.cellprocessor.ParseLong;
-import org.supercsv.cellprocessor.constraint.NotNull;
-import org.supercsv.cellprocessor.ift.CellProcessor;
-import org.supercsv.io.ICsvBeanReader;
 import org.supercsv.io.dozer.ICsvDozerBeanReader;
 
 import java.io.IOException;

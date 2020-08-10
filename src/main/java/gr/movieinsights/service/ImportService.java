@@ -23,8 +23,6 @@ import gr.movieinsights.models.CallWrapper;
 import gr.movieinsights.models.ImdbEntity;
 import gr.movieinsights.models.ImdbImportMovie;
 import gr.movieinsights.models.ImdbImportRating;
-import gr.movieinsights.models.MovieWrapper;
-import gr.movieinsights.models.ResponseWrapper;
 import gr.movieinsights.models.TmdbEntity;
 import gr.movieinsights.models.TmdbImportEntity;
 import gr.movieinsights.models.enumeration.ResponseResult;
@@ -36,6 +34,8 @@ import gr.movieinsights.repository.PersonRepository;
 import gr.movieinsights.repository.ProductionCompanyRepository;
 import gr.movieinsights.repository.ProductionCountryRepository;
 import gr.movieinsights.repository.VoteRepository;
+import gr.movieinsights.service.util.wrappers.dataimport.MovieImportWrapper;
+import gr.movieinsights.service.util.wrappers.dataimport.ResponseWrapper;
 import gr.movieinsights.util.DurationUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -75,7 +75,6 @@ public class ImportService {
     private final GenreRepository genreRepository;
     private final BannedEntityRepository bannedEntityRepository;
 
-
     public ImportService(MovieInsightsTmdb tmdb, ImdbService imdbService, TmdbService tmdbService, ProductionCompanyRepository companyRepository, ProductionCountryRepository countryRepository, PersonRepository personRepository, MovieRepository movieRepository, CreditRepository creditRepository, VoteRepository voteRepository, GenreRepository genreRepository, BannedEntityRepository bannedEntityRepository) {
         this.tmdb = tmdb;
         this.tmdbService = tmdbService;
@@ -89,7 +88,6 @@ public class ImportService {
         this.genreRepository = genreRepository;
         this.bannedEntityRepository = bannedEntityRepository;
     }
-
 
     private void fetchData(boolean initialFetch) {
         TmdbImportEntity tmdbImportEntity = tmdbService.getTmdbDailyExportFile(TmdbEntityType.MOVIE);
@@ -124,7 +122,13 @@ public class ImportService {
     }
 
     public void initializeDemoDatabase() {
-        if (movieRepository.count() > 0) {
+        initializeDemoDatabase(false);
+    }
+
+    public void initializeDemoDatabase(boolean force) {
+        if (force) {
+            //TODO: clear database
+        } else if (movieRepository.count() > 0) {
             log.warn("Initialize Demo Database: Database has already been initialized -- ignoring.");
             return;
         }
@@ -141,7 +145,13 @@ public class ImportService {
     }
 
     public void initializeDatabase() {
-        if (movieRepository.count() > 0) {
+        initializeDatabase(false);
+    }
+
+    public void initializeDatabase(boolean force) {
+        if (force) {
+            //TODO: clear database
+        } else if (movieRepository.count() > 0) {
             log.warn("Initialize Database: Database has already been initialized -- ignoring.");
             return;
         }
@@ -159,31 +169,26 @@ public class ImportService {
 
 
     private class DataImporter {
-
         List<Long> movieTmdbIdList;
         List<String> movieImdbIdList;
-
-        List<gr.movieinsights.domain.Movie> pendingMovies;
-
-        List<ProductionCompany> persistentCompanies;
-        Map<Long, ProductionCompany> pendingCompanies;
         List<Long> companyIdList;
-
-        List<ProductionCountry> persistentCountries;
-        Map<String, ProductionCountry> pendingCountries;
         List<String> countryIdList;
+        List<Long> personTmdbIdList;
+        List<String> personImdbIdList;
+        List<Long> genreIdList;
 
         List<Person> persistentPeople;
         List<Person> pendingPeople;
-        List<Long> personTmdbIdList;
-        List<String> personImdbIdList;
-
         List<Genre> persistentGenres;
-        Map<Long, Genre> pendingGenres;
-        List<Long> genreIdList;
-        List<Vote> pendingVotes;
+        List<ProductionCompany> persistentCompanies;
+        List<ProductionCountry> persistentCountries;
 
+        List<gr.movieinsights.domain.Movie> pendingMovies;
+        List<Vote> pendingVotes;
         List<Credit> pendingCredits;
+        Map<Long, ProductionCompany> pendingCompanies;
+        Map<String, ProductionCountry> pendingCountries;
+        Map<Long, Genre> pendingGenres;
 
         List<BannedEntity> bannedEntities;
 
@@ -234,6 +239,106 @@ public class ImportService {
 
         }
 
+        @Transactional
+        public void fetchData() {
+            log.info("\tImporting Data for {} Movies", movieCalls.size());
+
+            log.debug("\tFetching & Processing {} Movies...", movieCalls.size());
+            Instant fetchMoviesStart = Instant.now();
+            fetchMovies(Lists.partition(movieCalls, tmdb.getMaximumRequestsPerCycle()));
+
+            log.debug("\t\tMovies Fetched in {}", DurationUtils.getDurationInTimeFormat(fetchMoviesStart));
+            movieCalls.clear();
+            log.debug("\tFetching & Processing {} People...", personCalls.size());
+            Instant fetchPeopleStart = Instant.now();
+            fetchPeople(
+                Lists.partition(
+                    personCalls
+                        .parallelStream()
+                        .collect(Collectors.toMap(CallWrapper<com.uwetrottmann.tmdb2.entities.Person>::getIntKey, CallWrapper<com.uwetrottmann.tmdb2.entities.Person>::getCall, (p1, p2) -> p1))
+                        .entrySet()
+                        .parallelStream()
+                        .map(m -> new CallWrapper<>(m.getValue(), TmdbEntityType.PERSON, m.getKey()))
+                        .collect(Collectors.toList()),
+                    tmdb.getMaximumRequestsPerCycle()));
+
+            log.debug("\t\tPeople Fetched in {}", DurationUtils.getDurationInTimeFormat(fetchPeopleStart));
+            personCalls.clear();
+
+
+            Instant saveInstant;
+            Instant saveEntityInstant = saveInstant = Instant.now();
+            log.debug("\tSaving {} Votes...", pendingVotes.size());
+            voteRepository.saveAll(pendingVotes);
+            log.debug("\t\tSaved in {}ms", DurationUtils.getDurationInMillis(saveEntityInstant));
+            saveEntityInstant = Instant.now();
+
+            log.debug("\tSaving {} People...", pendingPeople.size());
+            personRepository.saveAll(pendingPeople);
+            log.debug("\t\tSaved in {}ms", DurationUtils.getDurationInMillis(saveEntityInstant));
+            saveEntityInstant = Instant.now();
+
+            log.debug("\tSaving {} Companies...", pendingCompanies.size());
+            companyRepository.saveAll(pendingCompanies.values());
+            log.debug("\t\tSaved in {}ms", DurationUtils.getDurationInMillis(saveEntityInstant));
+            saveEntityInstant = Instant.now();
+
+            log.debug("\tSaving {} Countries...", pendingCountries.size());
+            countryRepository.saveAll(pendingCountries.values());
+            log.debug("\t\tSaved in {}ms", DurationUtils.getDurationInMillis(saveEntityInstant));
+            saveEntityInstant = Instant.now();
+
+            log.debug("\tSaving {} Genres...", pendingCountries.size());
+            genreRepository.saveAll(pendingGenres.values());
+            log.debug("\t\tSaved in {}ms", DurationUtils.getDurationInMillis(saveEntityInstant));
+            saveEntityInstant = Instant.now();
+
+            log.debug("\tSaving {} Movies...", pendingMovies.size());
+            movieRepository.saveAll(pendingMovies);
+            log.debug("\t\tSaved in {}ms", DurationUtils.getDurationInMillis(saveEntityInstant));
+            saveEntityInstant = Instant.now();
+
+            log.debug("\tSaving {} Credits...", pendingCredits.size());
+            creditRepository.saveAll(pendingCredits);
+            log.debug("\t\tSaved in {}ms", DurationUtils.getDurationInMillis(saveEntityInstant));
+            saveEntityInstant = Instant.now();
+
+            log.debug("\tSaving Banned Entities...");
+            bannedEntityRepository.saveAll(bannedEntities);
+            log.debug("\t\tSaved in {}ms", DurationUtils.getDurationInMillis(saveEntityInstant));
+
+            log.debug("\tSaved all entities in {}", DurationUtils.getDurationInTimeFormat(saveInstant));
+
+
+            log.info("\tImport finished in {}", DurationUtils.getDurationInTimeFormat(fetchMoviesStart));
+
+        }
+
+        private void fetchMovies(List<List<CallWrapper<com.uwetrottmann.tmdb2.entities.Movie>>> movieCallsPartitionedLists) {
+            List<MovieImportWrapper> movieWrapperList = new ArrayList<>();
+            for (List<CallWrapper<com.uwetrottmann.tmdb2.entities.Movie>> movieCallList : movieCallsPartitionedLists) {
+                movieWrapperList.addAll(movieCallList
+                    .parallelStream()
+                    .map(call -> {
+                        ResponseWrapper<com.uwetrottmann.tmdb2.entities.Movie> tmdbMovieResponse = movieResponseProcessor(call);
+                        if (tmdbMovieResponse.getResult() == ResponseResult.SUCCESS && tmdbMovieResponse.getResponse().isSuccessful()) {
+                            com.uwetrottmann.tmdb2.entities.Movie tmdbMovie = tmdbMovieResponse.getResponse().body();
+                            return processTmdbMovie(tmdbMovie);
+                        } else if (tmdbMovieResponse.getResult() == ResponseResult.SUCCESS && !tmdbMovieResponse.getResponse().isSuccessful()) {
+                            banEntity(call, BanReason.NOTFOUND);
+
+                        } else if (tmdbMovieResponse.getResult() == ResponseResult.EXCEPTION) {
+                            banEntity(call, BanReason.UNDEFINED);
+                        }
+                        return null;
+                    })
+                    .filter(Objects::nonNull)
+                    .collect(Collectors.toList()));
+            }
+            pendingMovies.addAll(movieWrapperList.parallelStream().map(MovieImportWrapper::build).collect(Collectors.toList()));
+            movieWrapperList.clear();
+        }
+
         private ResponseWrapper<Movie> movieResponseProcessor(CallWrapper<com.uwetrottmann.tmdb2.entities.Movie> c) {
             try {
                 if (c.stringKey != null) {
@@ -258,225 +363,7 @@ public class ImportService {
             }
         }
 
-        private ResponseWrapper<com.uwetrottmann.tmdb2.entities.Person> personResponseProcessor
-            (CallWrapper<com.uwetrottmann.tmdb2.entities.Person> c) {
-            try {
-                if (c.stringKey != null) {
-                    if (personImdbIdList.contains(c.stringKey)) {
-                        injectPersonToCredits(persistentPeople.parallelStream().filter(p -> p.getTmdbId().equals(c.intKey.longValue())).findFirst().get());
-                        return ResponseWrapper.Of(null, ResponseResult.ENTITY_ALREADY_EXISTS);
-                    }
-                    if (isBanned(c.stringKey, c.type)) {
-                        return ResponseWrapper.Of(null, ResponseResult.ENTITY_IS_BANNED);
-                    }
-                }
-                if (c.intKey != null) {
-                    if (personTmdbIdList.contains(c.intKey.longValue())) {
-                        injectPersonToCredits(persistentPeople.parallelStream().filter(p -> p.getTmdbId().equals(c.intKey.longValue())).findFirst().get());
-                        return ResponseWrapper.Of(null, ResponseResult.ENTITY_ALREADY_EXISTS);
-                    }
-                    if (isBanned(c.intKey.longValue(), c.type)) {
-                        return ResponseWrapper.Of(null, ResponseResult.ENTITY_IS_BANNED);
-                    }
-                }
-                return ResponseWrapper.Of(c.call.execute(), ResponseResult.SUCCESS);
-            } catch (
-                IOException e) {
-                return ResponseWrapper.Of(null, ResponseResult.EXCEPTION);
-            }
-        }
-
-        public boolean isBanned(String imdbId, TmdbEntityType type) {
-            return bannedEntities.parallelStream().anyMatch(b -> b.getImdbId() != null && b.getImdbId().equals(imdbId) && b.getType().equals(type));
-        }
-
-        public boolean isBanned(Long tmdbId, TmdbEntityType type) {
-            return bannedEntities.parallelStream().anyMatch(b -> b.getTmdbId() != null && b.getTmdbId().equals(tmdbId) && b.getType().equals(type));
-        }
-
-        public <T> void banEntity(CallWrapper<T> callWrapper, BanReason banReason) {
-            banEntity(null, callWrapper.stringKey, (callWrapper.intKey != null ? callWrapper.intKey.longValue() : null), callWrapper.type, banReason);
-        }
-
-        public <T extends ImdbEntity & TmdbEntity> void banEntity(T entity, TmdbEntityType entityType, BanReason
-            banReason) {
-            banEntity(entity, entity.getImdbId(), entity.getTmdbId(), entityType, banReason);
-        }
-
-        public void banMovie(String imdbId, Long tmdbId, BanReason banReason) {
-            banEntity(null, imdbId, tmdbId, TmdbEntityType.MOVIE, banReason);
-        }
-
-        public void banPerson(String imdbId, Long tmdbId, BanReason banReason) {
-            banEntity(null, imdbId, tmdbId, TmdbEntityType.PERSON, banReason);
-        }
-
-        private <T extends ImdbEntity & TmdbEntity> void banEntity(T entity, String imdbId, Long
-            tmdbId, TmdbEntityType type, BanReason reason) {
-
-            BannedEntity bannedEntity = new BannedEntity();
-            bannedEntity
-                .imdbId(imdbId)
-                .tmdbId(tmdbId)
-                .type(type)
-                .reason(reason)
-                .timestamp(LocalDate.now());
-
-            bannedEntities.add(bannedEntity);
-
-        }
-
-        @Transactional
-        public void fetchData() {
-            log.debug("Fetching & Processing Movies...");
-            Instant fetchMoviesStart = Instant.now();
-            fetchMovies(Lists.partition(movieCalls, tmdb.getMaximumRequestsPerCycle()));
-
-            log.debug("\tMovies Fetched in {}", DurationUtils.getDurationInTimeFormat(fetchMoviesStart));
-            movieCalls.clear();
-            log.debug("Fetching & Processing People...");
-            Instant fetchPeopleStart = Instant.now();
-            fetchPeople(
-                Lists.partition(
-                    personCalls
-                        .parallelStream()
-                        .collect(Collectors.toMap(CallWrapper<com.uwetrottmann.tmdb2.entities.Person>::getIntKey, CallWrapper<com.uwetrottmann.tmdb2.entities.Person>::getCall, (p1, p2) -> p1))
-                        .entrySet()
-                        .parallelStream()
-                        .map(m -> new CallWrapper<>(m.getValue(), TmdbEntityType.PERSON, m.getKey()))
-                        .collect(Collectors.toList()),
-                    tmdb.getMaximumRequestsPerCycle()));
-
-            log.debug("\tPeople Fetched in {}", DurationUtils.getDurationInTimeFormat(fetchPeopleStart));
-            personCalls.clear();
-
-
-            Instant saveInstant;
-            Instant saveEntityInstant = saveInstant = Instant.now();
-            log.debug("Saving {} Votes...", pendingVotes.size());
-            voteRepository.saveAll(pendingVotes);
-            log.debug("\tSaved in {}ms", DurationUtils.getDurationInMillis(saveEntityInstant));
-            saveEntityInstant = Instant.now();
-
-            log.debug("Saving {} People...", pendingPeople.size());
-            personRepository.saveAll(pendingPeople);
-            log.debug("\tSaved in {}ms", DurationUtils.getDurationInMillis(saveEntityInstant));
-            saveEntityInstant = Instant.now();
-
-            log.debug("Saving {} Companies...", pendingCompanies.size());
-            companyRepository.saveAll(pendingCompanies.values());
-            log.debug("\tSaved in {}ms", DurationUtils.getDurationInMillis(saveEntityInstant));
-            saveEntityInstant = Instant.now();
-
-            log.debug("Saving {} Countries...", pendingCountries.size());
-            countryRepository.saveAll(pendingCountries.values());
-            log.debug("\tSaved in {}ms", DurationUtils.getDurationInMillis(saveEntityInstant));
-            saveEntityInstant = Instant.now();
-
-            log.debug("Saving {} Genres...", pendingCountries.size());
-            genreRepository.saveAll(pendingGenres.values());
-            log.debug("\tSaved in {}ms", DurationUtils.getDurationInMillis(saveEntityInstant));
-            saveEntityInstant = Instant.now();
-
-            log.debug("Saving {} Movies...", pendingMovies.size());
-            movieRepository.saveAll(pendingMovies);
-            log.debug("\tSaved in {}ms", DurationUtils.getDurationInMillis(saveEntityInstant));
-            saveEntityInstant = Instant.now();
-
-            log.debug("Saving {} Credits...", pendingCredits.size());
-            creditRepository.saveAll(pendingCredits);
-            log.debug("\tSaved in {}ms", DurationUtils.getDurationInMillis(saveEntityInstant));
-            saveEntityInstant = Instant.now();
-
-            log.debug("Saving Banned Entities...");
-            bannedEntityRepository.saveAll(bannedEntities);
-            log.debug("\tSaved in {}ms", DurationUtils.getDurationInMillis(saveEntityInstant));
-
-            log.debug("Saved all entities in {}", DurationUtils.getDurationInTimeFormat(saveInstant));
-
-
-            log.debug("Import finished in {}", DurationUtils.getDurationInTimeFormat(fetchMoviesStart));
-
-        }
-
-        private void fetchMovies
-            (List<List<CallWrapper<com.uwetrottmann.tmdb2.entities.Movie>>> movieCallsPartitionedLists) {
-            List<MovieWrapper> movieWrapperList = new ArrayList<>();
-            for (List<CallWrapper<com.uwetrottmann.tmdb2.entities.Movie>> movieCallList : movieCallsPartitionedLists) {
-                movieWrapperList.addAll(movieCallList
-                    .parallelStream()
-                    .map(call -> {
-                        ResponseWrapper<com.uwetrottmann.tmdb2.entities.Movie> tmdbMovieResponse = movieResponseProcessor(call);
-                        if (tmdbMovieResponse.getResult() == ResponseResult.SUCCESS && tmdbMovieResponse.getResponse().isSuccessful()) {
-                            com.uwetrottmann.tmdb2.entities.Movie tmdbMovie = tmdbMovieResponse.getResponse().body();
-                            return processTmdbMovie(tmdbMovie);
-                        } else if (tmdbMovieResponse.getResult() == ResponseResult.SUCCESS && !tmdbMovieResponse.getResponse().isSuccessful()) {
-                            banEntity(call, BanReason.NOTFOUND);
-
-                        } else if (tmdbMovieResponse.getResult() == ResponseResult.EXCEPTION) {
-                            banEntity(call, BanReason.UNDEFINED);
-                        }
-                        return null;
-                    })
-                    .filter(Objects::nonNull)
-                    .collect(Collectors.toList()));
-            }
-            pendingMovies.addAll(movieWrapperList.parallelStream().map(MovieWrapper::build).collect(Collectors.toList()));
-            movieWrapperList.clear();
-        }
-
-        private void fetchPeople
-            (List<List<CallWrapper<com.uwetrottmann.tmdb2.entities.Person>>> peopleCallsPartitionedLists) {
-            for (List<CallWrapper<com.uwetrottmann.tmdb2.entities.Person>> peopleCallList : peopleCallsPartitionedLists) {
-                pendingPeople.addAll(peopleCallList
-                    .parallelStream()
-                    .map(call -> {
-
-                        ResponseWrapper<com.uwetrottmann.tmdb2.entities.Person> tmdbPersonResponse = personResponseProcessor(call);
-
-                        if (tmdbPersonResponse.getResult() == ResponseResult.SUCCESS && tmdbPersonResponse.getResponse().isSuccessful()) {
-                            com.uwetrottmann.tmdb2.entities.Person tmdbPerson = tmdbPersonResponse.getResponse().body();
-                            return processTmdbPerson(tmdbPerson);
-                        } else if (tmdbPersonResponse.getResult() == ResponseResult.SUCCESS && !tmdbPersonResponse.getResponse().isSuccessful()) {
-                            banEntity(call, BanReason.NOTFOUND);
-
-                        } else if (tmdbPersonResponse.getResult() == ResponseResult.EXCEPTION) {
-                            banEntity(call, BanReason.UNDEFINED);
-                        }
-
-                        return null;
-                    })
-                    .filter(Objects::nonNull)
-                    .collect(Collectors.toList()));
-            }
-        }
-
-        private void injectPersonToCredits(Person miPerson) {
-            pendingCredits.parallelStream().filter(c -> c.getPersonTmdbId().equals(miPerson.getTmdbId())).forEach(c -> {
-                c.setPerson(miPerson);
-                c.setPersonTmdbId(miPerson.getTmdbId());
-            });
-        }
-
-        private Person processTmdbPerson(com.uwetrottmann.tmdb2.entities.Person tmdbPerson) {
-            if (tmdbPerson == null || tmdbPerson.id == null)
-                return null;
-
-            Person miPerson = new Person();
-            miPerson.setProfilePath(tmdbPerson.profile_path);
-            miPerson.setImdbId(tmdbPerson.imdb_id);
-            if (tmdbPerson.birthday != null)
-                miPerson.setBirthDay(Instant.ofEpochMilli(tmdbPerson.birthday.getTime()).atZone(ZoneId.systemDefault()).toLocalDate());
-            miPerson.setPopularity(tmdbPerson.popularity);
-            miPerson.setTmdbId(Long.valueOf(tmdbPerson.id));
-            miPerson.setName(tmdbPerson.name);
-            miPerson.setBiography(tmdbPerson.biography);
-
-            injectPersonToCredits(miPerson);
-            return miPerson;
-        }
-
-        private MovieWrapper processTmdbMovie(com.uwetrottmann.tmdb2.entities.Movie tmdbMovie) {
+        private MovieImportWrapper processTmdbMovie(com.uwetrottmann.tmdb2.entities.Movie tmdbMovie) {
             if (tmdbMovie == null || tmdbMovie.id == null)
                 return null;
 
@@ -504,7 +391,7 @@ public class ImportService {
             pendingVotes.add(vote);
 
             gr.movieinsights.domain.Movie miMovie = new gr.movieinsights.domain.Movie();
-            MovieWrapper movieWrapper = new MovieWrapper(pendingGenres, pendingCompanies, pendingCountries, miMovie);
+            MovieImportWrapper movieWrapper = new MovieImportWrapper(pendingGenres, pendingCompanies, pendingCountries, miMovie);
             miMovie.setBackdropPath(tmdbMovie.backdrop_path);
             miMovie.setBudget(tmdbMovie.budget == null ? 0 : tmdbMovie.budget);
             miMovie.setDescription(tmdbMovie.overview);
@@ -532,7 +419,7 @@ public class ImportService {
 
                     Credit credit = createCredit(miMovie, tmdbMovie, tmdbCredit);
                     if (credit != null) {
-                        miMovie.addCredits(credit);
+                        //miMovie.addCredits(credit);
                         personCalls.add(new CallWrapper<>(tmdbService.getPersonCallByTmdbId(tmdbCredit.id), TmdbEntityType.PERSON, tmdbCredit.id));
                     }
                 });
@@ -566,6 +453,113 @@ public class ImportService {
                 }
             }
             return movieWrapper;
+        }
+
+        private void fetchPeople(List<List<CallWrapper<com.uwetrottmann.tmdb2.entities.Person>>> peopleCallsPartitionedLists) {
+            for (List<CallWrapper<com.uwetrottmann.tmdb2.entities.Person>> peopleCallList : peopleCallsPartitionedLists) {
+                pendingPeople.addAll(peopleCallList
+                    .parallelStream()
+                    .map(call -> {
+
+                        ResponseWrapper<com.uwetrottmann.tmdb2.entities.Person> tmdbPersonResponse = personResponseProcessor(call);
+
+                        if (tmdbPersonResponse.getResult() == ResponseResult.SUCCESS && tmdbPersonResponse.getResponse().isSuccessful()) {
+                            com.uwetrottmann.tmdb2.entities.Person tmdbPerson = tmdbPersonResponse.getResponse().body();
+                            return processTmdbPerson(tmdbPerson);
+                        } else if (tmdbPersonResponse.getResult() == ResponseResult.SUCCESS && !tmdbPersonResponse.getResponse().isSuccessful()) {
+                            banEntity(call, BanReason.NOTFOUND);
+
+                        } else if (tmdbPersonResponse.getResult() == ResponseResult.EXCEPTION) {
+                            banEntity(call, BanReason.UNDEFINED);
+                        }
+
+                        return null;
+                    })
+                    .filter(Objects::nonNull)
+                    .collect(Collectors.toList()));
+            }
+        }
+
+        private ResponseWrapper<com.uwetrottmann.tmdb2.entities.Person> personResponseProcessor(CallWrapper<com.uwetrottmann.tmdb2.entities.Person> c) {
+            try {
+                if (c.stringKey != null) {
+                    if (personImdbIdList.contains(c.stringKey)) {
+                        injectPersonToCredits(persistentPeople.parallelStream().filter(p -> p.getImdbId().equals(c.stringKey)).findFirst().get());
+                        return ResponseWrapper.Of(null, ResponseResult.ENTITY_ALREADY_EXISTS);
+                    }
+                    if (isBanned(c.stringKey, c.type)) {
+                        return ResponseWrapper.Of(null, ResponseResult.ENTITY_IS_BANNED);
+                    }
+                }
+                if (c.intKey != null) {
+                    if (personTmdbIdList.contains(c.intKey.longValue())) {
+                        injectPersonToCredits(persistentPeople.parallelStream().filter(p -> p.getTmdbId().equals(c.intKey.longValue())).findFirst().get());
+                        return ResponseWrapper.Of(null, ResponseResult.ENTITY_ALREADY_EXISTS);
+                    }
+                    if (isBanned(c.intKey.longValue(), c.type)) {
+                        return ResponseWrapper.Of(null, ResponseResult.ENTITY_IS_BANNED);
+                    }
+                }
+                return ResponseWrapper.Of(c.call.execute(), ResponseResult.SUCCESS);
+            } catch (
+                IOException e) {
+                return ResponseWrapper.Of(null, ResponseResult.EXCEPTION);
+            }
+        }
+
+        private Person processTmdbPerson(com.uwetrottmann.tmdb2.entities.Person tmdbPerson) {
+            if (tmdbPerson == null || tmdbPerson.id == null)
+                return null;
+
+            Person miPerson = new Person();
+            miPerson.setProfilePath(tmdbPerson.profile_path);
+            miPerson.setImdbId(tmdbPerson.imdb_id);
+            if (tmdbPerson.birthday != null)
+                miPerson.setBirthDay(Instant.ofEpochMilli(tmdbPerson.birthday.getTime()).atZone(ZoneId.systemDefault()).toLocalDate());
+            miPerson.setPopularity(tmdbPerson.popularity);
+            miPerson.setTmdbId(Long.valueOf(tmdbPerson.id));
+            miPerson.setName(tmdbPerson.name);
+            miPerson.setBiography(tmdbPerson.biography);
+
+            injectPersonToCredits(miPerson);
+            return miPerson;
+        }
+
+        private boolean isBanned(String imdbId, TmdbEntityType type) {
+            return bannedEntities.parallelStream().anyMatch(b -> b.getImdbId() != null && b.getImdbId().equals(imdbId) && b.getType().equals(type));
+        }
+
+        private boolean isBanned(Long tmdbId, TmdbEntityType type) {
+            return bannedEntities.parallelStream().anyMatch(b -> b.getTmdbId() != null && b.getTmdbId().equals(tmdbId) && b.getType().equals(type));
+        }
+
+        public <T> void banEntity(CallWrapper<T> callWrapper, BanReason banReason) {
+            banEntity(null, callWrapper.stringKey, (callWrapper.intKey != null ? callWrapper.intKey.longValue() : null), callWrapper.type, banReason);
+        }
+
+        private void banMovie(String imdbId, Long tmdbId, BanReason banReason) {
+            banEntity(null, imdbId, tmdbId, TmdbEntityType.MOVIE, banReason);
+        }
+
+        private <T extends ImdbEntity & TmdbEntity> void banEntity(T entity, String imdbId, Long tmdbId, TmdbEntityType type, BanReason reason) {
+
+            BannedEntity bannedEntity = new BannedEntity();
+            bannedEntity
+                .imdbId(imdbId)
+                .tmdbId(tmdbId)
+                .type(type)
+                .reason(reason)
+                .timestamp(LocalDate.now());
+
+            bannedEntities.add(bannedEntity);
+
+        }
+
+        private void injectPersonToCredits(Person miPerson) {
+            pendingCredits.parallelStream().filter(c -> c.getPersonTmdbId().equals(miPerson.getTmdbId())).forEach(c -> {
+                c.setPerson(miPerson);
+                c.setPersonTmdbId(miPerson.getTmdbId());
+            });
         }
 
         private Genre getOrCreateGenre(com.uwetrottmann.tmdb2.entities.Genre tmdbGenre) {
@@ -623,8 +617,7 @@ public class ImportService {
 
         }
 
-        private Credit createCredit(gr.movieinsights.domain.Movie miMovie, com.uwetrottmann.tmdb2.entities.Movie tmdbMovie, BaseMember
-            member) {
+        private Credit createCredit(gr.movieinsights.domain.Movie miMovie, com.uwetrottmann.tmdb2.entities.Movie tmdbMovie, BaseMember member) {
             assert tmdbMovie.id != null;
             assert member.id != null;
 

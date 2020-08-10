@@ -1,10 +1,9 @@
 package gr.movieinsights.service.mapper;
 
 
-import gr.movieinsights.domain.*;
+import gr.movieinsights.domain.BannedEntity;
 import gr.movieinsights.service.dto.BannedEntityDTO;
-
-import org.mapstruct.*;
+import org.mapstruct.Mapper;
 
 /**
  * Mapper for the entity {@link BannedEntity} and its DTO {@link BannedEntityDTO}.

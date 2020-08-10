@@ -1,10 +1,10 @@
 package gr.movieinsights.service.mapper;
 
 
-import gr.movieinsights.domain.*;
+import gr.movieinsights.domain.Credit;
 import gr.movieinsights.service.dto.CreditDTO;
-
-import org.mapstruct.*;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
 /**
  * Mapper for the entity {@link Credit} and its DTO {@link CreditDTO}.

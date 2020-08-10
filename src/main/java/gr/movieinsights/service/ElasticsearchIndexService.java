@@ -3,7 +3,6 @@ package gr.movieinsights.service;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.github.vanroy.springdata.jest.JestElasticsearchTemplate;
 import gr.movieinsights.domain.Genre;
-import gr.movieinsights.domain.Movie;
 import gr.movieinsights.domain.Person;
 import gr.movieinsights.domain.ProductionCompany;
 import gr.movieinsights.domain.ProductionCountry;

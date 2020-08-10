@@ -3,10 +3,12 @@ package gr.movieinsights.service.mapper;
 import gr.movieinsights.domain.Authority;
 import gr.movieinsights.domain.User;
 import gr.movieinsights.service.dto.UserDTO;
-
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**

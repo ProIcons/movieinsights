@@ -1,10 +1,10 @@
 package gr.movieinsights.service.mapper;
 
 
-import gr.movieinsights.domain.*;
+import gr.movieinsights.domain.MovieInsightsPerCountry;
 import gr.movieinsights.service.dto.MovieInsightsPerCountryDTO;
-
-import org.mapstruct.*;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
 /**
  * Mapper for the entity {@link MovieInsightsPerCountry} and its DTO {@link MovieInsightsPerCountryDTO}.

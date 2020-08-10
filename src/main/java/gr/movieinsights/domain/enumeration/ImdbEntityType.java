@@ -3,13 +3,10 @@ package gr.movieinsights.domain.enumeration;
 
 import gr.movieinsights.models.ImdbImportMovie;
 import gr.movieinsights.models.ImdbImportRating;
-import org.supercsv.cellprocessor.ift.CellProcessor;
-import org.supercsv.io.ICsvBeanReader;
 import org.supercsv.io.dozer.ICsvDozerBeanReader;
 
 import java.util.Arrays;
 import java.util.function.Function;
-import java.util.function.Supplier;
 
 public enum ImdbEntityType {
     NAMEBASICS("name.basics", Object.class, null),

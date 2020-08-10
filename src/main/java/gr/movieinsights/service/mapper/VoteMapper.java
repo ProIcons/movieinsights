@@ -1,10 +1,9 @@
 package gr.movieinsights.service.mapper;
 
 
-import gr.movieinsights.domain.*;
+import gr.movieinsights.domain.Vote;
 import gr.movieinsights.service.dto.VoteDTO;
-
-import org.mapstruct.*;
+import org.mapstruct.Mapper;
 
 /**
  * Mapper for the entity {@link Vote} and its DTO {@link VoteDTO}.

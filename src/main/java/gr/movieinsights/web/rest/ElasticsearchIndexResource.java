@@ -1,16 +1,18 @@
 package gr.movieinsights.web.rest;
 
-import java.net.URISyntaxException;
-
 import gr.movieinsights.security.AuthoritiesConstants;
 import gr.movieinsights.security.SecurityUtils;
 import gr.movieinsights.service.ElasticsearchIndexService;
 import io.github.jhipster.web.util.HeaderUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.security.access.annotation.Secured;
-import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.net.URISyntaxException;
 
 /**
  * REST controller for managing Elasticsearch index.

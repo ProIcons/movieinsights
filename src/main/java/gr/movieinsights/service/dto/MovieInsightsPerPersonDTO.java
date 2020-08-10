@@ -1,14 +1,15 @@
 package gr.movieinsights.service.dto;
 
-import javax.validation.constraints.*;
-import java.io.Serializable;
 import gr.movieinsights.domain.enumeration.CreditRole;
+
+import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 
 /**
  * A DTO for the {@link gr.movieinsights.domain.MovieInsightsPerPerson} entity.
  */
 public class MovieInsightsPerPersonDTO implements Serializable {
-    
+
     private Long id;
 
     @NotNull
@@ -18,7 +19,7 @@ public class MovieInsightsPerPersonDTO implements Serializable {
     private Long movieInsightsId;
 
     private Long personId;
-    
+
     public Long getId() {
         return id;
     }

@@ -1,6 +1,7 @@
 package gr.movieinsights.web.rest.vm;
 
 import gr.movieinsights.service.dto.UserDTO;
+
 import javax.validation.constraints.Size;
 
 /**

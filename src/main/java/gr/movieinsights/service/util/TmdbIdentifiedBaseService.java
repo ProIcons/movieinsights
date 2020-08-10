@@ -1,4 +1,4 @@
-package gr.movieinsights.service;
+package gr.movieinsights.service.util;
 
 import gr.movieinsights.repository.util.TmdbIdentifiedRepository;
 import gr.movieinsights.service.mapper.EntityMapper;
@@ -6,16 +6,11 @@ import gr.movieinsights.service.mapper.EntityMapper;
 import java.util.List;
 import java.util.Optional;
 
-public class TmdbIdentifiedBaseService<E, D, R extends TmdbIdentifiedRepository<E, Long>, M extends EntityMapper<D, E>> {
-
-    protected final R repository;
-    protected final M mapper;
+public class TmdbIdentifiedBaseService<E, D, R extends TmdbIdentifiedRepository<E, Long>, M extends EntityMapper<D, E>> extends BaseService<E, Long, D, R, M> {
 
     public TmdbIdentifiedBaseService(R repository, M mapper) {
-        this.repository = repository;
-        this.mapper = mapper;
+        super(repository,mapper);
     }
-
 
     public List<Long> getAllTmdbIds() {
         return repository.getAllTmdbIds();

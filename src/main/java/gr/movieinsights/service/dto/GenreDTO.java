@@ -1,13 +1,13 @@
 package gr.movieinsights.service.dto;
 
-import javax.validation.constraints.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 /**
  * A DTO for the {@link gr.movieinsights.domain.Genre} entity.
  */
 public class GenreDTO implements Serializable {
-    
+
     private Long id;
 
     @NotNull
@@ -16,7 +16,7 @@ public class GenreDTO implements Serializable {
     @NotNull
     private String name;
 
-    
+
     public Long getId() {
         return id;
     }

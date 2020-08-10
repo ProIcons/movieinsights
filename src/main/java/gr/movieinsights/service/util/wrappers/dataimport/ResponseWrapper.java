@@ -1,4 +1,4 @@
-package gr.movieinsights.models;
+package gr.movieinsights.service.util.wrappers.dataimport;
 
 import gr.movieinsights.models.enumeration.ResponseResult;
 

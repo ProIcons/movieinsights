@@ -1,8 +1,8 @@
 package gr.movieinsights.config;
 
-import gr.movieinsights.security.*;
-import gr.movieinsights.security.jwt.*;
-
+import gr.movieinsights.security.AuthoritiesConstants;
+import gr.movieinsights.security.jwt.JWTConfigurer;
+import gr.movieinsights.security.jwt.TokenProvider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpMethod;

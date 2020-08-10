@@ -1,7 +1,6 @@
 package gr.movieinsights.repository;
 
 import gr.movieinsights.domain.Authority;
-
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**

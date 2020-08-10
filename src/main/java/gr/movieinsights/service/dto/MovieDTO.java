@@ -1,11 +1,11 @@
 package gr.movieinsights.service.dto;
 
-import java.time.LocalDate;
-import javax.validation.constraints.*;
+import javax.persistence.Lob;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
-import javax.persistence.Lob;
 
 /**
  * A DTO for the {@link gr.movieinsights.domain.Movie} entity.

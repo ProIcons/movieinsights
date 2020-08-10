@@ -3,7 +3,6 @@ package gr.movieinsights.service.util;
 import org.supercsv.comment.CommentMatcher;
 import org.supercsv.exception.SuperCsvException;
 import org.supercsv.io.AbstractTokenizer;
-import org.supercsv.io.Tokenizer;
 import org.supercsv.prefs.CsvPreference;
 
 import java.io.IOException;

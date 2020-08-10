@@ -1,15 +1,15 @@
 package gr.movieinsights.service.dto;
 
-import java.time.LocalDate;
-import javax.validation.constraints.*;
-import java.io.Serializable;
 import javax.persistence.Lob;
+import javax.validation.constraints.NotNull;
+import java.io.Serializable;
+import java.time.LocalDate;
 
 /**
  * A DTO for the {@link gr.movieinsights.domain.Person} entity.
  */
 public class PersonDTO implements Serializable {
-    
+
     private Long id;
 
     @NotNull
@@ -29,7 +29,7 @@ public class PersonDTO implements Serializable {
 
     private String profilePath;
 
-    
+
     public Long getId() {
         return id;
     }

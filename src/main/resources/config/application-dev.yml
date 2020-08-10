@@ -51,7 +51,7 @@ spring:
       auto-commit: false
   jpa:
     database-platform: io.github.jhipster.domain.util.FixedPostgreSQL10Dialect
-    show-sql: true
+    show-sql: false
   data:
     elasticsearch:
       properties:

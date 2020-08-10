@@ -6,11 +6,10 @@ import com.uwetrottmann.tmdb2.entities.Movie;
 import com.uwetrottmann.tmdb2.entities.Person;
 import com.uwetrottmann.tmdb2.enumerations.AppendToResponseItem;
 import gr.movieinsights.config.tmdb.MovieInsightsTmdb;
-import gr.movieinsights.models.TmdbImportEntity;
 import gr.movieinsights.domain.enumeration.TmdbEntityType;
+import gr.movieinsights.models.TmdbImportEntity;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
-
 import okhttp3.Response;
 import org.apache.commons.compress.compressors.gzip.GzipCompressorInputStream;
 import org.slf4j.Logger;
