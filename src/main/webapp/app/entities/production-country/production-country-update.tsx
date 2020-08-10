@@ -23,7 +23,7 @@ export const ProductionCountryUpdate = (props: IProductionCountryUpdateProps) =>
   const { productionCountryEntity, movies, loading, updating } = props;
 
   const handleClose = () => {
-    props.history.push('/production-country');
+    props.history.push('/production-country' + props.location.search);
   };
 
   useEffect(() => {

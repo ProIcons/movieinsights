@@ -7,8 +7,6 @@ import { Translate, translate, ICrudGetAction, ICrudGetAllAction, ICrudPutAction
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IRootState } from 'app/shared/reducers';
 
-import { IBannedPersistentEntity } from 'app/shared/model/banned-persistent-entity.model';
-import { getEntities as getBannedPersistentEntities } from 'app/entities/banned-persistent-entity/banned-persistent-entity.reducer';
 import { getEntity, updateEntity, createEntity, reset } from './banned-entity.reducer';
 import { IBannedEntity } from 'app/shared/model/banned-entity.model';
 import { convertDateTimeFromServer, convertDateTimeToServer, displayDefaultDateTime } from 'app/shared/util/date-utils';
@@ -20,7 +18,7 @@ export const BannedEntityUpdate = (props: IBannedEntityUpdateProps) => {
   const [bannedPersistentEntityId, setBannedPersistentEntityId] = useState('0');
   const [isNew, setIsNew] = useState(!props.match.params || !props.match.params.id);
 
-  const { bannedEntityEntity, bannedPersistentEntities, loading, updating } = props;
+  const { bannedEntityEntity, loading, updating } = props;
 
   const handleClose = () => {
     props.history.push('/banned-entity');
@@ -33,7 +31,6 @@ export const BannedEntityUpdate = (props: IBannedEntityUpdateProps) => {
       props.getEntity(props.match.params.id);
     }
 
-    props.getBannedPersistentEntities();
   }, []);
 
   useEffect(() => {
@@ -96,6 +93,19 @@ export const BannedEntityUpdate = (props: IBannedEntityUpdateProps) => {
                 />
               </AvGroup>
               <AvGroup>
+                <Label id="imdbLabel" for="banned-entity-imdb">
+                  <Translate contentKey="movieInsightsApp.bannedEntity.imdb">Imdb</Translate>
+                </Label>
+                <AvField
+                  id="banned-entity-imdb"
+                  type="text"
+                  name="imdb"
+                  validate={{
+                    required: { value: true, errorMessage: translate('entity.validation.required') },
+                  }}
+                />
+              </AvGroup>
+              <AvGroup>
                 <Label id="typeLabel" for="banned-entity-type">
                   <Translate contentKey="movieInsightsApp.bannedEntity.type">Type</Translate>
                 </Label>
@@ -106,28 +116,13 @@ export const BannedEntityUpdate = (props: IBannedEntityUpdateProps) => {
                   name="type"
                   value={(!isNew && bannedEntityEntity.type) || 'MOVIE'}
                 >
-                  <option value="MOVIE">{translate('movieInsightsApp.EntityType.MOVIE')}</option>
-                  <option value="PERSON">{translate('movieInsightsApp.EntityType.PERSON')}</option>
-                  <option value="COMPANY">{translate('movieInsightsApp.EntityType.COMPANY')}</option>
-                  <option value="GENRE">{translate('movieInsightsApp.EntityType.GENRE')}</option>
-                  <option value="COUNTRY">{translate('movieInsightsApp.EntityType.COUNTRY')}</option>
-                  <option value="CREDIT">{translate('movieInsightsApp.EntityType.CREDIT')}</option>
-                  <option value="VOTE">{translate('movieInsightsApp.EntityType.VOTE')}</option>
-                </AvInput>
-              </AvGroup>
-              <AvGroup>
-                <Label for="banned-entity-bannedPersistentEntity">
-                  <Translate contentKey="movieInsightsApp.bannedEntity.bannedPersistentEntity">Banned Persistent Entity</Translate>
-                </Label>
-                <AvInput id="banned-entity-bannedPersistentEntity" type="select" className="form-control" name="bannedPersistentEntityId">
-                  <option value="" key="0" />
-                  {bannedPersistentEntities
-                    ? bannedPersistentEntities.map(otherEntity => (
-                        <option value={otherEntity.id} key={otherEntity.id}>
-                          {otherEntity.id}
-                        </option>
-                      ))
-                    : null}
+                  <option value="MOVIE">{translate('movieInsightsApp.TmdbEntityType.MOVIE')}</option>
+                  <option value="PERSON">{translate('movieInsightsApp.TmdbEntityType.PERSON')}</option>
+                  <option value="COMPANY">{translate('movieInsightsApp.TmdbEntityType.COMPANY')}</option>
+                  <option value="GENRE">{translate('movieInsightsApp.TmdbEntityType.GENRE')}</option>
+                  <option value="COUNTRY">{translate('movieInsightsApp.TmdbEntityType.COUNTRY')}</option>
+                  <option value="CREDIT">{translate('movieInsightsApp.TmdbEntityType.CREDIT')}</option>
+                  <option value="VOTE">{translate('movieInsightsApp.TmdbEntityType.VOTE')}</option>
                 </AvInput>
               </AvGroup>
               <Button tag={Link} id="cancel-save" to="/banned-entity" replace color="info">
@@ -152,7 +147,6 @@ export const BannedEntityUpdate = (props: IBannedEntityUpdateProps) => {
 };
 
 const mapStateToProps = (storeState: IRootState) => ({
-  bannedPersistentEntities: storeState.bannedPersistentEntity.entities,
   bannedEntityEntity: storeState.bannedEntity.entity,
   loading: storeState.bannedEntity.loading,
   updating: storeState.bannedEntity.updating,
@@ -160,7 +154,6 @@ const mapStateToProps = (storeState: IRootState) => ({
 });
 
 const mapDispatchToProps = {
-  getBannedPersistentEntities,
   getEntity,
   updateEntity,
   createEntity,

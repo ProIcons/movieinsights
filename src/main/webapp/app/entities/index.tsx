@@ -8,9 +8,7 @@ import Movie from './movie';
 import Person from './person';
 import Credit from './credit';
 import BannedEntity from './banned-entity';
-import BannedPersistentEntity from './banned-persistent-entity';
 import Genre from './genre';
-import Image from './image';
 import Vote from './vote';
 import ProductionCountry from './production-country';
 import ProductionCompany from './production-company';
@@ -30,9 +28,7 @@ const Routes = ({ match }) => (
       <ErrorBoundaryRoute path={`${match.url}person`} component={Person} />
       <ErrorBoundaryRoute path={`${match.url}credit`} component={Credit} />
       <ErrorBoundaryRoute path={`${match.url}banned-entity`} component={BannedEntity} />
-      <ErrorBoundaryRoute path={`${match.url}banned-persistent-entity`} component={BannedPersistentEntity} />
       <ErrorBoundaryRoute path={`${match.url}genre`} component={Genre} />
-      <ErrorBoundaryRoute path={`${match.url}image`} component={Image} />
       <ErrorBoundaryRoute path={`${match.url}vote`} component={Vote} />
       <ErrorBoundaryRoute path={`${match.url}production-country`} component={ProductionCountry} />
       <ErrorBoundaryRoute path={`${match.url}production-company`} component={ProductionCompany} />

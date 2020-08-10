@@ -3,37 +3,114 @@ import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { Button, InputGroup, Col, Row, Table } from 'reactstrap';
 import { AvForm, AvGroup, AvInput } from 'availity-reactstrap-validation';
-import { Translate, translate, ICrudSearchAction, ICrudGetAllAction } from 'react-jhipster';
+import {
+  Translate,
+  translate,
+  ICrudSearchAction,
+  ICrudGetAllAction,
+  getSortState,
+  IPaginationBaseState,
+  JhiPagination,
+  JhiItemCount,
+} from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { IRootState } from 'app/shared/reducers';
 import { getSearchEntities, getEntities } from './production-country.reducer';
 import { IProductionCountry } from 'app/shared/model/production-country.model';
 import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
+import { ITEMS_PER_PAGE } from 'app/shared/util/pagination.constants';
+import { overridePaginationStateWithQueryParams } from 'app/shared/util/entity-utils';
 
 export interface IProductionCountryProps extends StateProps, DispatchProps, RouteComponentProps<{ url: string }> {}
 
 export const ProductionCountry = (props: IProductionCountryProps) => {
   const [search, setSearch] = useState('');
+  const [paginationState, setPaginationState] = useState(
+    overridePaginationStateWithQueryParams(getSortState(props.location, ITEMS_PER_PAGE), props.location.search)
+  );
 
-  useEffect(() => {
-    props.getEntities();
-  }, []);
+  const getAllEntities = () => {
+    if (search) {
+      props.getSearchEntities(
+        search,
+        paginationState.activePage - 1,
+        paginationState.itemsPerPage,
+        `${paginationState.sort},${paginationState.order}`
+      );
+    } else {
+      props.getEntities(paginationState.activePage - 1, paginationState.itemsPerPage, `${paginationState.sort},${paginationState.order}`);
+    }
+  };
 
   const startSearching = () => {
     if (search) {
-      props.getSearchEntities(search);
+      setPaginationState({
+        ...paginationState,
+        activePage: 1,
+      });
+      props.getSearchEntities(
+        search,
+        paginationState.activePage - 1,
+        paginationState.itemsPerPage,
+        `${paginationState.sort},${paginationState.order}`
+      );
     }
   };
 
   const clear = () => {
     setSearch('');
+    setPaginationState({
+      ...paginationState,
+      activePage: 1,
+    });
     props.getEntities();
   };
 
   const handleSearch = event => setSearch(event.target.value);
 
-  const { productionCountryList, match, loading } = props;
+  const sortEntities = () => {
+    getAllEntities();
+    const endURL = `?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`;
+    if (props.location.search !== endURL) {
+      props.history.push(`${props.location.pathname}${endURL}`);
+    }
+  };
+
+  useEffect(() => {
+    sortEntities();
+  }, [paginationState.activePage, paginationState.order, paginationState.sort, search]);
+
+  useEffect(() => {
+    const params = new URLSearchParams(props.location.search);
+    const page = params.get('page');
+    const sort = params.get('sort');
+    if (page && sort) {
+      const sortSplit = sort.split(',');
+      setPaginationState({
+        ...paginationState,
+        activePage: +page,
+        sort: sortSplit[0],
+        order: sortSplit[1],
+      });
+    }
+  }, [props.location.search]);
+
+  const sort = p => () => {
+    setPaginationState({
+      ...paginationState,
+      order: paginationState.order === 'asc' ? 'desc' : 'asc',
+      sort: p,
+    });
+  };
+
+  const handlePagination = currentPage =>
+    setPaginationState({
+      ...paginationState,
+      activePage: currentPage,
+    });
+
+  const { productionCountryList, match, loading, totalItems } = props;
   return (
     <div>
       <h2 id="production-country-heading">
@@ -72,14 +149,14 @@ export const ProductionCountry = (props: IProductionCountryProps) => {
           <Table responsive>
             <thead>
               <tr>
-                <th>
-                  <Translate contentKey="global.field.id">ID</Translate>
+                <th className="hand" onClick={sort('id')}>
+                  <Translate contentKey="global.field.id">ID</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="movieInsightsApp.productionCountry.name">Name</Translate>
+                <th className="hand" onClick={sort('name')}>
+                  <Translate contentKey="movieInsightsApp.productionCountry.name">Name</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="movieInsightsApp.productionCountry.iso31661">Iso 31661</Translate>
+                <th className="hand" onClick={sort('iso31661')}>
+                  <Translate contentKey="movieInsightsApp.productionCountry.iso31661">Iso 31661</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
                 <th />
               </tr>
@@ -102,13 +179,23 @@ export const ProductionCountry = (props: IProductionCountryProps) => {
                           <Translate contentKey="entity.action.view">View</Translate>
                         </span>
                       </Button>
-                      <Button tag={Link} to={`${match.url}/${productionCountry.id}/edit`} color="primary" size="sm">
+                      <Button
+                        tag={Link}
+                        to={`${match.url}/${productionCountry.id}/edit?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`}
+                        color="primary"
+                        size="sm"
+                      >
                         <FontAwesomeIcon icon="pencil-alt" />{' '}
                         <span className="d-none d-md-inline">
                           <Translate contentKey="entity.action.edit">Edit</Translate>
                         </span>
                       </Button>
-                      <Button tag={Link} to={`${match.url}/${productionCountry.id}/delete`} color="danger" size="sm">
+                      <Button
+                        tag={Link}
+                        to={`${match.url}/${productionCountry.id}/delete?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`}
+                        color="danger"
+                        size="sm"
+                      >
                         <FontAwesomeIcon icon="trash" />{' '}
                         <span className="d-none d-md-inline">
                           <Translate contentKey="entity.action.delete">Delete</Translate>
@@ -128,6 +215,24 @@ export const ProductionCountry = (props: IProductionCountryProps) => {
           )
         )}
       </div>
+      {props.totalItems ? (
+        <div className={productionCountryList && productionCountryList.length > 0 ? '' : 'd-none'}>
+          <Row className="justify-content-center">
+            <JhiItemCount page={paginationState.activePage} total={totalItems} itemsPerPage={paginationState.itemsPerPage} i18nEnabled />
+          </Row>
+          <Row className="justify-content-center">
+            <JhiPagination
+              activePage={paginationState.activePage}
+              onSelect={handlePagination}
+              maxButtons={5}
+              itemsPerPage={paginationState.itemsPerPage}
+              totalItems={props.totalItems}
+            />
+          </Row>
+        </div>
+      ) : (
+        ''
+      )}
     </div>
   );
 };
@@ -135,6 +240,7 @@ export const ProductionCountry = (props: IProductionCountryProps) => {
 const mapStateToProps = ({ productionCountry }: IRootState) => ({
   productionCountryList: productionCountry.entities,
   loading: productionCountry.loading,
+  totalItems: productionCountry.totalItems,
 });
 
 const mapDispatchToProps = {

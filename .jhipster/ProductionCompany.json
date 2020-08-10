@@ -22,12 +22,6 @@
   ],
   "relationships": [
     {
-      "relationshipType": "one-to-many",
-      "otherEntityName": "bannedPersistentEntity",
-      "otherEntityRelationshipName": "productionCompany",
-      "relationshipName": "banReasons"
-    },
-    {
       "relationshipType": "many-to-many",
       "otherEntityName": "movie",
       "otherEntityRelationshipName": "companies",
@@ -39,12 +33,13 @@
   "changelogDate": "20200807165049",
   "entityTableName": "production_company",
   "dto": "mapstruct",
-  "pagination": "no",
+  "pagination": "pagination",
   "service": "serviceClass",
   "jpaMetamodelFiltering": false,
   "fluentMethods": true,
   "readOnly": false,
   "embedded": false,
   "clientRootFolder": "",
-  "applications": "*"
+  "applications": "*",
+  "searchEngine": "elasticsearch"
 }

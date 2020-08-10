@@ -25,12 +25,13 @@
   "changelogDate": "20200807164649",
   "entityTableName": "genre",
   "dto": "mapstruct",
-  "pagination": "no",
+  "pagination": "pagination",
   "service": "serviceClass",
   "jpaMetamodelFiltering": false,
   "fluentMethods": true,
   "readOnly": false,
   "embedded": false,
   "clientRootFolder": "",
-  "applications": "*"
+  "applications": "*",
+  "searchEngine": "elasticsearch"
 }

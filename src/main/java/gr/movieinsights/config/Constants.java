@@ -12,6 +12,12 @@ public final class Constants {
     public static final String DEFAULT_LANGUAGE = "en";
     public static final String ANONYMOUS_USER = "anonymoususer";
 
+    public static final Integer TMDB_RATELIMITER_TIMEOUT_SECONDS = 11;
+    public static final Integer TMDB_RATELIMITER_LIMIT_REQUESTS = 40;
+
+    public static final Long MINIMUM_REVENUE_THRESHOLD = 10000L;
+    public static final Long MINIMUM_BUDGET_THRESHOLD = 10000L;
+    public static final Long MINIMUM_VOTES_THRESHOLD = 10000L;
     private Constants() {
     }
 }

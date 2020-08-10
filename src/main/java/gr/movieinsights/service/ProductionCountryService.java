@@ -8,14 +8,12 @@ import gr.movieinsights.service.mapper.ProductionCountryMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 import static org.elasticsearch.index.query.QueryBuilders.*;
 
@@ -58,14 +56,14 @@ public class ProductionCountryService {
     /**
      * Get all the productionCountries.
      *
+     * @param pageable the pagination information.
      * @return the list of entities.
      */
     @Transactional(readOnly = true)
-    public List<ProductionCountryDTO> findAll() {
+    public Page<ProductionCountryDTO> findAll(Pageable pageable) {
         log.debug("Request to get all ProductionCountries");
-        return productionCountryRepository.findAll().stream()
-            .map(productionCountryMapper::toDto)
-            .collect(Collectors.toCollection(LinkedList::new));
+        return productionCountryRepository.findAll(pageable)
+            .map(productionCountryMapper::toDto);
     }
 
 
@@ -94,17 +92,31 @@ public class ProductionCountryService {
     }
 
     /**
+     * Get one productionCountry by ISO 3166_1.
+     *
+     * @param iso
+     *     the country iso code of the entity.
+     *
+     * @return the entity.
+     */
+    @Transactional(readOnly = true)
+    public Optional<ProductionCountryDTO> findByIso31661(String iso) {
+        log.debug("Request to get ProductionCountry by ISO 3166_1 : {}", iso);
+        return productionCountryRepository.findByIso31661(iso)
+            .map(productionCountryMapper::toDto);
+    }
+
+    /**
      * Search for the productionCountry corresponding to the query.
      *
      * @param query the query of the search.
+     * @param pageable the pagination information.
      * @return the list of entities.
      */
     @Transactional(readOnly = true)
-    public List<ProductionCountryDTO> search(String query) {
-        log.debug("Request to search ProductionCountries for query {}", query);
-        return StreamSupport
-            .stream(productionCountrySearchRepository.search(queryStringQuery(query)).spliterator(), false)
-            .map(productionCountryMapper::toDto)
-        .collect(Collectors.toList());
+    public Page<ProductionCountryDTO> search(String query, Pageable pageable) {
+        log.debug("Request to search for a page of ProductionCountries for query {}", query);
+        return productionCountrySearchRepository.search(queryStringQuery(query), pageable)
+            .map(productionCountryMapper::toDto);
     }
 }

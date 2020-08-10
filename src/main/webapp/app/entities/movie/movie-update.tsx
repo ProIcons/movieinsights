@@ -202,12 +202,6 @@ export const MovieUpdate = (props: IMovieUpdateProps) => {
                 </Label>
                 <AvField id="movie-releaseDate" type="date" className="form-control" name="releaseDate" />
               </AvGroup>
-              <AvGroup check>
-                <Label id="isBannedLabel">
-                  <AvInput id="movie-isBanned" type="checkbox" className="form-check-input" name="isBanned" />
-                  <Translate contentKey="movieInsightsApp.movie.isBanned">Is Banned</Translate>
-                </Label>
-              </AvGroup>
               <AvGroup>
                 <Label for="movie-vote">
                   <Translate contentKey="movieInsightsApp.movie.vote">Vote</Translate>

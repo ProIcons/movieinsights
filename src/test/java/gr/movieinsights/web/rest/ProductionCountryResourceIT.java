@@ -16,6 +16,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
@@ -306,8 +308,8 @@ public class ProductionCountryResourceIT {
         // Configure the mock search repository
         // Initialize the database
         productionCountryRepository.saveAndFlush(productionCountry);
-        when(mockProductionCountrySearchRepository.search(queryStringQuery("id:" + productionCountry.getId())))
-            .thenReturn(Collections.singletonList(productionCountry));
+        when(mockProductionCountrySearchRepository.search(queryStringQuery("id:" + productionCountry.getId()), PageRequest.of(0, 20)))
+            .thenReturn(new PageImpl<>(Collections.singletonList(productionCountry), PageRequest.of(0, 1), 1));
 
         // Search the productionCountry
         restProductionCountryMockMvc.perform(get("/api/_search/production-countries?query=id:" + productionCountry.getId()))

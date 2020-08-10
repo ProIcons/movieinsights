@@ -8,6 +8,8 @@ import gr.movieinsights.service.mapper.VoteMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -105,6 +107,6 @@ public class VoteService {
         return StreamSupport
             .stream(voteSearchRepository.search(queryStringQuery(query)).spliterator(), false)
             .map(voteMapper::toDto)
-        .collect(Collectors.toList());
+            .collect(Collectors.toList());
     }
 }

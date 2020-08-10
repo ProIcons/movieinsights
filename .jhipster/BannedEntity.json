@@ -3,26 +3,35 @@
   "fields": [
     {
       "fieldName": "tmdbId",
-      "fieldType": "Long",
-      "fieldValidateRules": ["required"]
+      "fieldType": "Long"
+    },
+    {
+      "fieldName": "imdbId",
+      "fieldType": "String"
     },
     {
       "fieldName": "type",
-      "fieldType": "EntityType",
+      "fieldType": "TmdbEntityType",
       "fieldValues": "MOVIE,PERSON,COMPANY,GENRE,COUNTRY,CREDIT,VOTE",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "reason",
+      "fieldType": "BanReason",
+      "fieldValues": "UNDEFINED,NOBUDGET,NOREVENUE,NORELEASEDATE,NOVOTE,CUSTOM",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "reasonText",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "timestamp",
+      "fieldType": "LocalDate",
       "fieldValidateRules": ["required"]
     }
   ],
-  "relationships": [
-    {
-      "relationshipType": "one-to-one",
-      "otherEntityName": "bannedPersistentEntity",
-      "otherEntityRelationshipName": "bannedEntity",
-      "relationshipName": "bannedPersistentEntity",
-      "otherEntityField": "id",
-      "ownerSide": true
-    }
-  ],
+  "relationships": [],
   "changelogDate": "20200807164449",
   "entityTableName": "banned_entity",
   "dto": "mapstruct",

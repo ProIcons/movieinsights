@@ -112,9 +112,6 @@ export const Movie = (props: IMovieProps) => {
                   <Translate contentKey="movieInsightsApp.movie.releaseDate">Release Date</Translate>
                 </th>
                 <th>
-                  <Translate contentKey="movieInsightsApp.movie.isBanned">Is Banned</Translate>
-                </th>
-                <th>
                   <Translate contentKey="movieInsightsApp.movie.vote">Vote</Translate>
                 </th>
                 <th>
@@ -149,7 +146,6 @@ export const Movie = (props: IMovieProps) => {
                   <td>{movie.posterPath}</td>
                   <td>{movie.backdropPath}</td>
                   <td>{movie.releaseDate ? <TextFormat type="date" value={movie.releaseDate} format={APP_LOCAL_DATE_FORMAT} /> : null}</td>
-                  <td>{movie.isBanned ? 'true' : 'false'}</td>
                   <td>{movie.voteId ? <Link to={`vote/${movie.voteId}`}>{movie.voteId}</Link> : ''}</td>
                   <td>
                     {movie.companies

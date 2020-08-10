@@ -9,14 +9,10 @@ import org.mapstruct.*;
 /**
  * Mapper for the entity {@link BannedEntity} and its DTO {@link BannedEntityDTO}.
  */
-@Mapper(componentModel = "spring", uses = {BannedPersistentEntityMapper.class})
+@Mapper(componentModel = "spring", uses = {})
 public interface BannedEntityMapper extends EntityMapper<BannedEntityDTO, BannedEntity> {
 
-    @Mapping(source = "bannedPersistentEntity.id", target = "bannedPersistentEntityId")
-    BannedEntityDTO toDto(BannedEntity bannedEntity);
 
-    @Mapping(source = "bannedPersistentEntityId", target = "bannedPersistentEntity")
-    BannedEntity toEntity(BannedEntityDTO bannedEntityDTO);
 
     default BannedEntity fromId(Long id) {
         if (id == null) {

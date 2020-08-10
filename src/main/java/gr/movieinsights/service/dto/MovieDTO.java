@@ -11,7 +11,7 @@ import javax.persistence.Lob;
  * A DTO for the {@link gr.movieinsights.domain.Movie} entity.
  */
 public class MovieDTO implements Serializable {
-    
+
     private Long id;
 
     @NotNull
@@ -42,15 +42,12 @@ public class MovieDTO implements Serializable {
 
     private LocalDate releaseDate;
 
-    @NotNull
-    private Boolean isBanned;
-
 
     private Long voteId;
     private Set<ProductionCompanyDTO> companies = new HashSet<>();
     private Set<ProductionCountryDTO> countries = new HashSet<>();
     private Set<GenreDTO> genres = new HashSet<>();
-    
+
     public Long getId() {
         return id;
     }
@@ -155,14 +152,6 @@ public class MovieDTO implements Serializable {
         this.releaseDate = releaseDate;
     }
 
-    public Boolean isIsBanned() {
-        return isBanned;
-    }
-
-    public void setIsBanned(Boolean isBanned) {
-        this.isBanned = isBanned;
-    }
-
     public Long getVoteId() {
         return voteId;
     }
@@ -229,7 +218,6 @@ public class MovieDTO implements Serializable {
             ", posterPath='" + getPosterPath() + "'" +
             ", backdropPath='" + getBackdropPath() + "'" +
             ", releaseDate='" + getReleaseDate() + "'" +
-            ", isBanned='" + isIsBanned() + "'" +
             ", voteId=" + getVoteId() +
             ", companies='" + getCompanies() + "'" +
             ", countries='" + getCountries() + "'" +

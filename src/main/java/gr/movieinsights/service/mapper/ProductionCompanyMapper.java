@@ -13,8 +13,6 @@ import org.mapstruct.*;
 public interface ProductionCompanyMapper extends EntityMapper<ProductionCompanyDTO, ProductionCompany> {
 
 
-    @Mapping(target = "banReasons", ignore = true)
-    @Mapping(target = "removeBanReasons", ignore = true)
     @Mapping(target = "movies", ignore = true)
     @Mapping(target = "removeMovies", ignore = true)
     ProductionCompany toEntity(ProductionCompanyDTO productionCompanyDTO);

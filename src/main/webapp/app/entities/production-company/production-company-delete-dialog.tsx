@@ -17,7 +17,7 @@ export const ProductionCompanyDeleteDialog = (props: IProductionCompanyDeleteDia
   }, []);
 
   const handleClose = () => {
-    props.history.push('/production-company');
+    props.history.push('/production-company' + props.location.search);
   };
 
   useEffect(() => {

@@ -1,8 +1,10 @@
 package gr.movieinsights.service.dto;
 
+import java.time.LocalDate;
 import javax.validation.constraints.*;
 import java.io.Serializable;
-import gr.movieinsights.domain.enumeration.EntityType;
+import gr.movieinsights.domain.enumeration.TmdbEntityType;
+import gr.movieinsights.domain.enumeration.BanReason;
 
 /**
  * A DTO for the {@link gr.movieinsights.domain.BannedEntity} entity.
@@ -11,14 +13,21 @@ public class BannedEntityDTO implements Serializable {
     
     private Long id;
 
-    @NotNull
     private Long tmdbId;
 
+    private String imdbId;
+
     @NotNull
-    private EntityType type;
+    private TmdbEntityType type;
 
+    @NotNull
+    private BanReason reason;
 
-    private Long bannedPersistentEntityId;
+    private String reasonText;
+
+    @NotNull
+    private LocalDate timestamp;
+
     
     public Long getId() {
         return id;
@@ -36,20 +45,44 @@ public class BannedEntityDTO implements Serializable {
         this.tmdbId = tmdbId;
     }
 
-    public EntityType getType() {
+    public String getImdbId() {
+        return imdbId;
+    }
+
+    public void setImdbId(String imdbId) {
+        this.imdbId = imdbId;
+    }
+
+    public TmdbEntityType getType() {
         return type;
     }
 
-    public void setType(EntityType type) {
+    public void setType(TmdbEntityType type) {
         this.type = type;
     }
 
-    public Long getBannedPersistentEntityId() {
-        return bannedPersistentEntityId;
+    public BanReason getReason() {
+        return reason;
     }
 
-    public void setBannedPersistentEntityId(Long bannedPersistentEntityId) {
-        this.bannedPersistentEntityId = bannedPersistentEntityId;
+    public void setReason(BanReason reason) {
+        this.reason = reason;
+    }
+
+    public String getReasonText() {
+        return reasonText;
+    }
+
+    public void setReasonText(String reasonText) {
+        this.reasonText = reasonText;
+    }
+
+    public LocalDate getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(LocalDate timestamp) {
+        this.timestamp = timestamp;
     }
 
     @Override
@@ -75,8 +108,11 @@ public class BannedEntityDTO implements Serializable {
         return "BannedEntityDTO{" +
             "id=" + getId() +
             ", tmdbId=" + getTmdbId() +
+            ", imdbId='" + getImdbId() + "'" +
             ", type='" + getType() + "'" +
-            ", bannedPersistentEntityId=" + getBannedPersistentEntityId() +
+            ", reason='" + getReason() + "'" +
+            ", reasonText='" + getReasonText() + "'" +
+            ", timestamp='" + getTimestamp() + "'" +
             "}";
     }
 }

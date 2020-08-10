@@ -47,10 +47,6 @@ public class Credit implements Serializable {
     @Column(name = "role", nullable = false)
     private CreditRole role;
 
-    @OneToMany(mappedBy = "credit")
-    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    private Set<Image> images = new HashSet<>();
-
     @ManyToOne
     @JsonIgnoreProperties(value = "credits", allowSetters = true)
     private Movie movie;
@@ -118,31 +114,6 @@ public class Credit implements Serializable {
 
     public void setRole(CreditRole role) {
         this.role = role;
-    }
-
-    public Set<Image> getImages() {
-        return images;
-    }
-
-    public Credit images(Set<Image> images) {
-        this.images = images;
-        return this;
-    }
-
-    public Credit addImages(Image image) {
-        this.images.add(image);
-        image.setCredit(this);
-        return this;
-    }
-
-    public Credit removeImages(Image image) {
-        this.images.remove(image);
-        image.setCredit(null);
-        return this;
-    }
-
-    public void setImages(Set<Image> images) {
-        this.images = images;
     }
 
     public Movie getMovie() {

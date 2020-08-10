@@ -42,10 +42,6 @@ public class ProductionCompany implements Serializable {
     @Column(name = "origin_country")
     private String originCountry;
 
-    @OneToMany(mappedBy = "productionCompany")
-    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    private Set<BannedPersistentEntity> banReasons = new HashSet<>();
-
     @ManyToMany(mappedBy = "companies")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     @JsonIgnore
@@ -110,31 +106,6 @@ public class ProductionCompany implements Serializable {
 
     public void setOriginCountry(String originCountry) {
         this.originCountry = originCountry;
-    }
-
-    public Set<BannedPersistentEntity> getBanReasons() {
-        return banReasons;
-    }
-
-    public ProductionCompany banReasons(Set<BannedPersistentEntity> bannedPersistentEntities) {
-        this.banReasons = bannedPersistentEntities;
-        return this;
-    }
-
-    public ProductionCompany addBanReasons(BannedPersistentEntity bannedPersistentEntity) {
-        this.banReasons.add(bannedPersistentEntity);
-        bannedPersistentEntity.setProductionCompany(this);
-        return this;
-    }
-
-    public ProductionCompany removeBanReasons(BannedPersistentEntity bannedPersistentEntity) {
-        this.banReasons.remove(bannedPersistentEntity);
-        bannedPersistentEntity.setProductionCompany(null);
-        return this;
-    }
-
-    public void setBanReasons(Set<BannedPersistentEntity> bannedPersistentEntities) {
-        this.banReasons = bannedPersistentEntities;
     }
 
     public Set<Movie> getMovies() {

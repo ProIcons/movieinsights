@@ -3,37 +3,116 @@ import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { Button, InputGroup, Col, Row, Table } from 'reactstrap';
 import { AvForm, AvGroup, AvInput } from 'availity-reactstrap-validation';
-import { byteSize, Translate, translate, ICrudSearchAction, ICrudGetAllAction, TextFormat } from 'react-jhipster';
+import {
+  byteSize,
+  Translate,
+  translate,
+  ICrudSearchAction,
+  ICrudGetAllAction,
+  TextFormat,
+  getSortState,
+  IPaginationBaseState,
+  JhiPagination,
+  JhiItemCount,
+} from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { IRootState } from 'app/shared/reducers';
 import { getSearchEntities, getEntities } from './person.reducer';
 import { IPerson } from 'app/shared/model/person.model';
 import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
+import { ITEMS_PER_PAGE } from 'app/shared/util/pagination.constants';
+import { overridePaginationStateWithQueryParams } from 'app/shared/util/entity-utils';
 
 export interface IPersonProps extends StateProps, DispatchProps, RouteComponentProps<{ url: string }> {}
 
 export const Person = (props: IPersonProps) => {
   const [search, setSearch] = useState('');
+  const [paginationState, setPaginationState] = useState(
+    overridePaginationStateWithQueryParams(getSortState(props.location, ITEMS_PER_PAGE), props.location.search)
+  );
 
-  useEffect(() => {
-    props.getEntities();
-  }, []);
+  const getAllEntities = () => {
+    if (search) {
+      props.getSearchEntities(
+        search,
+        paginationState.activePage - 1,
+        paginationState.itemsPerPage,
+        `${paginationState.sort},${paginationState.order}`
+      );
+    } else {
+      props.getEntities(paginationState.activePage - 1, paginationState.itemsPerPage, `${paginationState.sort},${paginationState.order}`);
+    }
+  };
 
   const startSearching = () => {
     if (search) {
-      props.getSearchEntities(search);
+      setPaginationState({
+        ...paginationState,
+        activePage: 1,
+      });
+      props.getSearchEntities(
+        search,
+        paginationState.activePage - 1,
+        paginationState.itemsPerPage,
+        `${paginationState.sort},${paginationState.order}`
+      );
     }
   };
 
   const clear = () => {
     setSearch('');
+    setPaginationState({
+      ...paginationState,
+      activePage: 1,
+    });
     props.getEntities();
   };
 
   const handleSearch = event => setSearch(event.target.value);
 
-  const { personList, match, loading } = props;
+  const sortEntities = () => {
+    getAllEntities();
+    const endURL = `?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`;
+    if (props.location.search !== endURL) {
+      props.history.push(`${props.location.pathname}${endURL}`);
+    }
+  };
+
+  useEffect(() => {
+    sortEntities();
+  }, [paginationState.activePage, paginationState.order, paginationState.sort, search]);
+
+  useEffect(() => {
+    const params = new URLSearchParams(props.location.search);
+    const page = params.get('page');
+    const sort = params.get('sort');
+    if (page && sort) {
+      const sortSplit = sort.split(',');
+      setPaginationState({
+        ...paginationState,
+        activePage: +page,
+        sort: sortSplit[0],
+        order: sortSplit[1],
+      });
+    }
+  }, [props.location.search]);
+
+  const sort = p => () => {
+    setPaginationState({
+      ...paginationState,
+      order: paginationState.order === 'asc' ? 'desc' : 'asc',
+      sort: p,
+    });
+  };
+
+  const handlePagination = currentPage =>
+    setPaginationState({
+      ...paginationState,
+      activePage: currentPage,
+    });
+
+  const { personList, match, loading, totalItems } = props;
   return (
     <div>
       <h2 id="person-heading">
@@ -72,29 +151,29 @@ export const Person = (props: IPersonProps) => {
           <Table responsive>
             <thead>
               <tr>
-                <th>
-                  <Translate contentKey="global.field.id">ID</Translate>
+                <th className="hand" onClick={sort('id')}>
+                  <Translate contentKey="global.field.id">ID</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="movieInsightsApp.person.tmdbId">Tmdb Id</Translate>
+                <th className="hand" onClick={sort('tmdbId')}>
+                  <Translate contentKey="movieInsightsApp.person.tmdbId">Tmdb Id</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="movieInsightsApp.person.name">Name</Translate>
+                <th className="hand" onClick={sort('name')}>
+                  <Translate contentKey="movieInsightsApp.person.name">Name</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="movieInsightsApp.person.imdbId">Imdb Id</Translate>
+                <th className="hand" onClick={sort('imdbId')}>
+                  <Translate contentKey="movieInsightsApp.person.imdbId">Imdb Id</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="movieInsightsApp.person.popularity">Popularity</Translate>
+                <th className="hand" onClick={sort('popularity')}>
+                  <Translate contentKey="movieInsightsApp.person.popularity">Popularity</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="movieInsightsApp.person.biography">Biography</Translate>
+                <th className="hand" onClick={sort('biography')}>
+                  <Translate contentKey="movieInsightsApp.person.biography">Biography</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="movieInsightsApp.person.birthDay">Birth Day</Translate>
+                <th className="hand" onClick={sort('birthDay')}>
+                  <Translate contentKey="movieInsightsApp.person.birthDay">Birth Day</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="movieInsightsApp.person.profilePath">Profile Path</Translate>
+                <th className="hand" onClick={sort('profilePath')}>
+                  <Translate contentKey="movieInsightsApp.person.profilePath">Profile Path</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
                 <th />
               </tr>
@@ -122,13 +201,23 @@ export const Person = (props: IPersonProps) => {
                           <Translate contentKey="entity.action.view">View</Translate>
                         </span>
                       </Button>
-                      <Button tag={Link} to={`${match.url}/${person.id}/edit`} color="primary" size="sm">
+                      <Button
+                        tag={Link}
+                        to={`${match.url}/${person.id}/edit?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`}
+                        color="primary"
+                        size="sm"
+                      >
                         <FontAwesomeIcon icon="pencil-alt" />{' '}
                         <span className="d-none d-md-inline">
                           <Translate contentKey="entity.action.edit">Edit</Translate>
                         </span>
                       </Button>
-                      <Button tag={Link} to={`${match.url}/${person.id}/delete`} color="danger" size="sm">
+                      <Button
+                        tag={Link}
+                        to={`${match.url}/${person.id}/delete?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`}
+                        color="danger"
+                        size="sm"
+                      >
                         <FontAwesomeIcon icon="trash" />{' '}
                         <span className="d-none d-md-inline">
                           <Translate contentKey="entity.action.delete">Delete</Translate>
@@ -148,6 +237,24 @@ export const Person = (props: IPersonProps) => {
           )
         )}
       </div>
+      {props.totalItems ? (
+        <div className={personList && personList.length > 0 ? '' : 'd-none'}>
+          <Row className="justify-content-center">
+            <JhiItemCount page={paginationState.activePage} total={totalItems} itemsPerPage={paginationState.itemsPerPage} i18nEnabled />
+          </Row>
+          <Row className="justify-content-center">
+            <JhiPagination
+              activePage={paginationState.activePage}
+              onSelect={handlePagination}
+              maxButtons={5}
+              itemsPerPage={paginationState.itemsPerPage}
+              totalItems={props.totalItems}
+            />
+          </Row>
+        </div>
+      ) : (
+        ''
+      )}
     </div>
   );
 };
@@ -155,6 +262,7 @@ export const Person = (props: IPersonProps) => {
 const mapStateToProps = ({ person }: IRootState) => ({
   personList: person.entities,
   loading: person.loading,
+  totalItems: person.totalItems,
 });
 
 const mapDispatchToProps = {

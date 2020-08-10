@@ -118,6 +118,7 @@ Desktop.ini
 ######################
 /bin/
 /deploy/
+/tmdb.cache/
 
 ######################
 # Logs

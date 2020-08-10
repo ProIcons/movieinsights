@@ -105,6 +105,6 @@ public class MovieInsightsPerYearService {
         return StreamSupport
             .stream(movieInsightsPerYearSearchRepository.search(queryStringQuery(query)).spliterator(), false)
             .map(movieInsightsPerYearMapper::toDto)
-        .collect(Collectors.toList());
+            .collect(Collectors.toList());
     }
 }

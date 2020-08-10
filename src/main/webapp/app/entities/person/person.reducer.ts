@@ -23,6 +23,7 @@ const initialState = {
   entities: [] as ReadonlyArray<IPerson>,
   entity: defaultValue,
   updating: false,
+  totalItems: 0,
   updateSuccess: false,
 };
 
@@ -69,6 +70,7 @@ export default (state: PersonState = initialState, action): PersonState => {
         ...state,
         loading: false,
         entities: action.payload.data,
+        totalItems: parseInt(action.payload.headers['x-total-count'], 10),
       };
     case SUCCESS(ACTION_TYPES.FETCH_PERSON):
       return {
@@ -118,13 +120,16 @@ const apiSearchUrl = 'api/_search/people';
 
 export const getSearchEntities: ICrudSearchAction<IPerson> = (query, page, size, sort) => ({
   type: ACTION_TYPES.SEARCH_PEOPLE,
-  payload: axios.get<IPerson>(`${apiSearchUrl}?query=${query}`),
+  payload: axios.get<IPerson>(`${apiSearchUrl}?query=${query}${sort ? `&page=${page}&size=${size}&sort=${sort}` : ''}`),
 });
 
-export const getEntities: ICrudGetAllAction<IPerson> = (page, size, sort) => ({
-  type: ACTION_TYPES.FETCH_PERSON_LIST,
-  payload: axios.get<IPerson>(`${apiUrl}?cacheBuster=${new Date().getTime()}`),
-});
+export const getEntities: ICrudGetAllAction<IPerson> = (page, size, sort) => {
+  const requestUrl = `${apiUrl}${sort ? `?page=${page}&size=${size}&sort=${sort}` : ''}`;
+  return {
+    type: ACTION_TYPES.FETCH_PERSON_LIST,
+    payload: axios.get<IPerson>(`${requestUrl}${sort ? '&' : '?'}cacheBuster=${new Date().getTime()}`),
+  };
+};
 
 export const getEntity: ICrudGetAction<IPerson> = id => {
   const requestUrl = `${apiUrl}/${id}`;

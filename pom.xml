@@ -87,6 +87,9 @@
         <junit.utReportFolder>${project.testresult.directory}/test</junit.utReportFolder>
         <junit.itReportFolder>${project.testresult.directory}/integrationTest</junit.itReportFolder>
         <!-- jhipster-needle-maven-property -->
+        <tmdb-java.version>2.2.0</tmdb-java.version>
+        <resilience4j.version>1.5.0</resilience4j.version>
+        <supercsv.version>2.4.0</supercsv.version>
     </properties>
 
     <dependencyManagement>
@@ -350,6 +353,26 @@
             <scope>test</scope>
         </dependency>
         <!-- jhipster-needle-maven-add-dependency -->
+        <dependency>
+            <groupId>com.uwetrottmann.tmdb2</groupId>
+            <artifactId>tmdb-java</artifactId>
+            <version>${tmdb-java.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.github.resilience4j</groupId>
+            <artifactId>resilience4j-ratelimiter</artifactId>
+            <version>${resilience4j.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>net.sf.supercsv</groupId>
+            <artifactId>super-csv</artifactId>
+            <version>${supercsv.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>net.sf.supercsv</groupId>
+            <artifactId>super-csv-dozer</artifactId>
+            <version>${supercsv.version}</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -667,10 +690,10 @@
                         <changeLogFile>${project.basedir}/src/main/resources/config/liquibase/master.xml</changeLogFile>
                         <diffChangeLogFile>${project.basedir}/src/main/resources/config/liquibase/changelog/${maven.build.timestamp}_changelog.xml</diffChangeLogFile>
                         <driver>org.postgresql.Driver</driver>
-                        <url>jdbc:postgresql://localhost:5432/MovieInsights</url>
+                        <url>jdbc:postgresql://${env.MOVIEINSIGHTS_DEV_POSTGRES_HOST}/MovieInsights</url>
                         <defaultSchemaName></defaultSchemaName>
-                        <username>postgres</username>
-                        <password>postgres</password>
+                        <username>${env.MOVIEINSIGHTS_DEV_POSTGRES_USERNAME}</username>
+                        <password>${env.MOVIEINSIGHTS_DEV_POSTGRES_PASSWORD}</password>
                         <referenceUrl>hibernate:spring:gr.movieinsights.domain?dialect=io.github.jhipster.domain.util.FixedPostgreSQL10Dialect&amp;hibernate.physical_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy&amp;hibernate.implicit_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy</referenceUrl>
                         <verbose>true</verbose>
                         <logging>debug</logging>

@@ -82,9 +82,6 @@ public class MovieResourceIT {
     private static final LocalDate DEFAULT_RELEASE_DATE = LocalDate.ofEpochDay(0L);
     private static final LocalDate UPDATED_RELEASE_DATE = LocalDate.now(ZoneId.systemDefault());
 
-    private static final Boolean DEFAULT_IS_BANNED = false;
-    private static final Boolean UPDATED_IS_BANNED = true;
-
     @Autowired
     private MovieRepository movieRepository;
 
@@ -135,8 +132,7 @@ public class MovieResourceIT {
             .runtime(DEFAULT_RUNTIME)
             .posterPath(DEFAULT_POSTER_PATH)
             .backdropPath(DEFAULT_BACKDROP_PATH)
-            .releaseDate(DEFAULT_RELEASE_DATE)
-            .isBanned(DEFAULT_IS_BANNED);
+            .releaseDate(DEFAULT_RELEASE_DATE);
         return movie;
     }
     /**
@@ -158,8 +154,7 @@ public class MovieResourceIT {
             .runtime(UPDATED_RUNTIME)
             .posterPath(UPDATED_POSTER_PATH)
             .backdropPath(UPDATED_BACKDROP_PATH)
-            .releaseDate(UPDATED_RELEASE_DATE)
-            .isBanned(UPDATED_IS_BANNED);
+            .releaseDate(UPDATED_RELEASE_DATE);
         return movie;
     }
 
@@ -195,7 +190,6 @@ public class MovieResourceIT {
         assertThat(testMovie.getPosterPath()).isEqualTo(DEFAULT_POSTER_PATH);
         assertThat(testMovie.getBackdropPath()).isEqualTo(DEFAULT_BACKDROP_PATH);
         assertThat(testMovie.getReleaseDate()).isEqualTo(DEFAULT_RELEASE_DATE);
-        assertThat(testMovie.isIsBanned()).isEqualTo(DEFAULT_IS_BANNED);
 
         // Validate the Movie in Elasticsearch
         verify(mockMovieSearchRepository, times(1)).save(testMovie);
@@ -287,26 +281,6 @@ public class MovieResourceIT {
 
     @Test
     @Transactional
-    public void checkIsBannedIsRequired() throws Exception {
-        int databaseSizeBeforeTest = movieRepository.findAll().size();
-        // set the field null
-        movie.setIsBanned(null);
-
-        // Create the Movie, which fails.
-        MovieDTO movieDTO = movieMapper.toDto(movie);
-
-
-        restMovieMockMvc.perform(post("/api/movies")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(movieDTO)))
-            .andExpect(status().isBadRequest());
-
-        List<Movie> movieList = movieRepository.findAll();
-        assertThat(movieList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
     public void getAllMovies() throws Exception {
         // Initialize the database
         movieRepository.saveAndFlush(movie);
@@ -327,8 +301,7 @@ public class MovieResourceIT {
             .andExpect(jsonPath("$.[*].runtime").value(hasItem(DEFAULT_RUNTIME)))
             .andExpect(jsonPath("$.[*].posterPath").value(hasItem(DEFAULT_POSTER_PATH)))
             .andExpect(jsonPath("$.[*].backdropPath").value(hasItem(DEFAULT_BACKDROP_PATH)))
-            .andExpect(jsonPath("$.[*].releaseDate").value(hasItem(DEFAULT_RELEASE_DATE.toString())))
-            .andExpect(jsonPath("$.[*].isBanned").value(hasItem(DEFAULT_IS_BANNED.booleanValue())));
+            .andExpect(jsonPath("$.[*].releaseDate").value(hasItem(DEFAULT_RELEASE_DATE.toString())));
     }
     
     @SuppressWarnings({"unchecked"})
@@ -373,8 +346,7 @@ public class MovieResourceIT {
             .andExpect(jsonPath("$.runtime").value(DEFAULT_RUNTIME))
             .andExpect(jsonPath("$.posterPath").value(DEFAULT_POSTER_PATH))
             .andExpect(jsonPath("$.backdropPath").value(DEFAULT_BACKDROP_PATH))
-            .andExpect(jsonPath("$.releaseDate").value(DEFAULT_RELEASE_DATE.toString()))
-            .andExpect(jsonPath("$.isBanned").value(DEFAULT_IS_BANNED.booleanValue()));
+            .andExpect(jsonPath("$.releaseDate").value(DEFAULT_RELEASE_DATE.toString()));
     }
     @Test
     @Transactional
@@ -408,8 +380,7 @@ public class MovieResourceIT {
             .runtime(UPDATED_RUNTIME)
             .posterPath(UPDATED_POSTER_PATH)
             .backdropPath(UPDATED_BACKDROP_PATH)
-            .releaseDate(UPDATED_RELEASE_DATE)
-            .isBanned(UPDATED_IS_BANNED);
+            .releaseDate(UPDATED_RELEASE_DATE);
         MovieDTO movieDTO = movieMapper.toDto(updatedMovie);
 
         restMovieMockMvc.perform(put("/api/movies")
@@ -433,7 +404,6 @@ public class MovieResourceIT {
         assertThat(testMovie.getPosterPath()).isEqualTo(UPDATED_POSTER_PATH);
         assertThat(testMovie.getBackdropPath()).isEqualTo(UPDATED_BACKDROP_PATH);
         assertThat(testMovie.getReleaseDate()).isEqualTo(UPDATED_RELEASE_DATE);
-        assertThat(testMovie.isIsBanned()).isEqualTo(UPDATED_IS_BANNED);
 
         // Validate the Movie in Elasticsearch
         verify(mockMovieSearchRepository, times(1)).save(testMovie);
@@ -507,7 +477,6 @@ public class MovieResourceIT {
             .andExpect(jsonPath("$.[*].runtime").value(hasItem(DEFAULT_RUNTIME)))
             .andExpect(jsonPath("$.[*].posterPath").value(hasItem(DEFAULT_POSTER_PATH)))
             .andExpect(jsonPath("$.[*].backdropPath").value(hasItem(DEFAULT_BACKDROP_PATH)))
-            .andExpect(jsonPath("$.[*].releaseDate").value(hasItem(DEFAULT_RELEASE_DATE.toString())))
-            .andExpect(jsonPath("$.[*].isBanned").value(hasItem(DEFAULT_IS_BANNED.booleanValue())));
+            .andExpect(jsonPath("$.[*].releaseDate").value(hasItem(DEFAULT_RELEASE_DATE.toString())));
     }
 }

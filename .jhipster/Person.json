@@ -39,29 +39,18 @@
       "otherEntityName": "credit",
       "otherEntityRelationshipName": "person",
       "relationshipName": "credits"
-    },
-    {
-      "relationshipType": "one-to-many",
-      "otherEntityName": "image",
-      "otherEntityRelationshipName": "person",
-      "relationshipName": "images"
-    },
-    {
-      "relationshipType": "one-to-many",
-      "otherEntityName": "bannedPersistentEntity",
-      "otherEntityRelationshipName": "person",
-      "relationshipName": "banReasons"
     }
   ],
   "changelogDate": "20200807164249",
   "entityTableName": "person",
   "dto": "mapstruct",
-  "pagination": "no",
+  "pagination": "pagination",
   "service": "serviceClass",
   "jpaMetamodelFiltering": false,
   "fluentMethods": true,
   "readOnly": false,
   "embedded": false,
   "clientRootFolder": "",
-  "applications": "*"
+  "applications": "*",
+  "searchEngine": "elasticsearch"
 }

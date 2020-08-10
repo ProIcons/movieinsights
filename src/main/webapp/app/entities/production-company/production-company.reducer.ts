@@ -22,6 +22,7 @@ const initialState = {
   entities: [] as ReadonlyArray<IProductionCompany>,
   entity: defaultValue,
   updating: false,
+  totalItems: 0,
   updateSuccess: false,
 };
 
@@ -68,6 +69,7 @@ export default (state: ProductionCompanyState = initialState, action): Productio
         ...state,
         loading: false,
         entities: action.payload.data,
+        totalItems: parseInt(action.payload.headers['x-total-count'], 10),
       };
     case SUCCESS(ACTION_TYPES.FETCH_PRODUCTIONCOMPANY):
       return {
@@ -106,13 +108,16 @@ const apiSearchUrl = 'api/_search/production-companies';
 
 export const getSearchEntities: ICrudSearchAction<IProductionCompany> = (query, page, size, sort) => ({
   type: ACTION_TYPES.SEARCH_PRODUCTIONCOMPANIES,
-  payload: axios.get<IProductionCompany>(`${apiSearchUrl}?query=${query}`),
+  payload: axios.get<IProductionCompany>(`${apiSearchUrl}?query=${query}${sort ? `&page=${page}&size=${size}&sort=${sort}` : ''}`),
 });
 
-export const getEntities: ICrudGetAllAction<IProductionCompany> = (page, size, sort) => ({
-  type: ACTION_TYPES.FETCH_PRODUCTIONCOMPANY_LIST,
-  payload: axios.get<IProductionCompany>(`${apiUrl}?cacheBuster=${new Date().getTime()}`),
-});
+export const getEntities: ICrudGetAllAction<IProductionCompany> = (page, size, sort) => {
+  const requestUrl = `${apiUrl}${sort ? `?page=${page}&size=${size}&sort=${sort}` : ''}`;
+  return {
+    type: ACTION_TYPES.FETCH_PRODUCTIONCOMPANY_LIST,
+    payload: axios.get<IProductionCompany>(`${requestUrl}${sort ? '&' : '?'}cacheBuster=${new Date().getTime()}`),
+  };
+};
 
 export const getEntity: ICrudGetAction<IProductionCompany> = id => {
   const requestUrl = `${apiUrl}/${id}`;

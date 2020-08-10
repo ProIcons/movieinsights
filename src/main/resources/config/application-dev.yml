@@ -15,9 +15,10 @@
 
 logging:
   level:
-    ROOT: DEBUG
+    ROOT: WARN
     io.github.jhipster: DEBUG
     gr.movieinsights: DEBUG
+    gr.movieinsights.config.tmdb: WARN
 
 management:
   health:
@@ -42,9 +43,9 @@ spring:
       indent-output: true
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
-    url: jdbc:postgresql://localhost:5432/MovieInsights
-    username: postgres
-    password: postgres
+    url: jdbc:postgresql://${MOVIEINSIGHTS_DEV_POSTGRES_HOST}/MovieInsights
+    username: ${MOVIEINSIGHTS_DEV_POSTGRES_USERNAME}
+    password: ${MOVIEINSIGHTS_DEV_POSTGRES_PASSWORD}
     hikari:
       poolName: Hikari
       auto-commit: false
@@ -54,6 +55,11 @@ spring:
   data:
     elasticsearch:
       properties:
+        cluster:
+          routing:
+            allocation:
+              disk:
+                threshold_enabled: false
         path:
           home: target/elasticsearch
   liquibase:
@@ -125,3 +131,9 @@ jhipster:
 # ===================================================================
 
 # application:
+application:
+  tmdb:
+    api-key: ${TMDB_API_KEY}
+    cache:
+      max-age: 364d
+      path: tmdb.cache

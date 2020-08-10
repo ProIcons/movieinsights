@@ -19,7 +19,6 @@ export default class MovieUpdatePage {
   posterPathInput: ElementFinder = element(by.css('input#movie-posterPath'));
   backdropPathInput: ElementFinder = element(by.css('input#movie-backdropPath'));
   releaseDateInput: ElementFinder = element(by.css('input#movie-releaseDate'));
-  isBannedInput: ElementFinder = element(by.css('input#movie-isBanned'));
   voteSelect: ElementFinder = element(by.css('select#movie-vote'));
   companiesSelect: ElementFinder = element(by.css('select#movie-companies'));
   countriesSelect: ElementFinder = element(by.css('select#movie-countries'));
@@ -125,9 +124,6 @@ export default class MovieUpdatePage {
     return this.releaseDateInput.getAttribute('value');
   }
 
-  getIsBannedInput() {
-    return this.isBannedInput;
-  }
   async voteSelectLastOption() {
     await this.voteSelect.all(by.tagName('option')).last().click();
   }
@@ -241,15 +237,6 @@ export default class MovieUpdatePage {
     await waitUntilDisplayed(this.saveButton);
     await this.setReleaseDateInput('01-01-2001');
     expect(await this.getReleaseDateInput()).to.eq('2001-01-01');
-    await waitUntilDisplayed(this.saveButton);
-    const selectedIsBanned = await this.getIsBannedInput().isSelected();
-    if (selectedIsBanned) {
-      await this.getIsBannedInput().click();
-      expect(await this.getIsBannedInput().isSelected()).to.be.false;
-    } else {
-      await this.getIsBannedInput().click();
-      expect(await this.getIsBannedInput().isSelected()).to.be.true;
-    }
     await this.voteSelectLastOption();
     // this.companiesSelectLastOption();
     // this.countriesSelectLastOption();

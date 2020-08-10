@@ -26,19 +26,14 @@ import static org.elasticsearch.index.query.QueryBuilders.*;
  */
 @Service
 @Transactional
-public class MovieService {
+public class MovieService extends ImdbIdentifiedBaseService<Movie, MovieDTO, MovieRepository, MovieMapper> {
 
     private final Logger log = LoggerFactory.getLogger(MovieService.class);
-
-    private final MovieRepository movieRepository;
-
-    private final MovieMapper movieMapper;
 
     private final MovieSearchRepository movieSearchRepository;
 
     public MovieService(MovieRepository movieRepository, MovieMapper movieMapper, MovieSearchRepository movieSearchRepository) {
-        this.movieRepository = movieRepository;
-        this.movieMapper = movieMapper;
+        super(movieRepository, movieMapper);
         this.movieSearchRepository = movieSearchRepository;
     }
 
@@ -50,9 +45,9 @@ public class MovieService {
      */
     public MovieDTO save(MovieDTO movieDTO) {
         log.debug("Request to save Movie : {}", movieDTO);
-        Movie movie = movieMapper.toEntity(movieDTO);
-        movie = movieRepository.save(movie);
-        MovieDTO result = movieMapper.toDto(movie);
+        Movie movie = mapper.toEntity(movieDTO);
+        movie = repository.save(movie);
+        MovieDTO result = mapper.toDto(movie);
         movieSearchRepository.save(movie);
         return result;
     }
@@ -65,10 +60,11 @@ public class MovieService {
     @Transactional(readOnly = true)
     public List<MovieDTO> findAll() {
         log.debug("Request to get all Movies");
-        return movieRepository.findAllWithEagerRelationships().stream()
-            .map(movieMapper::toDto)
+        return repository.findAllWithEagerRelationships().stream()
+            .map(mapper::toDto)
             .collect(Collectors.toCollection(LinkedList::new));
     }
+
 
 
     /**
@@ -77,7 +73,7 @@ public class MovieService {
      * @return the list of entities.
      */
     public Page<MovieDTO> findAllWithEagerRelationships(Pageable pageable) {
-        return movieRepository.findAllWithEagerRelationships(pageable).map(movieMapper::toDto);
+        return repository.findAllWithEagerRelationships(pageable).map(mapper::toDto);
     }
 
     /**
@@ -89,8 +85,8 @@ public class MovieService {
     @Transactional(readOnly = true)
     public Optional<MovieDTO> findOne(Long id) {
         log.debug("Request to get Movie : {}", id);
-        return movieRepository.findOneWithEagerRelationships(id)
-            .map(movieMapper::toDto);
+        return repository.findOneWithEagerRelationships(id)
+            .map(mapper::toDto);
     }
 
     /**
@@ -100,7 +96,7 @@ public class MovieService {
      */
     public void delete(Long id) {
         log.debug("Request to delete Movie : {}", id);
-        movieRepository.deleteById(id);
+        repository.deleteById(id);
         movieSearchRepository.deleteById(id);
     }
 
@@ -115,7 +111,7 @@ public class MovieService {
         log.debug("Request to search Movies for query {}", query);
         return StreamSupport
             .stream(movieSearchRepository.search(queryStringQuery(query)).spliterator(), false)
-            .map(movieMapper::toDto)
-        .collect(Collectors.toList());
+            .map(mapper::toDto)
+            .collect(Collectors.toList());
     }
 }

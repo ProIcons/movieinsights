@@ -2,7 +2,7 @@ package gr.movieinsights.repository;
 
 import gr.movieinsights.domain.Genre;
 
-import org.springframework.data.jpa.repository.*;
+import gr.movieinsights.repository.util.TmdbIdentifiedRepository;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -10,5 +10,5 @@ import org.springframework.stereotype.Repository;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface GenreRepository extends JpaRepository<Genre, Long> {
+public interface GenreRepository extends TmdbIdentifiedRepository<Genre, Long> {
 }

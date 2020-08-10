@@ -105,6 +105,6 @@ public class MovieInsightsPerGenreService {
         return StreamSupport
             .stream(movieInsightsPerGenreSearchRepository.search(queryStringQuery(query)).spliterator(), false)
             .map(movieInsightsPerGenreMapper::toDto)
-        .collect(Collectors.toList());
+            .collect(Collectors.toList());
     }
 }

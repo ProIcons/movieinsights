@@ -29,17 +29,9 @@ import bannedEntity, {
   BannedEntityState
 } from 'app/entities/banned-entity/banned-entity.reducer';
 // prettier-ignore
-import bannedPersistentEntity, {
-  BannedPersistentEntityState
-} from 'app/entities/banned-persistent-entity/banned-persistent-entity.reducer';
-// prettier-ignore
 import genre, {
   GenreState
 } from 'app/entities/genre/genre.reducer';
-// prettier-ignore
-import image, {
-  ImageState
-} from 'app/entities/image/image.reducer';
 // prettier-ignore
 import vote, {
   VoteState
@@ -93,9 +85,7 @@ export interface IRootState {
   readonly person: PersonState;
   readonly credit: CreditState;
   readonly bannedEntity: BannedEntityState;
-  readonly bannedPersistentEntity: BannedPersistentEntityState;
   readonly genre: GenreState;
-  readonly image: ImageState;
   readonly vote: VoteState;
   readonly productionCountry: ProductionCountryState;
   readonly productionCompany: ProductionCompanyState;
@@ -124,9 +114,7 @@ const rootReducer = combineReducers<IRootState>({
   person,
   credit,
   bannedEntity,
-  bannedPersistentEntity,
   genre,
-  image,
   vote,
   productionCountry,
   productionCompany,

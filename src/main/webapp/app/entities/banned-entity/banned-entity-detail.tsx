@@ -32,15 +32,17 @@ export const BannedEntityDetail = (props: IBannedEntityDetailProps) => {
           </dt>
           <dd>{bannedEntityEntity.tmdbId}</dd>
           <dt>
+            <span id="imdb">
+              <Translate contentKey="movieInsightsApp.bannedEntity.imdb">Imdb</Translate>
+            </span>
+          </dt>
+          <dd>{bannedEntityEntity.imdb}</dd>
+          <dt>
             <span id="type">
               <Translate contentKey="movieInsightsApp.bannedEntity.type">Type</Translate>
             </span>
           </dt>
           <dd>{bannedEntityEntity.type}</dd>
-          <dt>
-            <Translate contentKey="movieInsightsApp.bannedEntity.bannedPersistentEntity">Banned Persistent Entity</Translate>
-          </dt>
-          <dd>{bannedEntityEntity.bannedPersistentEntityId ? bannedEntityEntity.bannedPersistentEntityId : ''}</dd>
         </dl>
         <Button tag={Link} to="/banned-entity" replace color="info">
           <FontAwesomeIcon icon="arrow-left" />{' '}

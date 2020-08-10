@@ -16,8 +16,6 @@ public interface CreditMapper extends EntityMapper<CreditDTO, Credit> {
     @Mapping(source = "person.id", target = "personId")
     CreditDTO toDto(Credit credit);
 
-    @Mapping(target = "images", ignore = true)
-    @Mapping(target = "removeImages", ignore = true)
     @Mapping(source = "movieId", target = "movie")
     @Mapping(source = "personId", target = "person")
     Credit toEntity(CreditDTO creditDTO);

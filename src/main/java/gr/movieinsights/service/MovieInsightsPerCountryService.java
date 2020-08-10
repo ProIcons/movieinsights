@@ -105,6 +105,6 @@ public class MovieInsightsPerCountryService {
         return StreamSupport
             .stream(movieInsightsPerCountrySearchRepository.search(queryStringQuery(query)).spliterator(), false)
             .map(movieInsightsPerCountryMapper::toDto)
-        .collect(Collectors.toList());
+            .collect(Collectors.toList());
     }
 }

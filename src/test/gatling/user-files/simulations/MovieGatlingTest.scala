@@ -84,7 +84,6 @@ class MovieGatlingTest extends Simulation {
                 , "posterPath":"SAMPLE_TEXT"
                 , "backdropPath":"SAMPLE_TEXT"
                 , "releaseDate":"2020-01-01T00:00:00.000Z"
-                , "isBanned":null
                 }""")).asJson
             .check(status.is(201))
             .check(headerRegex("Location", "(.*)").saveAs("new_movie_url"))).exitHereIfFailed

@@ -18,6 +18,7 @@
         "title": "Banned Entity"
       },
       "tmdbId": "Tmdb Id",
+      "imdb": "Imdb",
       "type": "Type",
       "bannedPersistentEntity": "Banned Persistent Entity"
     }

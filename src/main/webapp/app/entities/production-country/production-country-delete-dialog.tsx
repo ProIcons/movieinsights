@@ -17,7 +17,7 @@ export const ProductionCountryDeleteDialog = (props: IProductionCountryDeleteDia
   }, []);
 
   const handleClose = () => {
-    props.history.push('/production-country');
+    props.history.push('/production-country' + props.location.search);
   };
 
   useEffect(() => {

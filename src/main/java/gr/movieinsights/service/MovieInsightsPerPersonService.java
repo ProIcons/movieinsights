@@ -105,6 +105,6 @@ public class MovieInsightsPerPersonService {
         return StreamSupport
             .stream(movieInsightsPerPersonSearchRepository.search(queryStringQuery(query)).spliterator(), false)
             .map(movieInsightsPerPersonMapper::toDto)
-        .collect(Collectors.toList());
+            .collect(Collectors.toList());
     }
 }

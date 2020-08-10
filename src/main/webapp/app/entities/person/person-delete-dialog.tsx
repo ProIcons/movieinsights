@@ -17,7 +17,7 @@ export const PersonDeleteDialog = (props: IPersonDeleteDialogProps) => {
   }, []);
 
   const handleClose = () => {
-    props.history.push('/person');
+    props.history.push('/person' + props.location.search);
   };
 
   useEffect(() => {

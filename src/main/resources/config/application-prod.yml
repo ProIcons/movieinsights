@@ -33,9 +33,9 @@ spring:
       enabled: false
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
-    url: jdbc:postgresql://localhost:5432/MovieInsights
-    username: MovieInsights
-    password:
+    url: jdbc:postgresql://${MOVIEINSIGHTS_PROD_POSTGRES_HOST}/MovieInsights
+    username: ${MOVIEINSIGHTS_PROD_POSTGRES_USERNAME}
+    password: ${MOVIEINSIGHTS_PROD_POSTGRES_PASSWORD}
     hikari:
       poolName: Hikari
       auto-commit: false

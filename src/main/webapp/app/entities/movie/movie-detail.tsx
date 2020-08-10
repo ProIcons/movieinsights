@@ -100,12 +100,6 @@ export const MovieDetail = (props: IMovieDetailProps) => {
             {movieEntity.releaseDate ? <TextFormat value={movieEntity.releaseDate} type="date" format={APP_LOCAL_DATE_FORMAT} /> : null}
           </dd>
           <dt>
-            <span id="isBanned">
-              <Translate contentKey="movieInsightsApp.movie.isBanned">Is Banned</Translate>
-            </span>
-          </dt>
-          <dd>{movieEntity.isBanned ? 'true' : 'false'}</dd>
-          <dt>
             <Translate contentKey="movieInsightsApp.movie.vote">Vote</Translate>
           </dt>
           <dd>{movieEntity.voteId ? movieEntity.voteId : ''}</dd>

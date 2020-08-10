@@ -2,6 +2,7 @@ package gr.movieinsights.repository;
 
 import gr.movieinsights.domain.Movie;
 
+import gr.movieinsights.repository.util.ImdbIdentifiedRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.*;
@@ -15,7 +16,7 @@ import java.util.Optional;
  * Spring Data  repository for the Movie entity.
  */
 @Repository
-public interface MovieRepository extends JpaRepository<Movie, Long> {
+public interface MovieRepository extends ImdbIdentifiedRepository<Movie, Long> {
 
     @Query(value = "select distinct movie from Movie movie left join fetch movie.companies left join fetch movie.countries left join fetch movie.genres",
         countQuery = "select count(distinct movie) from Movie movie")

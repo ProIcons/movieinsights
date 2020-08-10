@@ -22,6 +22,7 @@ const initialState = {
   entities: [] as ReadonlyArray<IGenre>,
   entity: defaultValue,
   updating: false,
+  totalItems: 0,
   updateSuccess: false,
 };
 
@@ -68,6 +69,7 @@ export default (state: GenreState = initialState, action): GenreState => {
         ...state,
         loading: false,
         entities: action.payload.data,
+        totalItems: parseInt(action.payload.headers['x-total-count'], 10),
       };
     case SUCCESS(ACTION_TYPES.FETCH_GENRE):
       return {
@@ -106,13 +108,16 @@ const apiSearchUrl = 'api/_search/genres';
 
 export const getSearchEntities: ICrudSearchAction<IGenre> = (query, page, size, sort) => ({
   type: ACTION_TYPES.SEARCH_GENRES,
-  payload: axios.get<IGenre>(`${apiSearchUrl}?query=${query}`),
+  payload: axios.get<IGenre>(`${apiSearchUrl}?query=${query}${sort ? `&page=${page}&size=${size}&sort=${sort}` : ''}`),
 });
 
-export const getEntities: ICrudGetAllAction<IGenre> = (page, size, sort) => ({
-  type: ACTION_TYPES.FETCH_GENRE_LIST,
-  payload: axios.get<IGenre>(`${apiUrl}?cacheBuster=${new Date().getTime()}`),
-});
+export const getEntities: ICrudGetAllAction<IGenre> = (page, size, sort) => {
+  const requestUrl = `${apiUrl}${sort ? `?page=${page}&size=${size}&sort=${sort}` : ''}`;
+  return {
+    type: ACTION_TYPES.FETCH_GENRE_LIST,
+    payload: axios.get<IGenre>(`${requestUrl}${sort ? '&' : '?'}cacheBuster=${new Date().getTime()}`),
+  };
+};
 
 export const getEntity: ICrudGetAction<IGenre> = id => {
   const requestUrl = `${apiUrl}/${id}`;

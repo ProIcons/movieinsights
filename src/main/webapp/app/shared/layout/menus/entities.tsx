@@ -25,14 +25,8 @@ export const EntitiesMenu = props => (
     <MenuItem icon="asterisk" to="/banned-entity">
       <Translate contentKey="global.menu.entities.bannedEntity" />
     </MenuItem>
-    <MenuItem icon="asterisk" to="/banned-persistent-entity">
-      <Translate contentKey="global.menu.entities.bannedPersistentEntity" />
-    </MenuItem>
     <MenuItem icon="asterisk" to="/genre">
       <Translate contentKey="global.menu.entities.genre" />
-    </MenuItem>
-    <MenuItem icon="asterisk" to="/image">
-      <Translate contentKey="global.menu.entities.image" />
     </MenuItem>
     <MenuItem icon="asterisk" to="/vote">
       <Translate contentKey="global.menu.entities.vote" />

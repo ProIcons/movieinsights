@@ -70,10 +70,6 @@ public class Movie implements Serializable {
     @Column(name = "release_date")
     private LocalDate releaseDate;
 
-    @NotNull
-    @Column(name = "is_banned", nullable = false)
-    private Boolean isBanned;
-
     @OneToOne
     @JoinColumn(unique = true)
     private Vote vote;
@@ -82,33 +78,25 @@ public class Movie implements Serializable {
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     private Set<Credit> credits = new HashSet<>();
 
-    @OneToMany(mappedBy = "movie")
-    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    private Set<Image> images = new HashSet<>();
-
-    @OneToMany(mappedBy = "movie")
-    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    private Set<BannedPersistentEntity> banReasons = new HashSet<>();
-
     @ManyToMany
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     @JoinTable(name = "movie_companies",
-               joinColumns = @JoinColumn(name = "movie_id", referencedColumnName = "id"),
-               inverseJoinColumns = @JoinColumn(name = "companies_id", referencedColumnName = "id"))
+        joinColumns = @JoinColumn(name = "movie_id", referencedColumnName = "id"),
+        inverseJoinColumns = @JoinColumn(name = "companies_id", referencedColumnName = "id"))
     private Set<ProductionCompany> companies = new HashSet<>();
 
     @ManyToMany
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     @JoinTable(name = "movie_countries",
-               joinColumns = @JoinColumn(name = "movie_id", referencedColumnName = "id"),
-               inverseJoinColumns = @JoinColumn(name = "countries_id", referencedColumnName = "id"))
+        joinColumns = @JoinColumn(name = "movie_id", referencedColumnName = "id"),
+        inverseJoinColumns = @JoinColumn(name = "countries_id", referencedColumnName = "id"))
     private Set<ProductionCountry> countries = new HashSet<>();
 
     @ManyToMany
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     @JoinTable(name = "movie_genres",
-               joinColumns = @JoinColumn(name = "movie_id", referencedColumnName = "id"),
-               inverseJoinColumns = @JoinColumn(name = "genres_id", referencedColumnName = "id"))
+        joinColumns = @JoinColumn(name = "movie_id", referencedColumnName = "id"),
+        inverseJoinColumns = @JoinColumn(name = "genres_id", referencedColumnName = "id"))
     private Set<Genre> genres = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
@@ -276,19 +264,6 @@ public class Movie implements Serializable {
         this.releaseDate = releaseDate;
     }
 
-    public Boolean isIsBanned() {
-        return isBanned;
-    }
-
-    public Movie isBanned(Boolean isBanned) {
-        this.isBanned = isBanned;
-        return this;
-    }
-
-    public void setIsBanned(Boolean isBanned) {
-        this.isBanned = isBanned;
-    }
-
     public Vote getVote() {
         return vote;
     }
@@ -325,56 +300,6 @@ public class Movie implements Serializable {
 
     public void setCredits(Set<Credit> credits) {
         this.credits = credits;
-    }
-
-    public Set<Image> getImages() {
-        return images;
-    }
-
-    public Movie images(Set<Image> images) {
-        this.images = images;
-        return this;
-    }
-
-    public Movie addImages(Image image) {
-        this.images.add(image);
-        image.setMovie(this);
-        return this;
-    }
-
-    public Movie removeImages(Image image) {
-        this.images.remove(image);
-        image.setMovie(null);
-        return this;
-    }
-
-    public void setImages(Set<Image> images) {
-        this.images = images;
-    }
-
-    public Set<BannedPersistentEntity> getBanReasons() {
-        return banReasons;
-    }
-
-    public Movie banReasons(Set<BannedPersistentEntity> bannedPersistentEntities) {
-        this.banReasons = bannedPersistentEntities;
-        return this;
-    }
-
-    public Movie addBanReasons(BannedPersistentEntity bannedPersistentEntity) {
-        this.banReasons.add(bannedPersistentEntity);
-        bannedPersistentEntity.setMovie(this);
-        return this;
-    }
-
-    public Movie removeBanReasons(BannedPersistentEntity bannedPersistentEntity) {
-        this.banReasons.remove(bannedPersistentEntity);
-        bannedPersistentEntity.setMovie(null);
-        return this;
-    }
-
-    public void setBanReasons(Set<BannedPersistentEntity> bannedPersistentEntities) {
-        this.banReasons = bannedPersistentEntities;
     }
 
     public Set<ProductionCompany> getCompanies() {
@@ -486,7 +411,6 @@ public class Movie implements Serializable {
             ", posterPath='" + getPosterPath() + "'" +
             ", backdropPath='" + getBackdropPath() + "'" +
             ", releaseDate='" + getReleaseDate() + "'" +
-            ", isBanned='" + isIsBanned() + "'" +
             "}";
     }
 }

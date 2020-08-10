@@ -1,0 +1,44 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-3.9.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
+    <changeSet author="Nikolas (generated)" id="1597049582112-2">
+        <addColumn tableName="banned_entity">
+            <column name="reason" type="varchar(255)" defaultValue="UNDEFINED" defaultOnNull="true">
+                <constraints nullable="false"/>
+
+            </column>
+        </addColumn>
+    </changeSet>
+    <changeSet author="Nikolas (generated)" id="1597049582112-3">
+        <addColumn tableName="banned_entity">
+            <column name="reason_text" type="varchar(255)"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="Nikolas (generated)" id="1597049582112-4">
+        <addColumn tableName="banned_entity">
+            <column name="timestamp" type="date" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    <changeSet author="Nikolas (generated)" id="1597049582112-5">
+        <dropForeignKeyConstraint baseTableName="banned_entity" constraintName="fk_banned_entity_banned_persistent_entity_id"/>
+    </changeSet>
+    <changeSet author="Nikolas (generated)" id="1597049582112-6">
+        <dropForeignKeyConstraint baseTableName="banned_persistent_entity" constraintName="fk_banned_persistent_entity_movie_id"/>
+    </changeSet>
+    <changeSet author="Nikolas (generated)" id="1597049582112-7">
+        <dropForeignKeyConstraint baseTableName="banned_persistent_entity" constraintName="fk_banned_persistent_entity_person_id"/>
+    </changeSet>
+    <changeSet author="Nikolas (generated)" id="1597049582112-8">
+        <dropForeignKeyConstraint baseTableName="banned_persistent_entity" constraintName="fk_banned_persistent_entity_production_company_id"/>
+    </changeSet>
+    <changeSet author="Nikolas (generated)" id="1597049582112-9">
+        <dropUniqueConstraint constraintName="ux_banned_entity_banned_persistent_entity_id" tableName="banned_entity"/>
+    </changeSet>
+    <changeSet author="Nikolas (generated)" id="1597049582112-10">
+        <dropTable tableName="banned_persistent_entity"/>
+    </changeSet>
+    <changeSet author="Nikolas (generated)" id="1597049582112-11">
+        <dropColumn columnName="banned_persistent_entity_id" tableName="banned_entity"/>
+    </changeSet>
+</databaseChangeLog>

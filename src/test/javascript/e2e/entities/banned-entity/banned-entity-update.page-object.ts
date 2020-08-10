@@ -8,8 +8,11 @@ export default class BannedEntityUpdatePage {
   saveButton: ElementFinder = element(by.id('save-entity'));
   cancelButton: ElementFinder = element(by.id('cancel-save'));
   tmdbIdInput: ElementFinder = element(by.css('input#banned-entity-tmdbId'));
+  imdbIdInput: ElementFinder = element(by.css('input#banned-entity-imdbId'));
   typeSelect: ElementFinder = element(by.css('select#banned-entity-type'));
-  bannedPersistentEntitySelect: ElementFinder = element(by.css('select#banned-entity-bannedPersistentEntity'));
+  reasonSelect: ElementFinder = element(by.css('select#banned-entity-reason'));
+  reasonTextInput: ElementFinder = element(by.css('input#banned-entity-reasonText'));
+  timestampInput: ElementFinder = element(by.css('input#banned-entity-timestamp'));
 
   getPageTitle() {
     return this.pageTitle;
@@ -23,6 +26,14 @@ export default class BannedEntityUpdatePage {
     return this.tmdbIdInput.getAttribute('value');
   }
 
+  async setImdbIdInput(imdbId) {
+    await this.imdbIdInput.sendKeys(imdbId);
+  }
+
+  async getImdbIdInput() {
+    return this.imdbIdInput.getAttribute('value');
+  }
+
   async setTypeSelect(type) {
     await this.typeSelect.sendKeys(type);
   }
@@ -34,20 +45,31 @@ export default class BannedEntityUpdatePage {
   async typeSelectLastOption() {
     await this.typeSelect.all(by.tagName('option')).last().click();
   }
-  async bannedPersistentEntitySelectLastOption() {
-    await this.bannedPersistentEntitySelect.all(by.tagName('option')).last().click();
+  async setReasonSelect(reason) {
+    await this.reasonSelect.sendKeys(reason);
   }
 
-  async bannedPersistentEntitySelectOption(option) {
-    await this.bannedPersistentEntitySelect.sendKeys(option);
+  async getReasonSelect() {
+    return this.reasonSelect.element(by.css('option:checked')).getText();
   }
 
-  getBannedPersistentEntitySelect() {
-    return this.bannedPersistentEntitySelect;
+  async reasonSelectLastOption() {
+    await this.reasonSelect.all(by.tagName('option')).last().click();
+  }
+  async setReasonTextInput(reasonText) {
+    await this.reasonTextInput.sendKeys(reasonText);
   }
 
-  async getBannedPersistentEntitySelectedOption() {
-    return this.bannedPersistentEntitySelect.element(by.css('option:checked')).getText();
+  async getReasonTextInput() {
+    return this.reasonTextInput.getAttribute('value');
+  }
+
+  async setTimestampInput(timestamp) {
+    await this.timestampInput.sendKeys(timestamp);
+  }
+
+  async getTimestampInput() {
+    return this.timestampInput.getAttribute('value');
   }
 
   async save() {
@@ -67,8 +89,18 @@ export default class BannedEntityUpdatePage {
     await this.setTmdbIdInput('5');
     expect(await this.getTmdbIdInput()).to.eq('5');
     await waitUntilDisplayed(this.saveButton);
+    await this.setImdbIdInput('imdbId');
+    expect(await this.getImdbIdInput()).to.match(/imdbId/);
+    await waitUntilDisplayed(this.saveButton);
     await this.typeSelectLastOption();
-    await this.bannedPersistentEntitySelectLastOption();
+    await waitUntilDisplayed(this.saveButton);
+    await this.reasonSelectLastOption();
+    await waitUntilDisplayed(this.saveButton);
+    await this.setReasonTextInput('reasonText');
+    expect(await this.getReasonTextInput()).to.match(/reasonText/);
+    await waitUntilDisplayed(this.saveButton);
+    await this.setTimestampInput('01-01-2001');
+    expect(await this.getTimestampInput()).to.eq('2001-01-01');
     await this.save();
     await waitUntilHidden(this.saveButton);
     expect(await isVisible(this.saveButton)).to.be.false;

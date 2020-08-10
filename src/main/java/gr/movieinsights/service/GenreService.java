@@ -8,14 +8,12 @@ import gr.movieinsights.service.mapper.GenreMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 import static org.elasticsearch.index.query.QueryBuilders.*;
 
@@ -24,19 +22,14 @@ import static org.elasticsearch.index.query.QueryBuilders.*;
  */
 @Service
 @Transactional
-public class GenreService {
+public class GenreService extends TmdbIdentifiedBaseService<Genre, GenreDTO, GenreRepository, GenreMapper> {
 
     private final Logger log = LoggerFactory.getLogger(GenreService.class);
-
-    private final GenreRepository genreRepository;
-
-    private final GenreMapper genreMapper;
 
     private final GenreSearchRepository genreSearchRepository;
 
     public GenreService(GenreRepository genreRepository, GenreMapper genreMapper, GenreSearchRepository genreSearchRepository) {
-        this.genreRepository = genreRepository;
-        this.genreMapper = genreMapper;
+        super(genreRepository,genreMapper);
         this.genreSearchRepository = genreSearchRepository;
     }
 
@@ -48,9 +41,9 @@ public class GenreService {
      */
     public GenreDTO save(GenreDTO genreDTO) {
         log.debug("Request to save Genre : {}", genreDTO);
-        Genre genre = genreMapper.toEntity(genreDTO);
-        genre = genreRepository.save(genre);
-        GenreDTO result = genreMapper.toDto(genre);
+        Genre genre = mapper.toEntity(genreDTO);
+        genre = repository.save(genre);
+        GenreDTO result = mapper.toDto(genre);
         genreSearchRepository.save(genre);
         return result;
     }
@@ -58,14 +51,14 @@ public class GenreService {
     /**
      * Get all the genres.
      *
+     * @param pageable the pagination information.
      * @return the list of entities.
      */
     @Transactional(readOnly = true)
-    public List<GenreDTO> findAll() {
+    public Page<GenreDTO> findAll(Pageable pageable) {
         log.debug("Request to get all Genres");
-        return genreRepository.findAll().stream()
-            .map(genreMapper::toDto)
-            .collect(Collectors.toCollection(LinkedList::new));
+        return repository.findAll(pageable)
+            .map(mapper::toDto);
     }
 
 
@@ -78,8 +71,8 @@ public class GenreService {
     @Transactional(readOnly = true)
     public Optional<GenreDTO> findOne(Long id) {
         log.debug("Request to get Genre : {}", id);
-        return genreRepository.findById(id)
-            .map(genreMapper::toDto);
+        return repository.findById(id)
+            .map(mapper::toDto);
     }
 
     /**
@@ -89,7 +82,7 @@ public class GenreService {
      */
     public void delete(Long id) {
         log.debug("Request to delete Genre : {}", id);
-        genreRepository.deleteById(id);
+        repository.deleteById(id);
         genreSearchRepository.deleteById(id);
     }
 
@@ -97,14 +90,13 @@ public class GenreService {
      * Search for the genre corresponding to the query.
      *
      * @param query the query of the search.
+     * @param pageable the pagination information.
      * @return the list of entities.
      */
     @Transactional(readOnly = true)
-    public List<GenreDTO> search(String query) {
-        log.debug("Request to search Genres for query {}", query);
-        return StreamSupport
-            .stream(genreSearchRepository.search(queryStringQuery(query)).spliterator(), false)
-            .map(genreMapper::toDto)
-        .collect(Collectors.toList());
+    public Page<GenreDTO> search(String query, Pageable pageable) {
+        log.debug("Request to search for a page of Genres for query {}", query);
+        return genreSearchRepository.search(queryStringQuery(query), pageable)
+            .map(mapper::toDto);
     }
 }

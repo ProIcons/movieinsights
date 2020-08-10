@@ -23,7 +23,7 @@ export const ProductionCompanyUpdate = (props: IProductionCompanyUpdateProps) =>
   const { productionCompanyEntity, movies, loading, updating } = props;
 
   const handleClose = () => {
-    props.history.push('/production-company');
+    props.history.push('/production-company' + props.location.search);
   };
 
   useEffect(() => {

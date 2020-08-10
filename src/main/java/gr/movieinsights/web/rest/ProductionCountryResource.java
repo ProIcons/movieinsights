@@ -5,10 +5,16 @@ import gr.movieinsights.web.rest.errors.BadRequestAlertException;
 import gr.movieinsights.service.dto.ProductionCountryDTO;
 
 import io.github.jhipster.web.util.HeaderUtil;
+import io.github.jhipster.web.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -84,12 +90,15 @@ public class ProductionCountryResource {
     /**
      * {@code GET  /production-countries} : get all the productionCountries.
      *
+     * @param pageable the pagination information.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of productionCountries in body.
      */
     @GetMapping("/production-countries")
-    public List<ProductionCountryDTO> getAllProductionCountries() {
-        log.debug("REST request to get all ProductionCountries");
-        return productionCountryService.findAll();
+    public ResponseEntity<List<ProductionCountryDTO>> getAllProductionCountries(Pageable pageable) {
+        log.debug("REST request to get a page of ProductionCountries");
+        Page<ProductionCountryDTO> page = productionCountryService.findAll(pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
     /**
@@ -123,11 +132,14 @@ public class ProductionCountryResource {
      * to the query.
      *
      * @param query the query of the productionCountry search.
+     * @param pageable the pagination information.
      * @return the result of the search.
      */
     @GetMapping("/_search/production-countries")
-    public List<ProductionCountryDTO> searchProductionCountries(@RequestParam String query) {
-        log.debug("REST request to search ProductionCountries for query {}", query);
-        return productionCountryService.search(query);
-    }
+    public ResponseEntity<List<ProductionCountryDTO>> searchProductionCountries(@RequestParam String query, Pageable pageable) {
+        log.debug("REST request to search for a page of ProductionCountries for query {}", query);
+        Page<ProductionCountryDTO> page = productionCountryService.search(query, pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
+        }
 }

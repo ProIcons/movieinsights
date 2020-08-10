@@ -4,13 +4,18 @@ import gr.movieinsights.domain.Credit;
 import gr.movieinsights.repository.CreditRepository;
 import gr.movieinsights.repository.search.CreditSearchRepository;
 import gr.movieinsights.service.dto.CreditDTO;
+import gr.movieinsights.service.dto.MovieDTO;
+import gr.movieinsights.service.dto.PersonDTO;
 import gr.movieinsights.service.mapper.CreditMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -34,10 +39,16 @@ public class CreditService {
 
     private final CreditSearchRepository creditSearchRepository;
 
-    public CreditService(CreditRepository creditRepository, CreditMapper creditMapper, CreditSearchRepository creditSearchRepository) {
+    private final PersonService personService;
+
+    private final MovieService movieService;
+
+    public CreditService(CreditRepository creditRepository, CreditMapper creditMapper, CreditSearchRepository creditSearchRepository, PersonService personService, MovieService movieService) {
         this.creditRepository = creditRepository;
         this.creditMapper = creditMapper;
         this.creditSearchRepository = creditSearchRepository;
+        this.personService = personService;
+        this.movieService = movieService;
     }
 
     /**
@@ -68,7 +79,6 @@ public class CreditService {
             .collect(Collectors.toCollection(LinkedList::new));
     }
 
-
     /**
      * Get one credit by id.
      *
@@ -94,6 +104,23 @@ public class CreditService {
     }
 
     /**
+     * Save a credit by using tmdb ids.
+     *
+     * @param creditDTO the entity to save.
+     * @return the persisted entity.
+     */
+    public void saveByTmdbIds(CreditDTO creditDTO) {
+        Optional<PersonDTO> person = personService.findByTmdbId(creditDTO.getPersonTmdbId());
+        Optional<MovieDTO> movie = movieService.findByTmdbId(creditDTO.getMovieTmdbId());
+        if (!person.isPresent() || !movie.isPresent()) {
+            throw new EntityNotFoundException("Person with TMDb ID: " + creditDTO.getPersonTmdbId() + " and/or Movie with TMDb ID: " + creditDTO.getMovieTmdbId() + " are not persistent in database.");
+        }
+        creditDTO.setPersonId(person.get().getId());
+        creditDTO.setMovieId(movie.get().getId());
+        save(creditDTO);
+    }
+
+    /**
      * Search for the credit corresponding to the query.
      *
      * @param query the query of the search.
@@ -105,6 +132,6 @@ public class CreditService {
         return StreamSupport
             .stream(creditSearchRepository.search(queryStringQuery(query)).spliterator(), false)
             .map(creditMapper::toDto)
-        .collect(Collectors.toList());
+            .collect(Collectors.toList());
     }
 }

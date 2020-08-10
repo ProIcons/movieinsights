@@ -21,7 +21,6 @@
       "personTmdbId": "Person Tmdb Id",
       "movieTmdbId": "Movie Tmdb Id",
       "role": "Role",
-      "images": "Images",
       "movie": "Movie",
       "person": "Person"
     }

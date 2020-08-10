@@ -1,4 +1,3 @@
-import { IBannedPersistentEntity } from 'app/shared/model/banned-persistent-entity.model';
 import { IMovie } from 'app/shared/model/movie.model';
 
 export interface IProductionCompany {
@@ -7,7 +6,6 @@ export interface IProductionCompany {
   tmdbId?: number;
   logoPath?: string;
   originCountry?: string;
-  banReasons?: IBannedPersistentEntity[];
   movies?: IMovie[];
 }
 

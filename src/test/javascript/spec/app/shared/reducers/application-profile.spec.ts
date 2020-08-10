@@ -16,6 +16,7 @@ describe('Profile reducer tests', () => {
   describe('Common tests', () => {
     it('should return the initial state', () => {
       const toTest = profile(undefined, {});
+
       expect(toTest).toEqual(initialState);
     });
 
@@ -70,6 +71,7 @@ describe('Profile reducer tests', () => {
           payload: resolvedObject,
         },
       ];
+
       await store.dispatch(getProfile()).then(() => expect(store.getActions()).toEqual(expectedActions));
     });
   });

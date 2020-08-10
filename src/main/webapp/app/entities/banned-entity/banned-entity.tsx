@@ -79,10 +79,10 @@ export const BannedEntity = (props: IBannedEntityProps) => {
                   <Translate contentKey="movieInsightsApp.bannedEntity.tmdbId">Tmdb Id</Translate>
                 </th>
                 <th>
-                  <Translate contentKey="movieInsightsApp.bannedEntity.type">Type</Translate>
+                  <Translate contentKey="movieInsightsApp.bannedEntity.imdb">Imdb</Translate>
                 </th>
                 <th>
-                  <Translate contentKey="movieInsightsApp.bannedEntity.bannedPersistentEntity">Banned Persistent Entity</Translate>
+                  <Translate contentKey="movieInsightsApp.bannedEntity.type">Type</Translate>
                 </th>
                 <th />
               </tr>
@@ -96,8 +96,9 @@ export const BannedEntity = (props: IBannedEntityProps) => {
                     </Button>
                   </td>
                   <td>{bannedEntity.tmdbId}</td>
+                  <td>{bannedEntity.imdb}</td>
                   <td>
-                    <Translate contentKey={`movieInsightsApp.EntityType.${bannedEntity.type}`} />
+                    <Translate contentKey={`movieInsightsApp.TmdbEntityType.${bannedEntity.type}`} />
                   </td>
                   <td>
                     {bannedEntity.bannedPersistentEntityId ? (

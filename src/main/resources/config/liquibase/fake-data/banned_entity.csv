@@ -1,11 +1,11 @@
-id;tmdb_id;type
-1;50493;GENRE
-2;74105;PERSON
-3;9745;MOVIE
-4;17747;GENRE
-5;4783;VOTE
-6;69309;CREDIT
-7;3199;MOVIE
-8;66272;VOTE
-9;57998;CREDIT
-10;74922;GENRE
+id;tmdb_id;imdb_id;type;reason;reason_text;timestamp
+1;50493;Prairie;PERSON;NOBUDGET;Keyboard;2020-08-06
+2;17637;Intelligent Granite Salad International;CREDIT;NOVOTE;invoice;2020-08-06
+3;32604;zero defect Fresh Illinois;COUNTRY;NOREVENUE;Cambodia Refined Shoes;2020-08-07
+4;49112;redefine Platinum Assistant;PERSON;UNDEFINED;SSL Alabama Team-oriented;2020-08-06
+5;85068;Avon functionalities Small;GENRE;NORELEASEDATE;payment Avon;2020-08-07
+6;5364;compressing THX;PERSON;CUSTOM;GB;2020-08-06
+7;28054;composite;MOVIE;NOBUDGET;Buckinghamshire Beauty;2020-08-07
+8;96144;Fantastic calculate;VOTE;CUSTOM;De-engineered Supervisor Tuna;2020-08-07
+9;29609;Inlet Response;GENRE;NOBUDGET;Loaf azure models;2020-08-07
+10;5989;content-based Bedfordshire;VOTE;NOREVENUE;coherent;2020-08-07

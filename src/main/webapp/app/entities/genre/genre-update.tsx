@@ -23,7 +23,7 @@ export const GenreUpdate = (props: IGenreUpdateProps) => {
   const { genreEntity, movies, loading, updating } = props;
 
   const handleClose = () => {
-    props.history.push('/genre');
+    props.history.push('/genre' + props.location.search);
   };
 
   useEffect(() => {

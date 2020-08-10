@@ -52,11 +52,6 @@
     {
       "fieldName": "releaseDate",
       "fieldType": "LocalDate"
-    },
-    {
-      "fieldName": "isBanned",
-      "fieldType": "Boolean",
-      "fieldValidateRules": ["required"]
     }
   ],
   "relationships": [
@@ -73,18 +68,6 @@
       "otherEntityName": "credit",
       "otherEntityRelationshipName": "movie",
       "relationshipName": "credits"
-    },
-    {
-      "relationshipType": "one-to-many",
-      "otherEntityName": "image",
-      "otherEntityRelationshipName": "movie",
-      "relationshipName": "images"
-    },
-    {
-      "relationshipType": "one-to-many",
-      "otherEntityName": "bannedPersistentEntity",
-      "otherEntityRelationshipName": "movie",
-      "relationshipName": "banReasons"
     },
     {
       "relationshipType": "many-to-many",

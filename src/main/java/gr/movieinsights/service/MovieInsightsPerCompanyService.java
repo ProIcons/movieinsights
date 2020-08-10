@@ -105,6 +105,6 @@ public class MovieInsightsPerCompanyService {
         return StreamSupport
             .stream(movieInsightsPerCompanySearchRepository.search(queryStringQuery(query)).spliterator(), false)
             .map(movieInsightsPerCompanyMapper::toDto)
-        .collect(Collectors.toList());
+            .collect(Collectors.toList());
     }
 }

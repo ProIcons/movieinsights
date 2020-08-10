@@ -17,7 +17,7 @@ export const GenreDeleteDialog = (props: IGenreDeleteDialogProps) => {
   }, []);
 
   const handleClose = () => {
-    props.history.push('/genre');
+    props.history.push('/genre' + props.location.search);
   };
 
   useEffect(() => {

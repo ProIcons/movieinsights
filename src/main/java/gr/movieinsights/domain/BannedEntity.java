@@ -8,8 +8,11 @@ import javax.validation.constraints.*;
 
 import org.springframework.data.elasticsearch.annotations.FieldType;
 import java.io.Serializable;
+import java.time.LocalDate;
 
-import gr.movieinsights.domain.enumeration.EntityType;
+import gr.movieinsights.domain.enumeration.TmdbEntityType;
+
+import gr.movieinsights.domain.enumeration.BanReason;
 
 /**
  * A BannedEntity.
@@ -27,18 +30,28 @@ public class BannedEntity implements Serializable {
     @SequenceGenerator(name = "sequenceGenerator")
     private Long id;
 
-    @NotNull
-    @Column(name = "tmdb_id", nullable = false)
+    @Column(name = "tmdb_id")
     private Long tmdbId;
+
+    @Column(name = "imdb_id")
+    private String imdbId;
 
     @NotNull
     @Enumerated(EnumType.STRING)
     @Column(name = "type", nullable = false)
-    private EntityType type;
+    private TmdbEntityType type;
 
-    @OneToOne
-    @JoinColumn(unique = true)
-    private BannedPersistentEntity bannedPersistentEntity;
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    @Column(name = "reason", nullable = false,columnDefinition = "varchar(32) default 'UNDEFINED'")
+    private BanReason reason;
+
+    @Column(name = "reason_text")
+    private String reasonText;
+
+    @NotNull
+    @Column(name = "timestamp", nullable = false)
+    private LocalDate timestamp;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
@@ -62,30 +75,69 @@ public class BannedEntity implements Serializable {
         this.tmdbId = tmdbId;
     }
 
-    public EntityType getType() {
+    public String getImdbId() {
+        return imdbId;
+    }
+
+    public BannedEntity imdbId(String imdbId) {
+        this.imdbId = imdbId;
+        return this;
+    }
+
+    public void setImdbId(String imdbId) {
+        this.imdbId = imdbId;
+    }
+
+    public TmdbEntityType getType() {
         return type;
     }
 
-    public BannedEntity type(EntityType type) {
+    public BannedEntity type(TmdbEntityType type) {
         this.type = type;
         return this;
     }
 
-    public void setType(EntityType type) {
+    public void setType(TmdbEntityType type) {
         this.type = type;
     }
 
-    public BannedPersistentEntity getBannedPersistentEntity() {
-        return bannedPersistentEntity;
+    public BanReason getReason() {
+        return reason;
     }
 
-    public BannedEntity bannedPersistentEntity(BannedPersistentEntity bannedPersistentEntity) {
-        this.bannedPersistentEntity = bannedPersistentEntity;
+    public BannedEntity reason(BanReason reason) {
+        this.reason = reason;
         return this;
     }
 
-    public void setBannedPersistentEntity(BannedPersistentEntity bannedPersistentEntity) {
-        this.bannedPersistentEntity = bannedPersistentEntity;
+    public void setReason(BanReason reason) {
+        this.reason = reason;
+    }
+
+    public String getReasonText() {
+        return reasonText;
+    }
+
+    public BannedEntity reasonText(String reasonText) {
+        this.reasonText = reasonText;
+        return this;
+    }
+
+    public void setReasonText(String reasonText) {
+        this.reasonText = reasonText;
+    }
+
+    public LocalDate getTimestamp() {
+        return timestamp;
+    }
+
+    public BannedEntity timestamp(LocalDate timestamp) {
+        this.timestamp = timestamp;
+        return this;
+    }
+
+    public void setTimestamp(LocalDate timestamp) {
+        this.timestamp = timestamp;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
@@ -111,7 +163,11 @@ public class BannedEntity implements Serializable {
         return "BannedEntity{" +
             "id=" + getId() +
             ", tmdbId=" + getTmdbId() +
+            ", imdbId='" + getImdbId() + "'" +
             ", type='" + getType() + "'" +
+            ", reason='" + getReason() + "'" +
+            ", reasonText='" + getReasonText() + "'" +
+            ", timestamp='" + getTimestamp() + "'" +
             "}";
     }
 }

@@ -25,12 +25,6 @@
   ],
   "relationships": [
     {
-      "relationshipType": "one-to-many",
-      "otherEntityName": "image",
-      "otherEntityRelationshipName": "credit",
-      "relationshipName": "images"
-    },
-    {
       "relationshipType": "many-to-one",
       "otherEntityName": "movie",
       "otherEntityRelationshipName": "credits",

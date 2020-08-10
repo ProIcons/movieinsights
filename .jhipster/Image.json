@@ -65,7 +65,7 @@
   "changelogDate": "20200807164749",
   "entityTableName": "image",
   "dto": "mapstruct",
-  "pagination": "no",
+  "pagination": "pagination",
   "service": "serviceClass",
   "jpaMetamodelFiltering": false,
   "fluentMethods": true,

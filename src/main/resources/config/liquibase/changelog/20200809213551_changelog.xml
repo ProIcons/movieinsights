@@ -1,0 +1,24 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-3.9.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
+    <changeSet author="Nikolas (generated)" id="1597008963612-2">
+        <dropForeignKeyConstraint baseTableName="image" constraintName="fk_image_credit_id"/>
+    </changeSet>
+    <changeSet author="Nikolas (generated)" id="1597008963612-3">
+        <dropForeignKeyConstraint baseTableName="image" constraintName="fk_image_movie_id"/>
+    </changeSet>
+    <changeSet author="Nikolas (generated)" id="1597008963612-4">
+        <dropForeignKeyConstraint baseTableName="image" constraintName="fk_image_person_id"/>
+    </changeSet>
+    <changeSet author="Nikolas (generated)" id="1597008963612-5">
+        <dropForeignKeyConstraint baseTableName="image" constraintName="fk_image_vote_id"/>
+    </changeSet>
+    <changeSet author="Nikolas (generated)" id="1597008963612-6">
+        <dropUniqueConstraint constraintName="ux_image_tmdb_id" tableName="image"/>
+    </changeSet>
+    <changeSet author="Nikolas (generated)" id="1597008963612-7">
+        <dropUniqueConstraint constraintName="ux_image_vote_id" tableName="image"/>
+    </changeSet>
+    <changeSet author="Nikolas (generated)" id="1597008963612-8">
+        <dropTable tableName="image"/>
+    </changeSet>
+</databaseChangeLog>

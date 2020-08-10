@@ -2,7 +2,7 @@ package gr.movieinsights.repository;
 
 import gr.movieinsights.domain.ProductionCompany;
 
-import org.springframework.data.jpa.repository.*;
+import gr.movieinsights.repository.util.TmdbIdentifiedRepository;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -10,5 +10,5 @@ import org.springframework.stereotype.Repository;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface ProductionCompanyRepository extends JpaRepository<ProductionCompany, Long> {
+public interface ProductionCompanyRepository extends TmdbIdentifiedRepository<ProductionCompany, Long> {
 }

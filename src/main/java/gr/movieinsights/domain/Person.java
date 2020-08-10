@@ -58,14 +58,6 @@ public class Person implements Serializable {
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     private Set<Credit> credits = new HashSet<>();
 
-    @OneToMany(mappedBy = "person")
-    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    private Set<Image> images = new HashSet<>();
-
-    @OneToMany(mappedBy = "person")
-    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    private Set<BannedPersistentEntity> banReasons = new HashSet<>();
-
     // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
         return id;
@@ -189,56 +181,6 @@ public class Person implements Serializable {
 
     public void setCredits(Set<Credit> credits) {
         this.credits = credits;
-    }
-
-    public Set<Image> getImages() {
-        return images;
-    }
-
-    public Person images(Set<Image> images) {
-        this.images = images;
-        return this;
-    }
-
-    public Person addImages(Image image) {
-        this.images.add(image);
-        image.setPerson(this);
-        return this;
-    }
-
-    public Person removeImages(Image image) {
-        this.images.remove(image);
-        image.setPerson(null);
-        return this;
-    }
-
-    public void setImages(Set<Image> images) {
-        this.images = images;
-    }
-
-    public Set<BannedPersistentEntity> getBanReasons() {
-        return banReasons;
-    }
-
-    public Person banReasons(Set<BannedPersistentEntity> bannedPersistentEntities) {
-        this.banReasons = bannedPersistentEntities;
-        return this;
-    }
-
-    public Person addBanReasons(BannedPersistentEntity bannedPersistentEntity) {
-        this.banReasons.add(bannedPersistentEntity);
-        bannedPersistentEntity.setPerson(this);
-        return this;
-    }
-
-    public Person removeBanReasons(BannedPersistentEntity bannedPersistentEntity) {
-        this.banReasons.remove(bannedPersistentEntity);
-        bannedPersistentEntity.setPerson(null);
-        return this;
-    }
-
-    public void setBanReasons(Set<BannedPersistentEntity> bannedPersistentEntities) {
-        this.banReasons = bannedPersistentEntities;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 

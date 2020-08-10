@@ -22,6 +22,7 @@ const initialState = {
   entities: [] as ReadonlyArray<IProductionCountry>,
   entity: defaultValue,
   updating: false,
+  totalItems: 0,
   updateSuccess: false,
 };
 
@@ -68,6 +69,7 @@ export default (state: ProductionCountryState = initialState, action): Productio
         ...state,
         loading: false,
         entities: action.payload.data,
+        totalItems: parseInt(action.payload.headers['x-total-count'], 10),
       };
     case SUCCESS(ACTION_TYPES.FETCH_PRODUCTIONCOUNTRY):
       return {
@@ -106,13 +108,16 @@ const apiSearchUrl = 'api/_search/production-countries';
 
 export const getSearchEntities: ICrudSearchAction<IProductionCountry> = (query, page, size, sort) => ({
   type: ACTION_TYPES.SEARCH_PRODUCTIONCOUNTRIES,
-  payload: axios.get<IProductionCountry>(`${apiSearchUrl}?query=${query}`),
+  payload: axios.get<IProductionCountry>(`${apiSearchUrl}?query=${query}${sort ? `&page=${page}&size=${size}&sort=${sort}` : ''}`),
 });
 
-export const getEntities: ICrudGetAllAction<IProductionCountry> = (page, size, sort) => ({
-  type: ACTION_TYPES.FETCH_PRODUCTIONCOUNTRY_LIST,
-  payload: axios.get<IProductionCountry>(`${apiUrl}?cacheBuster=${new Date().getTime()}`),
-});
+export const getEntities: ICrudGetAllAction<IProductionCountry> = (page, size, sort) => {
+  const requestUrl = `${apiUrl}${sort ? `?page=${page}&size=${size}&sort=${sort}` : ''}`;
+  return {
+    type: ACTION_TYPES.FETCH_PRODUCTIONCOUNTRY_LIST,
+    payload: axios.get<IProductionCountry>(`${requestUrl}${sort ? '&' : '?'}cacheBuster=${new Date().getTime()}`),
+  };
+};
 
 export const getEntity: ICrudGetAction<IProductionCountry> = id => {
   const requestUrl = `${apiUrl}/${id}`;

@@ -8,14 +8,12 @@ import gr.movieinsights.service.mapper.ProductionCompanyMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 import static org.elasticsearch.index.query.QueryBuilders.*;
 
@@ -24,19 +22,14 @@ import static org.elasticsearch.index.query.QueryBuilders.*;
  */
 @Service
 @Transactional
-public class ProductionCompanyService {
+public class ProductionCompanyService extends TmdbIdentifiedBaseService<ProductionCompany, ProductionCompanyDTO, ProductionCompanyRepository, ProductionCompanyMapper> {
 
     private final Logger log = LoggerFactory.getLogger(ProductionCompanyService.class);
-
-    private final ProductionCompanyRepository productionCompanyRepository;
-
-    private final ProductionCompanyMapper productionCompanyMapper;
 
     private final ProductionCompanySearchRepository productionCompanySearchRepository;
 
     public ProductionCompanyService(ProductionCompanyRepository productionCompanyRepository, ProductionCompanyMapper productionCompanyMapper, ProductionCompanySearchRepository productionCompanySearchRepository) {
-        this.productionCompanyRepository = productionCompanyRepository;
-        this.productionCompanyMapper = productionCompanyMapper;
+        super(productionCompanyRepository, productionCompanyMapper);
         this.productionCompanySearchRepository = productionCompanySearchRepository;
     }
 
@@ -48,9 +41,9 @@ public class ProductionCompanyService {
      */
     public ProductionCompanyDTO save(ProductionCompanyDTO productionCompanyDTO) {
         log.debug("Request to save ProductionCompany : {}", productionCompanyDTO);
-        ProductionCompany productionCompany = productionCompanyMapper.toEntity(productionCompanyDTO);
-        productionCompany = productionCompanyRepository.save(productionCompany);
-        ProductionCompanyDTO result = productionCompanyMapper.toDto(productionCompany);
+        ProductionCompany productionCompany = mapper.toEntity(productionCompanyDTO);
+        productionCompany = repository.save(productionCompany);
+        ProductionCompanyDTO result = mapper.toDto(productionCompany);
         productionCompanySearchRepository.save(productionCompany);
         return result;
     }
@@ -58,14 +51,14 @@ public class ProductionCompanyService {
     /**
      * Get all the productionCompanies.
      *
+     * @param pageable the pagination information.
      * @return the list of entities.
      */
     @Transactional(readOnly = true)
-    public List<ProductionCompanyDTO> findAll() {
+    public Page<ProductionCompanyDTO> findAll(Pageable pageable) {
         log.debug("Request to get all ProductionCompanies");
-        return productionCompanyRepository.findAll().stream()
-            .map(productionCompanyMapper::toDto)
-            .collect(Collectors.toCollection(LinkedList::new));
+        return repository.findAll(pageable)
+            .map(mapper::toDto);
     }
 
 
@@ -78,8 +71,8 @@ public class ProductionCompanyService {
     @Transactional(readOnly = true)
     public Optional<ProductionCompanyDTO> findOne(Long id) {
         log.debug("Request to get ProductionCompany : {}", id);
-        return productionCompanyRepository.findById(id)
-            .map(productionCompanyMapper::toDto);
+        return repository.findById(id)
+            .map(mapper::toDto);
     }
 
     /**
@@ -89,7 +82,7 @@ public class ProductionCompanyService {
      */
     public void delete(Long id) {
         log.debug("Request to delete ProductionCompany : {}", id);
-        productionCompanyRepository.deleteById(id);
+        repository.deleteById(id);
         productionCompanySearchRepository.deleteById(id);
     }
 
@@ -97,14 +90,13 @@ public class ProductionCompanyService {
      * Search for the productionCompany corresponding to the query.
      *
      * @param query the query of the search.
+     * @param pageable the pagination information.
      * @return the list of entities.
      */
     @Transactional(readOnly = true)
-    public List<ProductionCompanyDTO> search(String query) {
-        log.debug("Request to search ProductionCompanies for query {}", query);
-        return StreamSupport
-            .stream(productionCompanySearchRepository.search(queryStringQuery(query)).spliterator(), false)
-            .map(productionCompanyMapper::toDto)
-        .collect(Collectors.toList());
+    public Page<ProductionCompanyDTO> search(String query, Pageable pageable) {
+        log.debug("Request to search for a page of ProductionCompanies for query {}", query);
+        return productionCompanySearchRepository.search(queryStringQuery(query), pageable)
+            .map(mapper::toDto);
     }
 }

@@ -2,7 +2,7 @@ package gr.movieinsights.repository;
 
 import gr.movieinsights.domain.Person;
 
-import org.springframework.data.jpa.repository.*;
+import gr.movieinsights.repository.util.ImdbIdentifiedRepository;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -10,5 +10,5 @@ import org.springframework.stereotype.Repository;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface PersonRepository extends JpaRepository<Person, Long> {
+public interface PersonRepository extends ImdbIdentifiedRepository<Person, Long> {
 }

@@ -15,10 +15,6 @@ public interface PersonMapper extends EntityMapper<PersonDTO, Person> {
 
     @Mapping(target = "credits", ignore = true)
     @Mapping(target = "removeCredits", ignore = true)
-    @Mapping(target = "images", ignore = true)
-    @Mapping(target = "removeImages", ignore = true)
-    @Mapping(target = "banReasons", ignore = true)
-    @Mapping(target = "removeBanReasons", ignore = true)
     Person toEntity(PersonDTO personDTO);
 
     default Person fromId(Long id) {
