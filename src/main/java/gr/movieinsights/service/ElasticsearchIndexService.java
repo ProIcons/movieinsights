@@ -13,9 +13,7 @@ import gr.movieinsights.repository.PersonRepository;
 import gr.movieinsights.repository.ProductionCompanyRepository;
 import gr.movieinsights.repository.ProductionCountryRepository;
 import gr.movieinsights.repository.UserRepository;
-import gr.movieinsights.repository.search.CreditSearchRepository;
 import gr.movieinsights.repository.search.GenreSearchRepository;
-import gr.movieinsights.repository.search.MovieSearchRepository;
 import gr.movieinsights.repository.search.PersonSearchRepository;
 import gr.movieinsights.repository.search.ProductionCompanySearchRepository;
 import gr.movieinsights.repository.search.ProductionCountrySearchRepository;
@@ -66,8 +64,6 @@ public class ElasticsearchIndexService {
     private final PersonRepository personRepository;
 
     private final PersonSearchRepository personSearchRepository;
-    private final CreditSearchRepository creditSearchRepository;
-    private final MovieSearchRepository movieSearchRepository;
 
     private final ProductionCompanyRepository productionCompanyRepository;
 
@@ -83,15 +79,13 @@ public class ElasticsearchIndexService {
 
     private final JestElasticsearchTemplate jestElasticsearchTemplate;
 
-    public ElasticsearchIndexService(GenreRepository genreRepository, CreditRepository creditRepository, MovieRepository movieRepository, GenreSearchRepository genreSearchRepository, PersonRepository personRepository, PersonSearchRepository personSearchRepository, CreditSearchRepository creditSearchRepository, MovieSearchRepository movieSearchRepository, ProductionCompanyRepository productionCompanyRepository, ProductionCompanySearchRepository productionCompanySearchRepository, ProductionCountryRepository productionCountryRepository, ProductionCountrySearchRepository productionCountrySearchRepository, UserRepository userRepository, UserSearchRepository userSearchRepository, JestElasticsearchTemplate jestElasticsearchTemplate) {
+    public ElasticsearchIndexService(GenreRepository genreRepository, CreditRepository creditRepository, MovieRepository movieRepository, GenreSearchRepository genreSearchRepository, PersonRepository personRepository, PersonSearchRepository personSearchRepository, ProductionCompanyRepository productionCompanyRepository, ProductionCompanySearchRepository productionCompanySearchRepository, ProductionCountryRepository productionCountryRepository, ProductionCountrySearchRepository productionCountrySearchRepository, UserRepository userRepository, UserSearchRepository userSearchRepository, JestElasticsearchTemplate jestElasticsearchTemplate) {
         this.genreRepository = genreRepository;
         this.creditRepository = creditRepository;
         this.movieRepository = movieRepository;
         this.genreSearchRepository = genreSearchRepository;
         this.personRepository = personRepository;
         this.personSearchRepository = personSearchRepository;
-        this.creditSearchRepository = creditSearchRepository;
-        this.movieSearchRepository = movieSearchRepository;
         this.productionCompanyRepository = productionCompanyRepository;
         this.productionCompanySearchRepository = productionCompanySearchRepository;
         this.productionCountryRepository = productionCountryRepository;
