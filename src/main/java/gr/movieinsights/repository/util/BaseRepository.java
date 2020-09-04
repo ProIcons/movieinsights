@@ -13,6 +13,4 @@ public interface BaseRepository<E,K> extends JpaRepository<E,K> {
     @Query("SELECT distinct mi FROM #{#entityName} mi")
     Optional<E> findFirst();
 
-
-
 }

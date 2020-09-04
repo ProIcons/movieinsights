@@ -33,4 +33,27 @@ public interface MovieInsightsPerYearRepository extends BaseRepository<MovieInsi
         "and movie_insights_per_year.movieInsightsGeneral is null " +
         "and movie_insights_per_year.year = :year")
     Optional<MovieInsightsPerYear> findByYear(@Param("year") int year);
+
+    @Query("SELECT distinct miy FROM MovieInsightsPerYear miy inner join miy.movieInsightsPerCompany mic inner join mic.company c on c.id = :companyId where miy.year = :year")
+    Optional<MovieInsightsPerYear> findByCompany(@Param("companyId") long companyId, @Param("year") int year);
+
+    @Query("SELECT distinct miy FROM MovieInsightsPerYear miy inner join miy.movieInsightsPerCountry mic inner join mic.country c on lower(c.iso31661) = lower(:countryIso) where miy.year = :year")
+    Optional<MovieInsightsPerYear> findByCountry(@Param("countryIso") String countryIso, @Param("year") int year);
+
+    @Query("SELECT distinct miy FROM MovieInsightsPerYear miy inner join miy.movieInsightsPerCountry mic inner join mic.country c on c.id = :countryId where miy.year = :year")
+    Optional<MovieInsightsPerYear> findByCountryId(@Param("countryId") long countryId, @Param("year") int year);
+
+    @Query("SELECT distinct miy FROM MovieInsightsPerYear miy inner join miy.movieInsightsPerGenre mic inner join mic.genre g on g.id = :genreId where miy.year = :year")
+    Optional<MovieInsightsPerYear> findByGenre(@Param("genreId") long genreId, @Param("year") int year);
+
+    @Query("SELECT distinct miy FROM MovieInsightsPerYear miy inner join miy.movieInsightsPerGenre mic inner join mic.genre g on lower(g.name) = lower(:genreName) where miy.year = :year")
+    Optional<MovieInsightsPerYear> findByGenre(@Param("genreName") String genreName, @Param("year") int year);
+
+
+    @Query("SELECT distinct miy FROM MovieInsightsPerYear miy inner join miy.movieInsightsPerPerson mic inner join mic.person p on p.id = :personId where miy.year = :year")
+    Optional<MovieInsightsPerYear> findByPerson(@Param("personId") long personId, @Param("year") int year);
+
+    @Query("SELECT distinct miy FROM MovieInsightsPerYear miy inner join miy.movieInsightsGeneral mic where miy.year = :year")
+    Optional<MovieInsightsPerYear> findGeneral(@Param("year") int year);
+
 }

@@ -5,6 +5,7 @@ import gr.movieinsights.domain.MovieInsightsPerCountry;
 import gr.movieinsights.service.MovieInsightsPerCountryService;
 import gr.movieinsights.service.dto.movieinsights.country.MovieInsightsPerCountryBasicDTO;
 import gr.movieinsights.service.dto.movieinsights.country.MovieInsightsPerCountryDTO;
+import gr.movieinsights.service.dto.movieinsights.year.MovieInsightsPerYearDTO;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping({"/country","/cn"})
-public class MovieInsightsPerCountryResource extends BaseMovieInsightsBasicResource<MovieInsightsPerCountry, MovieInsightsPerCountryDTO, MovieInsightsPerCountryBasicDTO, MovieInsightsPerCountryService> {
+public class MovieInsightsPerCountryResource extends BaseMovieInsightsContainerResource<MovieInsightsPerCountry, MovieInsightsPerCountryDTO, MovieInsightsPerCountryBasicDTO, MovieInsightsPerCountryService> {
     private static final String ENTITY_NAME = "movieInsightsPerCountry";
 
     public MovieInsightsPerCountryResource(MovieInsightsPerCountryService movieInsightsPerCountryService) {
@@ -44,5 +45,25 @@ public class MovieInsightsPerCountryResource extends BaseMovieInsightsBasicResou
             return ResponseUtil.wrapOrNotFound(getService().findByCountryIso(iso));
         else
             return ResponseUtil.wrapOrNotFound(getService().findByCountryIsoBasic(iso));
+    }
+
+    /**
+     * {@code GET /:iso/:year} : get the movieInsightsPerEntity by country and by year.
+     *
+     * @param iso
+     *     the iso of the movieInsightsPerCountryDTO to retrieve.
+     * @param year
+     *     the year
+     *
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the movieInsightsPerYearDTO, or
+     * with status {@code 404 (Not Found)}.
+     */
+    @GetMapping(path = {"/{iso}/{year}"})
+    public ResponseEntity<MovieInsightsPerYearDTO> getByYear(
+        @PathVariable("iso") String iso,
+        @PathVariable("year") int year) {
+
+        return ResponseUtil.wrapOrNotFound(getService().findByYear(iso, year));
+
     }
 }

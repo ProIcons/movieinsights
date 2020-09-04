@@ -1,8 +1,10 @@
 package gr.movieinsights.web.rest.movieinsights;
 
 import gr.movieinsights.config.converters.ExtendedParam;
+import gr.movieinsights.domain.IdentifiedEntity;
 import gr.movieinsights.security.AuthoritiesConstants;
 import gr.movieinsights.service.dto.BaseDTO;
+import gr.movieinsights.service.util.BaseMovieInsightsService;
 import gr.movieinsights.service.util.IBasicDataProviderService;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.springframework.http.ResponseEntity;
@@ -12,7 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.Optional;
 
-public abstract class BaseMovieInsightsBasicResource<TEntity, TDTO extends TBasicDTO, TBasicDTO extends BaseDTO, TService extends IBasicDataProviderService<TEntity, TDTO, TBasicDTO, ?, ?, ?>> extends BaseMovieInsightsResource<TEntity, TDTO, TService> {
+public abstract class BaseMovieInsightsBasicResource<TEntity extends IdentifiedEntity, TDTO extends TBasicDTO, TBasicDTO extends BaseDTO, TService extends IBasicDataProviderService<TEntity, TDTO, TBasicDTO, ?, ?, ?>> extends BaseMovieInsightsResource<TEntity, TDTO, TService> {
     public BaseMovieInsightsBasicResource(TService service, String entityName) {
         super(service, entityName);
     }

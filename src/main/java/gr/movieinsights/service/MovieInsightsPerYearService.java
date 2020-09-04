@@ -8,6 +8,7 @@ import gr.movieinsights.service.util.BaseService;
 import gr.movieinsights.service.util.IBasicDataProviderService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -65,4 +66,31 @@ public class MovieInsightsPerYearService
         return repository.findByYear(year).map(MovieInsightsPerYearMapper::toDto);
     }
 
+    public Optional<MovieInsightsPerYearDTO> findByCompany(long companyId, int year) {
+        return getRepository().findByCompany(companyId, year).map(getMapper()::toDto);
+    }
+
+    public Optional<MovieInsightsPerYearDTO> findByCountry(String countryIso, int year) {
+        return getRepository().findByCountry(countryIso, year).map(getMapper()::toDto);
+    }
+
+    public Optional<MovieInsightsPerYearDTO> findByCountryId(long id, int year) {
+        return getRepository().findByCountryId(id, year).map(getMapper()::toDto);
+    }
+
+    public Optional<MovieInsightsPerYearDTO> findByGenre(long genreId, int year) {
+        return getRepository().findByGenre(genreId, year).map(getMapper()::toDto);
+    }
+
+    public Optional<MovieInsightsPerYearDTO> findByGenre(String name, int year) {
+        return getRepository().findByGenre(name, year).map(getMapper()::toDto);
+    }
+
+    public Optional<MovieInsightsPerYearDTO> findByPerson(long personId, int year) {
+        return getRepository().findByPerson(personId, year).map(getMapper()::toDto);
+    }
+
+    public Optional<MovieInsightsPerYearDTO> findGeneral(int year) {
+        return getRepository().findGeneral(year).map(getMapper()::toDto);
+    }
 }

@@ -1,8 +1,11 @@
 package gr.movieinsights.web.rest.movieinsights;
 
 import gr.movieinsights.config.converters.ExtendedParam;
+import gr.movieinsights.domain.IdentifiedEntity;
 import gr.movieinsights.security.AuthoritiesConstants;
 import gr.movieinsights.service.dto.BaseDTO;
+import gr.movieinsights.service.dto.movieinsights.year.MovieInsightsPerYearDTO;
+import gr.movieinsights.service.util.BaseMovieInsightsService;
 import gr.movieinsights.service.util.IBaseService;
 import gr.movieinsights.web.rest.BaseResource;
 import io.github.jhipster.web.util.ResponseUtil;
@@ -15,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import java.util.Optional;
 
 @RequestMapping({"/movieinsights","/m"})
-public abstract class BaseMovieInsightsResource<TEntity, TDTO extends BaseDTO, TService extends IBaseService<TEntity, TDTO, ?, ?>> extends BaseResource {
+public abstract class BaseMovieInsightsResource<TEntity extends IdentifiedEntity, TDTO extends BaseDTO, TService extends IBaseService<TEntity, TDTO, ?, ?>> extends BaseResource {
 
     private final TService service;
     protected final String entityName;
@@ -41,4 +44,6 @@ public abstract class BaseMovieInsightsResource<TEntity, TDTO extends BaseDTO, T
         Optional<TDTO> movieInsightsGeneral = getService().findOne(id);
         return ResponseUtil.wrapOrNotFound(movieInsightsGeneral);
     }
+
+
 }

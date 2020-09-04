@@ -1,3 +1,4 @@
+/*
 package gr.movieinsights.web.rest;
 
 import gr.movieinsights.MovieInsightsApp;
@@ -28,9 +29,11 @@ import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+*/
 /**
  * Integration tests for the {@link MovieInsightsPerYearResource} REST controller.
- */
+ *//*
+
 @SpringBootTest(classes = MovieInsightsApp.class)
 @ExtendWith(MockitoExtension.class)
 @AutoConfigureMockMvc
@@ -57,12 +60,14 @@ public class MovieInsightsPerYearResourceIT {
 
     private MovieInsightsPerYear movieInsightsPerYear;
 
-    /**
+    */
+/**
      * Create an entity for this test.
      *
      * This is a static method, as tests for other entities might also need it,
      * if they test an entity which requires the current entity.
-     */
+     *//*
+
     public static MovieInsightsPerYear createEntity(EntityManager em) {
         MovieInsightsPerYear movieInsightsPerYear = new MovieInsightsPerYear()
             .year(DEFAULT_YEAR);
@@ -78,12 +83,14 @@ public class MovieInsightsPerYearResourceIT {
         movieInsightsPerYear.setMovieInsights(movieInsights);
         return movieInsightsPerYear;
     }
-    /**
+    */
+/**
      * Create an updated entity for this test.
      *
      * This is a static method, as tests for other entities might also need it,
      * if they test an entity which requires the current entity.
-     */
+     *//*
+
     public static MovieInsightsPerYear createUpdatedEntity(EntityManager em) {
         MovieInsightsPerYear movieInsightsPerYear = new MovieInsightsPerYear()
             .year(UPDATED_YEAR);
@@ -264,3 +271,4 @@ public class MovieInsightsPerYearResourceIT {
         assertThat(movieInsightsPerYearList).hasSize(databaseSizeBeforeDelete - 1);
     }
 }
+*/

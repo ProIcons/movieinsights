@@ -2,6 +2,7 @@ package gr.movieinsights.repository;
 
 import gr.movieinsights.domain.Genre;
 import gr.movieinsights.domain.MovieInsightsPerGenre;
+import gr.movieinsights.repository.util.BaseMovieInsightsRepository;
 import gr.movieinsights.repository.util.BaseRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -15,7 +16,7 @@ import java.util.Optional;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface MovieInsightsPerGenreRepository extends BaseRepository<MovieInsightsPerGenre, Long> {
+public interface MovieInsightsPerGenreRepository extends BaseMovieInsightsRepository<MovieInsightsPerGenre, Long> {
     @Transactional
     @Modifying
     @Override
@@ -23,6 +24,6 @@ public interface MovieInsightsPerGenreRepository extends BaseRepository<MovieIns
     void clear();
 
     Optional<MovieInsightsPerGenre> findByGenre(Genre genre);
-    Optional<MovieInsightsPerGenre> findByGenre_Name(String name);
+    Optional<MovieInsightsPerGenre> findByGenre_NameIgnoreCase(String name);
     Optional<MovieInsightsPerGenre> findByGenre_Id(Long id);
 }

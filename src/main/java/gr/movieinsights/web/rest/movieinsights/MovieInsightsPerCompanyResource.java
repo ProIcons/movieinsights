@@ -5,6 +5,7 @@ import gr.movieinsights.domain.MovieInsightsPerCompany;
 import gr.movieinsights.service.MovieInsightsPerCompanyService;
 import gr.movieinsights.service.dto.movieinsights.company.MovieInsightsPerCompanyBasicDTO;
 import gr.movieinsights.service.dto.movieinsights.company.MovieInsightsPerCompanyDTO;
+import gr.movieinsights.service.dto.movieinsights.year.MovieInsightsPerYearDTO;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping({"/company", "/cm"})
-public class MovieInsightsPerCompanyResource extends BaseMovieInsightsBasicResource<MovieInsightsPerCompany, MovieInsightsPerCompanyDTO, MovieInsightsPerCompanyBasicDTO, MovieInsightsPerCompanyService> {
+public class MovieInsightsPerCompanyResource extends BaseMovieInsightsContainerResource<MovieInsightsPerCompany, MovieInsightsPerCompanyDTO, MovieInsightsPerCompanyBasicDTO, MovieInsightsPerCompanyService> {
     private static final String ENTITY_NAME = "movieInsightsPerCompany";
 
     public MovieInsightsPerCompanyResource(MovieInsightsPerCompanyService movieInsightsPerCompanyService) {

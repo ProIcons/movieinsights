@@ -5,10 +5,12 @@ import gr.movieinsights.domain.MovieInsightsGeneral;
 import gr.movieinsights.service.MovieInsightsGeneralService;
 import gr.movieinsights.service.dto.movieinsights.general.MovieInsightsGeneralBasicDTO;
 import gr.movieinsights.service.dto.movieinsights.general.MovieInsightsGeneralDTO;
+import gr.movieinsights.service.dto.movieinsights.year.MovieInsightsPerYearDTO;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -38,6 +40,23 @@ public class MovieInsightsGeneralResource extends BaseMovieInsightsResource<Movi
             return ResponseUtil.wrapOrNotFound(getService().getBasic());
         else
             return ResponseUtil.wrapOrNotFound(getService().get());
+
+    }
+
+    /**
+     * {@code GET /:entityId/:year} : get the movieInsightsGenerals by year.
+     *
+     * @param year
+     *     the year
+     *
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the movieInsightsPerYearDTO, or
+     * with status {@code 404 (Not Found)}.
+     */
+    @GetMapping(path = {"/{year}"})
+    public ResponseEntity<MovieInsightsPerYearDTO> getByYear(
+        @PathVariable("year") int year) {
+
+        return ResponseUtil.wrapOrNotFound(getService().findByYear(year));
 
     }
 }

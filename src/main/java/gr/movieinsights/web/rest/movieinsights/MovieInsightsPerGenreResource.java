@@ -5,6 +5,7 @@ import gr.movieinsights.domain.MovieInsightsPerGenre;
 import gr.movieinsights.service.MovieInsightsPerGenreService;
 import gr.movieinsights.service.dto.movieinsights.genre.MovieInsightsPerGenreBasicDTO;
 import gr.movieinsights.service.dto.movieinsights.genre.MovieInsightsPerGenreDTO;
+import gr.movieinsights.service.dto.movieinsights.year.MovieInsightsPerYearDTO;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,7 +21,7 @@ import javax.servlet.http.HttpServletRequest;
  */
 @RestController
 @RequestMapping({"/genre","/gn"})
-public class MovieInsightsPerGenreResource extends BaseMovieInsightsBasicResource<MovieInsightsPerGenre, MovieInsightsPerGenreDTO, MovieInsightsPerGenreBasicDTO, MovieInsightsPerGenreService> {
+public class MovieInsightsPerGenreResource extends BaseMovieInsightsContainerResource<MovieInsightsPerGenre, MovieInsightsPerGenreDTO, MovieInsightsPerGenreBasicDTO, MovieInsightsPerGenreService> {
     private static final String ENTITY_NAME = "movieInsightsPerGenre";
 
     public MovieInsightsPerGenreResource(MovieInsightsPerGenreService movieInsightsPerGenreService) {
@@ -45,6 +46,26 @@ public class MovieInsightsPerGenreResource extends BaseMovieInsightsBasicResourc
             return ResponseUtil.wrapOrNotFound(getService().findByGenreNameBasic(name));
         else
             return ResponseUtil.wrapOrNotFound(getService().findByGenreName(name));
+    }
+
+    /**
+     * {@code GET /:iso/:year} : get the movieInsightsPerEntity by country and by year.
+     *
+     * @param genreName
+     *     the name of the movieInsightsPerGenreDTO to retrieve.
+     * @param year
+     *     the year
+     *
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the movieInsightsPerYearDTO, or
+     * with status {@code 404 (Not Found)}.
+     */
+    @GetMapping(path = {"/n/{genreName}/{year}"})
+    public ResponseEntity<MovieInsightsPerYearDTO> getByYear(
+        @PathVariable("genreName") String genreName,
+        @PathVariable("year") int year) {
+
+        return ResponseUtil.wrapOrNotFound(getService().findByYear(genreName, year));
+
     }
 
     /**

@@ -4,10 +4,10 @@ import gr.movieinsights.domain.MovieInsightsPerGenre;
 import gr.movieinsights.repository.MovieInsightsPerGenreRepository;
 import gr.movieinsights.service.dto.movieinsights.genre.MovieInsightsPerGenreBasicDTO;
 import gr.movieinsights.service.dto.movieinsights.genre.MovieInsightsPerGenreDTO;
+import gr.movieinsights.service.dto.movieinsights.year.MovieInsightsPerYearDTO;
 import gr.movieinsights.service.mapper.movieinsights.genre.MovieInsightsPerGenreBasicMapper;
 import gr.movieinsights.service.mapper.movieinsights.genre.MovieInsightsPerGenreMapper;
-import gr.movieinsights.service.util.BaseService;
-import gr.movieinsights.service.util.IBasicDataProviderService;
+import gr.movieinsights.service.util.BaseMovieInsightsService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,14 +19,16 @@ import java.util.Optional;
 @Service
 @Transactional
 public class MovieInsightsPerGenreService
-    extends BaseService<MovieInsightsPerGenre, MovieInsightsPerGenreDTO, MovieInsightsPerGenreRepository, MovieInsightsPerGenreMapper>
-    implements IBasicDataProviderService<MovieInsightsPerGenre, MovieInsightsPerGenreDTO, MovieInsightsPerGenreBasicDTO, MovieInsightsPerGenreRepository, MovieInsightsPerGenreMapper, MovieInsightsPerGenreBasicMapper> {
+    extends BaseMovieInsightsService<MovieInsightsPerGenre, MovieInsightsPerGenreDTO, MovieInsightsPerGenreBasicDTO, MovieInsightsPerGenreRepository, MovieInsightsPerGenreMapper, MovieInsightsPerGenreBasicMapper> {
 
     private final MovieInsightsPerGenreBasicMapper basicMovieInsightsPerGenreMapper;
 
-    public MovieInsightsPerGenreService(MovieInsightsPerGenreRepository movieInsightsPerGenreRepository, MovieInsightsPerGenreMapper movieInsightsPerGenreMapper, MovieInsightsPerGenreBasicMapper basicMovieInsightsPerGenreMapper) {
+    private final MovieInsightsPerYearService movieInsightsPerYearService;
+
+    public MovieInsightsPerGenreService(MovieInsightsPerGenreRepository movieInsightsPerGenreRepository, MovieInsightsPerGenreMapper movieInsightsPerGenreMapper, MovieInsightsPerGenreBasicMapper basicMovieInsightsPerGenreMapper, MovieInsightsPerYearService movieInsightsPerYearService) {
         super(movieInsightsPerGenreRepository, movieInsightsPerGenreMapper);
         this.basicMovieInsightsPerGenreMapper = basicMovieInsightsPerGenreMapper;
+        this.movieInsightsPerYearService = movieInsightsPerYearService;
     }
 
     @Override
@@ -73,7 +75,7 @@ public class MovieInsightsPerGenreService
     @Transactional(readOnly = true)
     public Optional<MovieInsightsPerGenreDTO> findByGenreName(String name) {
         log.debug("Request to get MovieInsightsPerGenre By Genre name : {}", name);
-        return repository.findByGenre_Name(name).map(getMapper()::toDto);
+        return repository.findByGenre_NameIgnoreCase(name).map(getMapper()::toDto);
     }
 
     /**
@@ -87,6 +89,15 @@ public class MovieInsightsPerGenreService
     @Transactional(readOnly = true)
     public Optional<MovieInsightsPerGenreBasicDTO> findByGenreNameBasic(String name) {
         log.debug("Request to get MovieInsightsPerGenre by Genre name : {}", name);
-        return repository.findByGenre_Name(name).map(getBasicMapper()::toDto);
+        return repository.findByGenre_NameIgnoreCase(name).map(getBasicMapper()::toDto);
+    }
+
+    @Override
+    public Optional<MovieInsightsPerYearDTO> findByYear(long genreId, int year) {
+        return movieInsightsPerYearService.findByGenre(genreId, year);
+    }
+
+    public Optional<MovieInsightsPerYearDTO> findByYear(String genreName, int year) {
+        return movieInsightsPerYearService.findByGenre(genreName, year);
     }
 }

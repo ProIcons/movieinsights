@@ -2,6 +2,7 @@ package gr.movieinsights.repository;
 
 import gr.movieinsights.domain.MovieInsightsPerCountry;
 import gr.movieinsights.domain.ProductionCountry;
+import gr.movieinsights.repository.util.BaseMovieInsightsRepository;
 import gr.movieinsights.repository.util.BaseRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -16,7 +17,7 @@ import java.util.Optional;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface MovieInsightsPerCountryRepository extends BaseRepository<MovieInsightsPerCountry, Long> {
+public interface MovieInsightsPerCountryRepository extends BaseMovieInsightsRepository<MovieInsightsPerCountry, Long> {
     @Transactional
     @Modifying
     @Override
@@ -25,6 +26,6 @@ public interface MovieInsightsPerCountryRepository extends BaseRepository<MovieI
 
     Optional<MovieInsightsPerCountry> findByCountry(ProductionCountry country);
 
-    @Query("SELECT distinct mipc FROM MovieInsightsPerCountry mipc LEFT JOIN FETCH mipc.country c LEFT JOIN fetch mipc.movieInsights LEFT Join fetch mipc.movieInsightsPerYears WHERE c.iso31661 = :iso31661")
+    @Query("SELECT distinct mipc FROM MovieInsightsPerCountry mipc LEFT JOIN FETCH mipc.country c LEFT JOIN fetch mipc.movieInsights LEFT Join fetch mipc.movieInsightsPerYears WHERE lower(c.iso31661) = lower(:iso31661)")
     Optional<MovieInsightsPerCountry> findByCountry(@Param("iso31661") String iso31661);
 }

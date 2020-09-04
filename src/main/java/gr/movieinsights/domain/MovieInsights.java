@@ -28,7 +28,7 @@ import java.io.Serializable;
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorValue("0")
 @DiscriminatorFormula("0")
-public class MovieInsights implements Serializable {
+public class MovieInsights implements Serializable, IdentifiedEntity {
 
     private static final long serialVersionUID = 1L;
 

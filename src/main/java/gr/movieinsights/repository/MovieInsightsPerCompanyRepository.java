@@ -2,6 +2,7 @@ package gr.movieinsights.repository;
 
 import gr.movieinsights.domain.MovieInsightsPerCompany;
 import gr.movieinsights.domain.ProductionCompany;
+import gr.movieinsights.repository.util.BaseMovieInsightsRepository;
 import gr.movieinsights.repository.util.BaseRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -15,7 +16,7 @@ import java.util.Optional;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface MovieInsightsPerCompanyRepository extends BaseRepository<MovieInsightsPerCompany, Long> {
+public interface MovieInsightsPerCompanyRepository extends BaseMovieInsightsRepository<MovieInsightsPerCompany, Long> {
     @Transactional
     @Modifying
     @Override

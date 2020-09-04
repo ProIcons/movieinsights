@@ -23,7 +23,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping({"/person","/p"})
-public class MovieInsightsPerPersonResource extends BaseMovieInsightsBasicResource<MovieInsightsPerPerson, MovieInsightsPerPersonDTO, MovieInsightsPerPersonBasicDTO, MovieInsightsPerPersonService> {
+public class MovieInsightsPerPersonResource extends BaseMovieInsightsContainerResource<MovieInsightsPerPerson, MovieInsightsPerPersonDTO, MovieInsightsPerPersonBasicDTO, MovieInsightsPerPersonService> {
     private static final String ENTITY_NAME = "movieInsightsPerPerson";
 
     public MovieInsightsPerPersonResource(MovieInsightsPerPersonService movieInsightsPerPersonService) {

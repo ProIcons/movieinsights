@@ -1,12 +1,15 @@
 package gr.movieinsights.service;
 
 import gr.movieinsights.domain.MovieInsightsPerCompany;
+import gr.movieinsights.domain.MovieInsightsPerYear;
+import gr.movieinsights.domain.elasticsearch.ProductionCompany;
 import gr.movieinsights.repository.MovieInsightsPerCompanyRepository;
 import gr.movieinsights.service.dto.movieinsights.company.MovieInsightsPerCompanyBasicDTO;
 import gr.movieinsights.service.dto.movieinsights.company.MovieInsightsPerCompanyDTO;
+import gr.movieinsights.service.dto.movieinsights.year.MovieInsightsPerYearDTO;
 import gr.movieinsights.service.mapper.movieinsights.company.MovieInsightsPerCompanyBasicMapper;
 import gr.movieinsights.service.mapper.movieinsights.company.MovieInsightsPerCompanyMapper;
-import gr.movieinsights.service.util.BaseService;
+import gr.movieinsights.service.util.BaseMovieInsightsService;
 import gr.movieinsights.service.util.IBasicDataProviderService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,14 +22,16 @@ import java.util.Optional;
 @Service
 @Transactional
 public class MovieInsightsPerCompanyService
-    extends BaseService<MovieInsightsPerCompany, MovieInsightsPerCompanyDTO, MovieInsightsPerCompanyRepository, MovieInsightsPerCompanyMapper>
-    implements IBasicDataProviderService<MovieInsightsPerCompany, MovieInsightsPerCompanyDTO, MovieInsightsPerCompanyBasicDTO, MovieInsightsPerCompanyRepository, MovieInsightsPerCompanyMapper, MovieInsightsPerCompanyBasicMapper> {
+    extends BaseMovieInsightsService<MovieInsightsPerCompany, MovieInsightsPerCompanyDTO, MovieInsightsPerCompanyBasicDTO, MovieInsightsPerCompanyRepository, MovieInsightsPerCompanyMapper, MovieInsightsPerCompanyBasicMapper> {
 
     private final MovieInsightsPerCompanyBasicMapper basicMovieInsightsPerCompanyMapper;
 
-    public MovieInsightsPerCompanyService(MovieInsightsPerCompanyRepository movieInsightsPerCompanyRepository, MovieInsightsPerCompanyMapper movieInsightsPerCompanyMapper, MovieInsightsPerCompanyBasicMapper basicMovieInsightsPerCompanyMapper) {
+    private final MovieInsightsPerYearService movieInsightsPerYearService;
+
+    public MovieInsightsPerCompanyService(MovieInsightsPerCompanyRepository movieInsightsPerCompanyRepository, MovieInsightsPerCompanyMapper movieInsightsPerCompanyMapper, MovieInsightsPerCompanyBasicMapper basicMovieInsightsPerCompanyMapper, MovieInsightsPerYearService movieInsightsPerYearService) {
         super(movieInsightsPerCompanyRepository, movieInsightsPerCompanyMapper);
         this.basicMovieInsightsPerCompanyMapper = basicMovieInsightsPerCompanyMapper;
+        this.movieInsightsPerYearService = movieInsightsPerYearService;
     }
 
     @Override
@@ -61,4 +66,10 @@ public class MovieInsightsPerCompanyService
         log.debug("Request to get MovieInsightsPerCompany by CompanyId : {}", id);
         return repository.findByCompany_Id(id).map(getBasicMapper()::toDto);
     }
+
+    @Override
+    public Optional<MovieInsightsPerYearDTO> findByYear(long companyId, int year) {
+        return movieInsightsPerYearService.findByCompany(companyId, year);
+    }
+
 }

@@ -2,6 +2,7 @@ package gr.movieinsights.repository;
 
 import gr.movieinsights.domain.MovieInsightsPerPerson;
 import gr.movieinsights.domain.enumeration.CreditRole;
+import gr.movieinsights.repository.util.BaseMovieInsightsRepository;
 import gr.movieinsights.repository.util.BaseRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -16,7 +17,7 @@ import java.util.Optional;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface MovieInsightsPerPersonRepository extends BaseRepository<MovieInsightsPerPerson, Long> {
+public interface MovieInsightsPerPersonRepository extends BaseMovieInsightsRepository<MovieInsightsPerPerson, Long> {
     @Transactional
     @Modifying
     @Override
