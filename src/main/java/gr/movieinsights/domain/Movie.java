@@ -3,6 +3,9 @@ package gr.movieinsights.domain;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Type;
+import org.springframework.data.elasticsearch.annotations.Field;
+import org.springframework.data.elasticsearch.annotations.InnerField;
+import org.springframework.data.elasticsearch.annotations.MultiField;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -23,20 +26,22 @@ import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
+import static org.springframework.data.elasticsearch.annotations.FieldType.Keyword;
+import static org.springframework.data.elasticsearch.annotations.FieldType.Text;
+
 /**
  * A Movie.
  */
 @Entity
 @Table(name = "movie")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-@org.springframework.data.elasticsearch.annotations.Document(indexName = "movie")
 public class Movie implements Serializable, IdentifiedEntity {
 
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
-    @SequenceGenerator(name = "sequenceGenerator")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "movieSequenceGenerator")
+    @SequenceGenerator(name = "movieSequenceGenerator")
     private Long id;
 
     @NotNull
@@ -45,8 +50,11 @@ public class Movie implements Serializable, IdentifiedEntity {
 
     @NotNull
     @Column(name = "name", nullable = false)
+    @MultiField(mainField = @Field(type = Text, fielddata = true), otherFields = { @InnerField(suffix = "verbatim", type = Keyword) })
     private String name;
 
+    @Lob
+    @Type(type = "org.hibernate.type.TextType")
     @Column(name = "tagline")
     private String tagline;
 

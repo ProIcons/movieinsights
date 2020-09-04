@@ -3,8 +3,8 @@ package gr.movieinsights.service;
 import gr.movieinsights.domain.ProductionCountry;
 import gr.movieinsights.repository.ProductionCountryRepository;
 import gr.movieinsights.repository.search.ProductionCountrySearchRepository;
-import gr.movieinsights.service.dto.ProductionCountryDTO;
-import gr.movieinsights.service.mapper.ProductionCountryMapper;
+import gr.movieinsights.service.dto.country.ProductionCountryDTO;
+import gr.movieinsights.service.mapper.country.ProductionCountryMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -13,8 +13,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
-
-import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 
 /**
  * Service Implementation for managing {@link ProductionCountry}.
@@ -48,7 +46,7 @@ public class ProductionCountryService {
         ProductionCountry productionCountry = productionCountryMapper.toEntity(productionCountryDTO);
         productionCountry = productionCountryRepository.save(productionCountry);
         ProductionCountryDTO result = productionCountryMapper.toDto(productionCountry);
-        productionCountrySearchRepository.save(productionCountry);
+        //productionCountrySearchRepository.save(productionCountry);
         return result;
     }
 
@@ -115,7 +113,8 @@ public class ProductionCountryService {
     @Transactional(readOnly = true)
     public Page<ProductionCountryDTO> search(String query, Pageable pageable) {
         log.debug("Request to search for a page of ProductionCountries for query {}", query);
-        return productionCountrySearchRepository.search(queryStringQuery(query), pageable)
-            .map(productionCountryMapper::toDto);
+        /*return productionCountrySearchRepository.search(queryStringQuery(query), pageable)
+            .map(productionCountryMapper::toDto);*/
+        return null;
     }
 }

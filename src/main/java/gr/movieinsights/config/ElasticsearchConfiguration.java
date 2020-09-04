@@ -1,11 +1,14 @@
 package gr.movieinsights.config;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.github.vanroy.springdata.jest.JestElasticsearchTemplate;
 import com.github.vanroy.springdata.jest.mapper.DefaultJestResultsMapper;
 import io.searchbox.client.JestClient;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.data.elasticsearch.ElasticsearchProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -24,7 +27,6 @@ import java.util.Map;
 @Configuration
 @EnableConfigurationProperties(ElasticsearchProperties.class)
 public class ElasticsearchConfiguration {
-
     private ObjectMapper mapper;
 
     public ElasticsearchConfiguration(ObjectMapper mapper) {
@@ -37,19 +39,27 @@ public class ElasticsearchConfiguration {
     }
 
     @Bean
+    public JestElasticsearchTemplate jestElasticsearchTemplate(JestClient jestClient,
+                                                               ElasticsearchConverter elasticsearchConverter,
+                                                               SimpleElasticsearchMappingContext mappingContext,
+                                                               EntityMapper entityMapper) {
+        JestElasticsearchTemplate jestElasticsearchTemplate = new JestElasticsearchTemplate(
+            jestClient,
+            elasticsearchConverter,
+            new DefaultJestResultsMapper(mappingContext, entityMapper));
+        return jestElasticsearchTemplate;
+    }
+
+    @Bean
     @Primary
     public ElasticsearchOperations elasticsearchTemplate(JestClient jestClient,
                                                          ElasticsearchConverter elasticsearchConverter,
                                                          SimpleElasticsearchMappingContext mappingContext,
                                                          EntityMapper entityMapper) {
-        return new JestElasticsearchTemplate(
-            jestClient,
-            elasticsearchConverter,
-            new DefaultJestResultsMapper(mappingContext, entityMapper));
+        return jestElasticsearchTemplate(jestClient, elasticsearchConverter, mappingContext, entityMapper);
     }
 
-    public class CustomEntityMapper implements EntityMapper {
-
+    public static class CustomEntityMapper implements EntityMapper {
         private ObjectMapper objectMapper;
 
         public CustomEntityMapper(ObjectMapper objectMapper) {
@@ -71,10 +81,16 @@ public class ElasticsearchConfiguration {
             return objectMapper.readValue(source, clazz);
         }
 
+        public <T> T mapToObject(String source, TypeReference<T> clazz) throws IOException {
+            return objectMapper.readValue(source, clazz);
+        }
+
         @Override
         public Map<String, Object> mapObject(Object source) {
             try {
-                return objectMapper.readValue(mapToString(source), HashMap.class);
+                TypeReference<HashMap<String, Object>> typeRef = new TypeReference<HashMap<String, Object>>() {
+                };
+                return objectMapper.readValue(mapToString(source), typeRef);
             } catch (IOException e) {
                 throw new MappingException(e.getMessage(), e);
             }

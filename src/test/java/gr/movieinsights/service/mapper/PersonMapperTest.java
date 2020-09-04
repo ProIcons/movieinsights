@@ -1,5 +1,7 @@
 package gr.movieinsights.service.mapper;
 
+import gr.movieinsights.service.mapper.person.PersonMapper;
+import gr.movieinsights.service.mapper.person.PersonMapperImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.assertThat;

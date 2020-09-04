@@ -1,17 +1,15 @@
 package gr.movieinsights.web.rest;
 
 import gr.movieinsights.MovieInsightsApp;
-import gr.movieinsights.domain.MovieInsightsPerYear;
 import gr.movieinsights.domain.MovieInsights;
+import gr.movieinsights.domain.MovieInsightsPerYear;
 import gr.movieinsights.repository.MovieInsightsPerYearRepository;
-import gr.movieinsights.repository.search.MovieInsightsPerYearSearchRepository;
 import gr.movieinsights.service.MovieInsightsPerYearService;
-import gr.movieinsights.service.dto.MovieInsightsPerYearDTO;
-import gr.movieinsights.service.mapper.MovieInsightsPerYearMapper;
-
+import gr.movieinsights.service.dto.movieinsights.year.MovieInsightsPerYearDTO;
+import gr.movieinsights.service.mapper.movieinsights.year.MovieInsightsPerYearMapper;
+import gr.movieinsights.web.rest.movieinsights.MovieInsightsPerYearResource;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,14 +19,12 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
+
 import javax.persistence.EntityManager;
-import java.util.Collections;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 import static org.hamcrest.Matchers.hasItem;
-import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -53,15 +49,7 @@ public class MovieInsightsPerYearResourceIT {
     @Autowired
     private MovieInsightsPerYearService movieInsightsPerYearService;
 
-    /**
-     * This repository is mocked in the gr.movieinsights.repository.search test package.
-     *
-     * @see gr.movieinsights.repository.search.MovieInsightsPerYearSearchRepositoryMockConfiguration
-     */
-    @Autowired
-    private MovieInsightsPerYearSearchRepository mockMovieInsightsPerYearSearchRepository;
-
-    @Autowired
+   @Autowired
     private EntityManager em;
 
     @Autowired
@@ -133,9 +121,6 @@ public class MovieInsightsPerYearResourceIT {
         assertThat(movieInsightsPerYearList).hasSize(databaseSizeBeforeCreate + 1);
         MovieInsightsPerYear testMovieInsightsPerYear = movieInsightsPerYearList.get(movieInsightsPerYearList.size() - 1);
         assertThat(testMovieInsightsPerYear.getYear()).isEqualTo(DEFAULT_YEAR);
-
-        // Validate the MovieInsightsPerYear in Elasticsearch
-        verify(mockMovieInsightsPerYearSearchRepository, times(1)).save(testMovieInsightsPerYear);
     }
 
     @Test
@@ -156,9 +141,6 @@ public class MovieInsightsPerYearResourceIT {
         // Validate the MovieInsightsPerYear in the database
         List<MovieInsightsPerYear> movieInsightsPerYearList = movieInsightsPerYearRepository.findAll();
         assertThat(movieInsightsPerYearList).hasSize(databaseSizeBeforeCreate);
-
-        // Validate the MovieInsightsPerYear in Elasticsearch
-        verify(mockMovieInsightsPerYearSearchRepository, times(0)).save(movieInsightsPerYear);
     }
 
 
@@ -195,7 +177,7 @@ public class MovieInsightsPerYearResourceIT {
             .andExpect(jsonPath("$.[*].id").value(hasItem(movieInsightsPerYear.getId().intValue())))
             .andExpect(jsonPath("$.[*].year").value(hasItem(DEFAULT_YEAR)));
     }
-    
+
     @Test
     @Transactional
     public void getMovieInsightsPerYear() throws Exception {
@@ -243,9 +225,6 @@ public class MovieInsightsPerYearResourceIT {
         assertThat(movieInsightsPerYearList).hasSize(databaseSizeBeforeUpdate);
         MovieInsightsPerYear testMovieInsightsPerYear = movieInsightsPerYearList.get(movieInsightsPerYearList.size() - 1);
         assertThat(testMovieInsightsPerYear.getYear()).isEqualTo(UPDATED_YEAR);
-
-        // Validate the MovieInsightsPerYear in Elasticsearch
-        verify(mockMovieInsightsPerYearSearchRepository, times(1)).save(testMovieInsightsPerYear);
     }
 
     @Test
@@ -265,9 +244,6 @@ public class MovieInsightsPerYearResourceIT {
         // Validate the MovieInsightsPerYear in the database
         List<MovieInsightsPerYear> movieInsightsPerYearList = movieInsightsPerYearRepository.findAll();
         assertThat(movieInsightsPerYearList).hasSize(databaseSizeBeforeUpdate);
-
-        // Validate the MovieInsightsPerYear in Elasticsearch
-        verify(mockMovieInsightsPerYearSearchRepository, times(0)).save(movieInsightsPerYear);
     }
 
     @Test
@@ -286,25 +262,5 @@ public class MovieInsightsPerYearResourceIT {
         // Validate the database contains one less item
         List<MovieInsightsPerYear> movieInsightsPerYearList = movieInsightsPerYearRepository.findAll();
         assertThat(movieInsightsPerYearList).hasSize(databaseSizeBeforeDelete - 1);
-
-        // Validate the MovieInsightsPerYear in Elasticsearch
-        verify(mockMovieInsightsPerYearSearchRepository, times(1)).deleteById(movieInsightsPerYear.getId());
-    }
-
-    @Test
-    @Transactional
-    public void searchMovieInsightsPerYear() throws Exception {
-        // Configure the mock search repository
-        // Initialize the database
-        movieInsightsPerYearRepository.saveAndFlush(movieInsightsPerYear);
-        when(mockMovieInsightsPerYearSearchRepository.search(queryStringQuery("id:" + movieInsightsPerYear.getId())))
-            .thenReturn(Collections.singletonList(movieInsightsPerYear));
-
-        // Search the movieInsightsPerYear
-        restMovieInsightsPerYearMockMvc.perform(get("/api/_search/movie-insights-per-years?query=id:" + movieInsightsPerYear.getId()))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(movieInsightsPerYear.getId().intValue())))
-            .andExpect(jsonPath("$.[*].year").value(hasItem(DEFAULT_YEAR)));
     }
 }

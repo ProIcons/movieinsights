@@ -1,5 +1,6 @@
 package gr.movieinsights.service.dto;
 
+import gr.movieinsights.service.dto.movieinsights.person.MovieInsightsPerPersonDTO;
 import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 import gr.movieinsights.web.rest.TestUtil;

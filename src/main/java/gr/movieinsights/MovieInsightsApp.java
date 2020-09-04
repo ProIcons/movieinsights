@@ -1,10 +1,9 @@
 package gr.movieinsights;
 
 import gr.movieinsights.config.ApplicationProperties;
-
+import gr.movieinsights.config.tmdb.util.AddressUtils;
 import io.github.jhipster.config.DefaultProfileUtil;
 import io.github.jhipster.config.JHipsterConstants;
-
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,9 +15,10 @@ import org.springframework.core.env.Environment;
 
 import javax.annotation.PostConstruct;
 import java.net.InetAddress;
-import java.net.UnknownHostException;
+import java.net.SocketException;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 @SpringBootApplication
 @EnableConfigurationProperties({LiquibaseProperties.class, ApplicationProperties.class})
@@ -76,8 +76,9 @@ public class MovieInsightsApp {
         }
         String hostAddress = "localhost";
         try {
-            hostAddress = InetAddress.getLocalHost().getHostAddress();
-        } catch (UnknownHostException e) {
+            List<InetAddress> addressList = AddressUtils.getMachineIPAddresses("https://1.1.1.1");
+            hostAddress = addressList.get(0).getHostAddress();
+        }  catch (SocketException e) {
             log.warn("The host name could not be determined, using `localhost` as fallback");
         }
         log.info("\n----------------------------------------------------------\n\t" +

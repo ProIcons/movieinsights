@@ -2,108 +2,63 @@ package gr.movieinsights.service;
 
 import gr.movieinsights.domain.MovieInsightsPerCountry;
 import gr.movieinsights.repository.MovieInsightsPerCountryRepository;
-import gr.movieinsights.repository.search.MovieInsightsPerCountrySearchRepository;
-import gr.movieinsights.service.dto.MovieInsightsPerCountryDTO;
-import gr.movieinsights.service.mapper.MovieInsightsPerCountryMapper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import gr.movieinsights.service.dto.movieinsights.country.MovieInsightsPerCountryBasicDTO;
+import gr.movieinsights.service.dto.movieinsights.country.MovieInsightsPerCountryDTO;
+import gr.movieinsights.service.mapper.movieinsights.country.MovieInsightsPerCountryBasicMapper;
+import gr.movieinsights.service.mapper.movieinsights.country.MovieInsightsPerCountryMapper;
+import gr.movieinsights.service.util.BaseService;
+import gr.movieinsights.service.util.IBasicDataProviderService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
-
-import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 
 /**
  * Service Implementation for managing {@link MovieInsightsPerCountry}.
  */
 @Service
 @Transactional
-public class MovieInsightsPerCountryService {
+public class MovieInsightsPerCountryService
+    extends BaseService<MovieInsightsPerCountry, MovieInsightsPerCountryDTO, MovieInsightsPerCountryRepository, MovieInsightsPerCountryMapper>
+    implements IBasicDataProviderService<MovieInsightsPerCountry, MovieInsightsPerCountryDTO, MovieInsightsPerCountryBasicDTO, MovieInsightsPerCountryRepository, MovieInsightsPerCountryMapper, MovieInsightsPerCountryBasicMapper> {
 
-    private final Logger log = LoggerFactory.getLogger(MovieInsightsPerCountryService.class);
+    private final MovieInsightsPerCountryBasicMapper basicMovieInsightsPerCountryMapper;
 
-    private final MovieInsightsPerCountryRepository movieInsightsPerCountryRepository;
+    public MovieInsightsPerCountryService(MovieInsightsPerCountryRepository movieInsightsPerCountryRepository, MovieInsightsPerCountryMapper movieInsightsPerCountryMapper, MovieInsightsPerCountryBasicMapper basicMovieInsightsPerCountryMapper) {
+        super(movieInsightsPerCountryRepository, movieInsightsPerCountryMapper);
+        this.basicMovieInsightsPerCountryMapper = basicMovieInsightsPerCountryMapper;
+    }
 
-    private final MovieInsightsPerCountryMapper movieInsightsPerCountryMapper;
-
-    private final MovieInsightsPerCountrySearchRepository movieInsightsPerCountrySearchRepository;
-
-    public MovieInsightsPerCountryService(MovieInsightsPerCountryRepository movieInsightsPerCountryRepository, MovieInsightsPerCountryMapper movieInsightsPerCountryMapper, MovieInsightsPerCountrySearchRepository movieInsightsPerCountrySearchRepository) {
-        this.movieInsightsPerCountryRepository = movieInsightsPerCountryRepository;
-        this.movieInsightsPerCountryMapper = movieInsightsPerCountryMapper;
-        this.movieInsightsPerCountrySearchRepository = movieInsightsPerCountrySearchRepository;
+    @Override
+    public MovieInsightsPerCountryBasicMapper getBasicMapper() {
+        return basicMovieInsightsPerCountryMapper;
     }
 
     /**
-     * Save a movieInsightsPerCountry.
+     * Get one movieInsightsPerCountry by iso.
      *
-     * @param movieInsightsPerCountryDTO the entity to save.
-     * @return the persisted entity.
-     */
-    public MovieInsightsPerCountryDTO save(MovieInsightsPerCountryDTO movieInsightsPerCountryDTO) {
-        log.debug("Request to save MovieInsightsPerCountry : {}", movieInsightsPerCountryDTO);
-        MovieInsightsPerCountry movieInsightsPerCountry = movieInsightsPerCountryMapper.toEntity(movieInsightsPerCountryDTO);
-        movieInsightsPerCountry = movieInsightsPerCountryRepository.save(movieInsightsPerCountry);
-        MovieInsightsPerCountryDTO result = movieInsightsPerCountryMapper.toDto(movieInsightsPerCountry);
-        movieInsightsPerCountrySearchRepository.save(movieInsightsPerCountry);
-        return result;
-    }
-
-    /**
-     * Get all the movieInsightsPerCountries.
+     * @param iso
+     *     the iso of the entity.
      *
-     * @return the list of entities.
-     */
-    @Transactional(readOnly = true)
-    public List<MovieInsightsPerCountryDTO> findAll() {
-        log.debug("Request to get all MovieInsightsPerCountries");
-        return movieInsightsPerCountryRepository.findAll().stream()
-            .map(movieInsightsPerCountryMapper::toDto)
-            .collect(Collectors.toCollection(LinkedList::new));
-    }
-
-
-    /**
-     * Get one movieInsightsPerCountry by id.
-     *
-     * @param id the id of the entity.
      * @return the entity.
      */
     @Transactional(readOnly = true)
-    public Optional<MovieInsightsPerCountryDTO> findOne(Long id) {
-        log.debug("Request to get MovieInsightsPerCountry : {}", id);
-        return movieInsightsPerCountryRepository.findById(id)
-            .map(movieInsightsPerCountryMapper::toDto);
+    public Optional<MovieInsightsPerCountryDTO> findByCountryIso(String iso) {
+        log.debug("Request to get MovieInsightsPerCountry : {}", iso);
+        return repository.findByCountry(iso).map(mapper::toDto);
     }
 
     /**
-     * Delete the movieInsightsPerCountry by id.
+     * Get one movieInsightsPerCountry by iso.
      *
-     * @param id the id of the entity.
-     */
-    public void delete(Long id) {
-        log.debug("Request to delete MovieInsightsPerCountry : {}", id);
-        movieInsightsPerCountryRepository.deleteById(id);
-        movieInsightsPerCountrySearchRepository.deleteById(id);
-    }
-
-    /**
-     * Search for the movieInsightsPerCountry corresponding to the query.
+     * @param iso
+     *     the iso of the entity.
      *
-     * @param query the query of the search.
-     * @return the list of entities.
+     * @return the entity.
      */
     @Transactional(readOnly = true)
-    public List<MovieInsightsPerCountryDTO> search(String query) {
-        log.debug("Request to search MovieInsightsPerCountries for query {}", query);
-        return StreamSupport
-            .stream(movieInsightsPerCountrySearchRepository.search(queryStringQuery(query)).spliterator(), false)
-            .map(movieInsightsPerCountryMapper::toDto)
-            .collect(Collectors.toList());
+    public Optional<MovieInsightsPerCountryBasicDTO> findByCountryIsoBasic(String iso) {
+        log.debug("Request to get MovieInsightsPerCountry : {}", iso);
+        return repository.findByCountry(iso).map(basicMovieInsightsPerCountryMapper::toDto);
     }
 }

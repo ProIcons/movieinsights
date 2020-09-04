@@ -15,7 +15,7 @@ import administration, {
   getConfigurations,
   getEnv,
   getAudits,
-} from 'app/modules/administration/administration.reducer';
+} from 'app/modules/admin/administration.reducer';
 
 describe('Administration reducer tests', () => {
   const username = process.env.E2E_USERNAME || 'admin';

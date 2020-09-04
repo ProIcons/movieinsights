@@ -1,3 +1,4 @@
+/*
 package gr.movieinsights.web.rest;
 
 import gr.movieinsights.MovieInsightsApp;
@@ -5,12 +6,10 @@ import gr.movieinsights.domain.ProductionCompany;
 import gr.movieinsights.repository.ProductionCompanyRepository;
 import gr.movieinsights.repository.search.ProductionCompanySearchRepository;
 import gr.movieinsights.service.ProductionCompanyService;
-import gr.movieinsights.service.dto.ProductionCompanyDTO;
-import gr.movieinsights.service.mapper.ProductionCompanyMapper;
-
+import gr.movieinsights.service.dto.company.ProductionCompanyDTO;
+import gr.movieinsights.service.mapper.company.ProductionCompanyMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +21,7 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
+
 import javax.persistence.EntityManager;
 import java.util.Collections;
 import java.util.List;
@@ -33,9 +33,11 @@ import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+*/
 /**
  * Integration tests for the {@link ProductionCompanyResource} REST controller.
- */
+ *//*
+
 @SpringBootTest(classes = MovieInsightsApp.class)
 @ExtendWith(MockitoExtension.class)
 @AutoConfigureMockMvc
@@ -63,11 +65,13 @@ public class ProductionCompanyResourceIT {
     @Autowired
     private ProductionCompanyService productionCompanyService;
 
-    /**
+    */
+/**
      * This repository is mocked in the gr.movieinsights.repository.search test package.
      *
      * @see gr.movieinsights.repository.search.ProductionCompanySearchRepositoryMockConfiguration
-     */
+     *//*
+
     @Autowired
     private ProductionCompanySearchRepository mockProductionCompanySearchRepository;
 
@@ -79,12 +83,14 @@ public class ProductionCompanyResourceIT {
 
     private ProductionCompany productionCompany;
 
-    /**
+    */
+/**
      * Create an entity for this test.
      *
      * This is a static method, as tests for other entities might also need it,
      * if they test an entity which requires the current entity.
-     */
+     *//*
+
     public static ProductionCompany createEntity(EntityManager em) {
         ProductionCompany productionCompany = new ProductionCompany()
             .name(DEFAULT_NAME)
@@ -93,12 +99,14 @@ public class ProductionCompanyResourceIT {
             .originCountry(DEFAULT_ORIGIN_COUNTRY);
         return productionCompany;
     }
-    /**
+    */
+/**
      * Create an updated entity for this test.
      *
      * This is a static method, as tests for other entities might also need it,
      * if they test an entity which requires the current entity.
-     */
+     *//*
+
     public static ProductionCompany createUpdatedEntity(EntityManager em) {
         ProductionCompany productionCompany = new ProductionCompany()
             .name(UPDATED_NAME)
@@ -217,7 +225,7 @@ public class ProductionCompanyResourceIT {
             .andExpect(jsonPath("$.[*].logoPath").value(hasItem(DEFAULT_LOGO_PATH)))
             .andExpect(jsonPath("$.[*].originCountry").value(hasItem(DEFAULT_ORIGIN_COUNTRY)));
     }
-    
+
     @Test
     @Transactional
     public void getProductionCompany() throws Exception {
@@ -342,3 +350,4 @@ public class ProductionCompanyResourceIT {
             .andExpect(jsonPath("$.[*].originCountry").value(hasItem(DEFAULT_ORIGIN_COUNTRY)));
     }
 }
+*/

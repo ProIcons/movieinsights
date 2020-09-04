@@ -1,5 +1,7 @@
 package gr.movieinsights.service.mapper;
 
+import gr.movieinsights.service.mapper.movieinsights.company.MovieInsightsPerCompanyMapper;
+import gr.movieinsights.service.mapper.movieinsights.company.MovieInsightsPerCompanyMapperImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.assertThat;

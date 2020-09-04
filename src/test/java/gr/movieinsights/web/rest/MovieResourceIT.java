@@ -3,35 +3,30 @@ package gr.movieinsights.web.rest;
 import gr.movieinsights.MovieInsightsApp;
 import gr.movieinsights.domain.Movie;
 import gr.movieinsights.repository.MovieRepository;
-import gr.movieinsights.repository.search.MovieSearchRepository;
 import gr.movieinsights.service.MovieService;
-import gr.movieinsights.service.dto.MovieDTO;
-import gr.movieinsights.service.mapper.MovieMapper;
-
+import gr.movieinsights.service.dto.movie.MovieDTO;
+import gr.movieinsights.service.mapper.movie.MovieMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.Base64Utils;
+
 import javax.persistence.EntityManager;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 import static org.hamcrest.Matchers.hasItem;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -97,15 +92,7 @@ public class MovieResourceIT {
     @Autowired
     private MovieService movieService;
 
-    /**
-     * This repository is mocked in the gr.movieinsights.repository.search test package.
-     *
-     * @see gr.movieinsights.repository.search.MovieSearchRepositoryMockConfiguration
-     */
-    @Autowired
-    private MovieSearchRepository mockMovieSearchRepository;
-
-    @Autowired
+   @Autowired
     private EntityManager em;
 
     @Autowired
@@ -190,9 +177,6 @@ public class MovieResourceIT {
         assertThat(testMovie.getPosterPath()).isEqualTo(DEFAULT_POSTER_PATH);
         assertThat(testMovie.getBackdropPath()).isEqualTo(DEFAULT_BACKDROP_PATH);
         assertThat(testMovie.getReleaseDate()).isEqualTo(DEFAULT_RELEASE_DATE);
-
-        // Validate the Movie in Elasticsearch
-        verify(mockMovieSearchRepository, times(1)).save(testMovie);
     }
 
     @Test
@@ -213,9 +197,6 @@ public class MovieResourceIT {
         // Validate the Movie in the database
         List<Movie> movieList = movieRepository.findAll();
         assertThat(movieList).hasSize(databaseSizeBeforeCreate);
-
-        // Validate the Movie in Elasticsearch
-        verify(mockMovieSearchRepository, times(0)).save(movie);
     }
 
 
@@ -303,7 +284,7 @@ public class MovieResourceIT {
             .andExpect(jsonPath("$.[*].backdropPath").value(hasItem(DEFAULT_BACKDROP_PATH)))
             .andExpect(jsonPath("$.[*].releaseDate").value(hasItem(DEFAULT_RELEASE_DATE.toString())));
     }
-    
+
     @SuppressWarnings({"unchecked"})
     public void getAllMoviesWithEagerRelationshipsIsEnabled() throws Exception {
         when(movieServiceMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
@@ -404,9 +385,6 @@ public class MovieResourceIT {
         assertThat(testMovie.getPosterPath()).isEqualTo(UPDATED_POSTER_PATH);
         assertThat(testMovie.getBackdropPath()).isEqualTo(UPDATED_BACKDROP_PATH);
         assertThat(testMovie.getReleaseDate()).isEqualTo(UPDATED_RELEASE_DATE);
-
-        // Validate the Movie in Elasticsearch
-        verify(mockMovieSearchRepository, times(1)).save(testMovie);
     }
 
     @Test
@@ -426,9 +404,6 @@ public class MovieResourceIT {
         // Validate the Movie in the database
         List<Movie> movieList = movieRepository.findAll();
         assertThat(movieList).hasSize(databaseSizeBeforeUpdate);
-
-        // Validate the Movie in Elasticsearch
-        verify(mockMovieSearchRepository, times(0)).save(movie);
     }
 
     @Test
@@ -447,36 +422,5 @@ public class MovieResourceIT {
         // Validate the database contains one less item
         List<Movie> movieList = movieRepository.findAll();
         assertThat(movieList).hasSize(databaseSizeBeforeDelete - 1);
-
-        // Validate the Movie in Elasticsearch
-        verify(mockMovieSearchRepository, times(1)).deleteById(movie.getId());
-    }
-
-    @Test
-    @Transactional
-    public void searchMovie() throws Exception {
-        // Configure the mock search repository
-        // Initialize the database
-        movieRepository.saveAndFlush(movie);
-        when(mockMovieSearchRepository.search(queryStringQuery("id:" + movie.getId())))
-            .thenReturn(Collections.singletonList(movie));
-
-        // Search the movie
-        restMovieMockMvc.perform(get("/api/_search/movies?query=id:" + movie.getId()))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(movie.getId().intValue())))
-            .andExpect(jsonPath("$.[*].tmdbId").value(hasItem(DEFAULT_TMDB_ID.intValue())))
-            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
-            .andExpect(jsonPath("$.[*].tagline").value(hasItem(DEFAULT_TAGLINE)))
-            .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION.toString())))
-            .andExpect(jsonPath("$.[*].revenue").value(hasItem(DEFAULT_REVENUE.intValue())))
-            .andExpect(jsonPath("$.[*].budget").value(hasItem(DEFAULT_BUDGET.intValue())))
-            .andExpect(jsonPath("$.[*].imdbId").value(hasItem(DEFAULT_IMDB_ID)))
-            .andExpect(jsonPath("$.[*].popularity").value(hasItem(DEFAULT_POPULARITY.doubleValue())))
-            .andExpect(jsonPath("$.[*].runtime").value(hasItem(DEFAULT_RUNTIME)))
-            .andExpect(jsonPath("$.[*].posterPath").value(hasItem(DEFAULT_POSTER_PATH)))
-            .andExpect(jsonPath("$.[*].backdropPath").value(hasItem(DEFAULT_BACKDROP_PATH)))
-            .andExpect(jsonPath("$.[*].releaseDate").value(hasItem(DEFAULT_RELEASE_DATE.toString())));
     }
 }

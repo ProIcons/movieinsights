@@ -1,6 +1,7 @@
 package gr.movieinsights.web.rest.errors;
 
 import io.github.jhipster.web.util.HeaderUtil;
+import org.springframework.beans.TypeMismatchException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.ConcurrencyFailureException;
 import org.springframework.http.ResponseEntity;
@@ -20,12 +21,13 @@ import org.zalando.problem.violations.ConstraintViolationProblem;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.servlet.http.HttpServletRequest;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * Controller advice to translate the server side exceptions to client-friendly json structures.
- * The error response follows RFC7807 - Problem Details for HTTP APIs (https://tools.ietf.org/html/rfc7807).
+ * Controller advice to translate the server side exceptions to client-friendly json structures. The error response
+ * follows RFC7807 - Problem Details for HTTP APIs (https://tools.ietf.org/html/rfc7807).
  */
 @ControllerAdvice
 public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait {
@@ -93,13 +95,13 @@ public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait
     @ExceptionHandler
     public ResponseEntity<Problem> handleEmailAlreadyUsedException(gr.movieinsights.service.EmailAlreadyUsedException ex, NativeWebRequest request) {
         EmailAlreadyUsedException problem = new EmailAlreadyUsedException();
-        return create(problem, request, HeaderUtil.createFailureAlert(applicationName,  true, problem.getEntityName(), problem.getErrorKey(), problem.getMessage()));
+        return create(problem, request, HeaderUtil.createFailureAlert(applicationName, true, problem.getEntityName(), problem.getErrorKey(), problem.getMessage()));
     }
 
     @ExceptionHandler
     public ResponseEntity<Problem> handleUsernameAlreadyUsedException(gr.movieinsights.service.UsernameAlreadyUsedException ex, NativeWebRequest request) {
         LoginAlreadyUsedException problem = new LoginAlreadyUsedException();
-        return create(problem, request, HeaderUtil.createFailureAlert(applicationName,  true, problem.getEntityName(), problem.getErrorKey(), problem.getMessage()));
+        return create(problem, request, HeaderUtil.createFailureAlert(applicationName, true, problem.getEntityName(), problem.getErrorKey(), problem.getMessage()));
     }
 
     @ExceptionHandler
@@ -118,6 +120,32 @@ public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait
             .withStatus(Status.CONFLICT)
             .with(MESSAGE_KEY, ErrorConstants.ERR_CONCURRENCY_FAILURE)
             .build();
+        return create(ex, problem, request);
+    }
+
+    private String getAvailableValues(Class<?> objectClass) {
+        if (objectClass.isEnum())
+            return getEnumAvailableValues(objectClass);
+        else if (objectClass == Boolean.class) {
+            return "[true,false]";
+        }
+        return "";
+    }
+
+
+    private String getEnumAvailableValues(Class<?> enumClass) {
+        if (enumClass.isEnum()) {
+            List<String> strings = Arrays.stream(enumClass.getEnumConstants()).map((f) -> ((Enum<?>) f).name()).collect(Collectors.toList());
+            return "[" + String.join(",", strings) + "]";
+        } else return "";
+    }
+
+    @ExceptionHandler
+    @Override
+    public ResponseEntity<Problem> handleTypeMismatch(TypeMismatchException ex, NativeWebRequest request) {
+        Problem problem = Problem.builder().withStatus(Status.BAD_REQUEST).withTitle(Status.BAD_REQUEST.getReasonPhrase()).withDetail(
+            ex.getValue() + " is not a valid " + ex.getRequiredType().getSimpleName() + getAvailableValues(ex.getRequiredType())
+        ).build();
         return create(ex, problem, request);
     }
 }

@@ -1,18 +1,17 @@
+/*
 package gr.movieinsights.web.rest;
 
 import gr.movieinsights.MovieInsightsApp;
-import gr.movieinsights.domain.MovieInsightsPerCompany;
 import gr.movieinsights.domain.MovieInsights;
+import gr.movieinsights.domain.MovieInsightsPerCompany;
 import gr.movieinsights.domain.ProductionCompany;
 import gr.movieinsights.repository.MovieInsightsPerCompanyRepository;
-import gr.movieinsights.repository.search.MovieInsightsPerCompanySearchRepository;
 import gr.movieinsights.service.MovieInsightsPerCompanyService;
-import gr.movieinsights.service.dto.MovieInsightsPerCompanyDTO;
-import gr.movieinsights.service.mapper.MovieInsightsPerCompanyMapper;
-
+import gr.movieinsights.service.dto.movieinsights.company.MovieInsightsPerCompanyDTO;
+import gr.movieinsights.service.mapper.movieinsights.company.MovieInsightsPerCompanyMapper;
+import gr.movieinsights.web.rest.movieinsights.MovieInsightsPerCompanyResource;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,20 +21,20 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
+
 import javax.persistence.EntityManager;
-import java.util.Collections;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 import static org.hamcrest.Matchers.hasItem;
-import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+*/
 /**
  * Integration tests for the {@link MovieInsightsPerCompanyResource} REST controller.
- */
+ *//*
+
 @SpringBootTest(classes = MovieInsightsApp.class)
 @ExtendWith(MockitoExtension.class)
 @AutoConfigureMockMvc
@@ -51,14 +50,6 @@ public class MovieInsightsPerCompanyResourceIT {
     @Autowired
     private MovieInsightsPerCompanyService movieInsightsPerCompanyService;
 
-    /**
-     * This repository is mocked in the gr.movieinsights.repository.search test package.
-     *
-     * @see gr.movieinsights.repository.search.MovieInsightsPerCompanySearchRepositoryMockConfiguration
-     */
-    @Autowired
-    private MovieInsightsPerCompanySearchRepository mockMovieInsightsPerCompanySearchRepository;
-
     @Autowired
     private EntityManager em;
 
@@ -67,12 +58,14 @@ public class MovieInsightsPerCompanyResourceIT {
 
     private MovieInsightsPerCompany movieInsightsPerCompany;
 
-    /**
+    */
+/**
      * Create an entity for this test.
      *
      * This is a static method, as tests for other entities might also need it,
      * if they test an entity which requires the current entity.
-     */
+     *//*
+
     public static MovieInsightsPerCompany createEntity(EntityManager em) {
         MovieInsightsPerCompany movieInsightsPerCompany = new MovieInsightsPerCompany();
         // Add required entity
@@ -97,12 +90,14 @@ public class MovieInsightsPerCompanyResourceIT {
         movieInsightsPerCompany.setCompany(productionCompany);
         return movieInsightsPerCompany;
     }
-    /**
+    */
+/**
      * Create an updated entity for this test.
      *
      * This is a static method, as tests for other entities might also need it,
      * if they test an entity which requires the current entity.
-     */
+     *//*
+
     public static MovieInsightsPerCompany createUpdatedEntity(EntityManager em) {
         MovieInsightsPerCompany movieInsightsPerCompany = new MovieInsightsPerCompany();
         // Add required entity
@@ -148,9 +143,6 @@ public class MovieInsightsPerCompanyResourceIT {
         List<MovieInsightsPerCompany> movieInsightsPerCompanyList = movieInsightsPerCompanyRepository.findAll();
         assertThat(movieInsightsPerCompanyList).hasSize(databaseSizeBeforeCreate + 1);
         MovieInsightsPerCompany testMovieInsightsPerCompany = movieInsightsPerCompanyList.get(movieInsightsPerCompanyList.size() - 1);
-
-        // Validate the MovieInsightsPerCompany in Elasticsearch
-        verify(mockMovieInsightsPerCompanySearchRepository, times(1)).save(testMovieInsightsPerCompany);
     }
 
     @Test
@@ -171,9 +163,6 @@ public class MovieInsightsPerCompanyResourceIT {
         // Validate the MovieInsightsPerCompany in the database
         List<MovieInsightsPerCompany> movieInsightsPerCompanyList = movieInsightsPerCompanyRepository.findAll();
         assertThat(movieInsightsPerCompanyList).hasSize(databaseSizeBeforeCreate);
-
-        // Validate the MovieInsightsPerCompany in Elasticsearch
-        verify(mockMovieInsightsPerCompanySearchRepository, times(0)).save(movieInsightsPerCompany);
     }
 
 
@@ -189,7 +178,7 @@ public class MovieInsightsPerCompanyResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(movieInsightsPerCompany.getId().intValue())));
     }
-    
+
     @Test
     @Transactional
     public void getMovieInsightsPerCompany() throws Exception {
@@ -233,9 +222,6 @@ public class MovieInsightsPerCompanyResourceIT {
         List<MovieInsightsPerCompany> movieInsightsPerCompanyList = movieInsightsPerCompanyRepository.findAll();
         assertThat(movieInsightsPerCompanyList).hasSize(databaseSizeBeforeUpdate);
         MovieInsightsPerCompany testMovieInsightsPerCompany = movieInsightsPerCompanyList.get(movieInsightsPerCompanyList.size() - 1);
-
-        // Validate the MovieInsightsPerCompany in Elasticsearch
-        verify(mockMovieInsightsPerCompanySearchRepository, times(1)).save(testMovieInsightsPerCompany);
     }
 
     @Test
@@ -255,9 +241,6 @@ public class MovieInsightsPerCompanyResourceIT {
         // Validate the MovieInsightsPerCompany in the database
         List<MovieInsightsPerCompany> movieInsightsPerCompanyList = movieInsightsPerCompanyRepository.findAll();
         assertThat(movieInsightsPerCompanyList).hasSize(databaseSizeBeforeUpdate);
-
-        // Validate the MovieInsightsPerCompany in Elasticsearch
-        verify(mockMovieInsightsPerCompanySearchRepository, times(0)).save(movieInsightsPerCompany);
     }
 
     @Test
@@ -276,24 +259,6 @@ public class MovieInsightsPerCompanyResourceIT {
         // Validate the database contains one less item
         List<MovieInsightsPerCompany> movieInsightsPerCompanyList = movieInsightsPerCompanyRepository.findAll();
         assertThat(movieInsightsPerCompanyList).hasSize(databaseSizeBeforeDelete - 1);
-
-        // Validate the MovieInsightsPerCompany in Elasticsearch
-        verify(mockMovieInsightsPerCompanySearchRepository, times(1)).deleteById(movieInsightsPerCompany.getId());
-    }
-
-    @Test
-    @Transactional
-    public void searchMovieInsightsPerCompany() throws Exception {
-        // Configure the mock search repository
-        // Initialize the database
-        movieInsightsPerCompanyRepository.saveAndFlush(movieInsightsPerCompany);
-        when(mockMovieInsightsPerCompanySearchRepository.search(queryStringQuery("id:" + movieInsightsPerCompany.getId())))
-            .thenReturn(Collections.singletonList(movieInsightsPerCompany));
-
-        // Search the movieInsightsPerCompany
-        restMovieInsightsPerCompanyMockMvc.perform(get("/api/_search/movie-insights-per-companies?query=id:" + movieInsightsPerCompany.getId()))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(movieInsightsPerCompany.getId().intValue())));
     }
 }
+*/

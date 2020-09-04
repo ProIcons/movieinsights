@@ -127,7 +127,6 @@ public class ImportService {
 
     public void initializeDemoDatabase(boolean force) {
         if (force) {
-            //TODO: clear database
         } else if (movieRepository.count() > 0) {
             log.warn("Initialize Demo Database: Database has already been initialized -- ignoring.");
             return;
@@ -367,7 +366,11 @@ public class ImportService {
             if (tmdbMovie == null || tmdbMovie.id == null)
                 return null;
 
-            int failures = 0;
+
+
+            //TODO: Review - This is not necessary since we can still calculate credit's appearances on these movies. After all that's how popularity is described atm.
+
+            /*int failures = 0;
 
             if (tmdbMovie.budget == null || tmdbMovie.budget == 0) {
                 failures++;
@@ -385,7 +388,7 @@ public class ImportService {
             if (failures == 4) {
                 banMovie(tmdbMovie.imdb_id, tmdbMovie.id.longValue(), BanReason.NOUSABLEDATA);
                 return null;
-            }
+            }*/
 
             Vote vote = voteSupplier.apply(tmdbMovie);
             pendingVotes.add(vote);
@@ -397,6 +400,8 @@ public class ImportService {
             miMovie.setDescription(tmdbMovie.overview);
             miMovie.setImdbId(tmdbMovie.imdb_id);
             miMovie.setRevenue(tmdbMovie.revenue == null ? 0 : tmdbMovie.revenue);
+            miMovie.setRuntime(tmdbMovie.runtime);
+            miMovie.setPosterPath(tmdbMovie.poster_path);
             miMovie.setTagline(tmdbMovie.tagline);
             miMovie.setTmdbId(Long.valueOf(tmdbMovie.id));
             miMovie.setPopularity(tmdbMovie.popularity);

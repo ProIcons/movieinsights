@@ -11,7 +11,11 @@ import org.mapstruct.Mapper;
 @Mapper(componentModel = "spring", uses = {})
 public interface BannedEntityMapper extends EntityMapper<BannedEntityDTO, BannedEntity> {
 
+    @Override
+    BannedEntity toEntity(BannedEntityDTO dto);
 
+    @Override
+    BannedEntityDTO toDto(BannedEntity entity);
 
     default BannedEntity fromId(Long id) {
         if (id == null) {

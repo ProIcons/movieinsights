@@ -1,11 +1,7 @@
 package gr.movieinsights.repository.search;
 
 import gr.movieinsights.domain.Credit;
-import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
+import gr.movieinsights.repository.util.BaseSearchRepository;
 
-
-/**
- * Spring Data Elasticsearch repository for the {@link Credit} entity.
- */
-public interface CreditSearchRepository extends ElasticsearchRepository<Credit, Long> {
+public interface CreditSearchRepository extends BaseSearchRepository<Credit,Long> {
 }

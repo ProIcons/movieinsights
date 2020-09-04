@@ -1,11 +1,11 @@
 package gr.movieinsights.repository.search;
 
-import gr.movieinsights.domain.Genre;
-import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
+import gr.movieinsights.domain.elasticsearch.Genre;
+import gr.movieinsights.repository.util.BaseSearchRepository;
 
 
 /**
  * Spring Data Elasticsearch repository for the {@link Genre} entity.
  */
-public interface GenreSearchRepository extends ElasticsearchRepository<Genre, Long> {
+public interface GenreSearchRepository extends BaseSearchRepository<Genre, Long> {
 }

@@ -23,14 +23,13 @@ import java.util.Set;
 @Entity
 @Table(name = "genre")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-@org.springframework.data.elasticsearch.annotations.Document(indexName = "genre")
-public class Genre implements Serializable, IdentifiedEntity {
+public class Genre implements Serializable, IdentifiedNamedEntity {
 
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
-    @SequenceGenerator(name = "sequenceGenerator")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "genreSequenceGenerator")
+    @SequenceGenerator(name = "genreSequenceGenerator")
     private Long id;
 
     @NotNull

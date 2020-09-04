@@ -101,7 +101,7 @@ spring:
     execution:
       thread-name-prefix: movie-insights-task-
       pool:
-        core-size: 8
+        core-size: 12
         max-size: 50
         queue-capacity: 10000
     scheduling:

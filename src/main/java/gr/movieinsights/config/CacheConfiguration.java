@@ -77,6 +77,8 @@ public class CacheConfiguration {
             createCache(cm, gr.movieinsights.domain.MovieInsightsPerPerson.class.getName() + ".movieInsightsPerYears");
             createCache(cm, gr.movieinsights.domain.MovieInsightsPerGenre.class.getName());
             createCache(cm, gr.movieinsights.domain.MovieInsightsPerGenre.class.getName() + ".movieInsightsPerYears");
+            createCache(cm, gr.movieinsights.domain.MovieInsightsGeneral.class.getName());
+            createCache(cm, gr.movieinsights.domain.MovieInsightsGeneral.class.getName() + ".movieInsightsPerYears");
             createCache(cm, gr.movieinsights.domain.MovieInsightsPerYear.class.getName());
             // jhipster-needle-ehcache-add-entry
         };

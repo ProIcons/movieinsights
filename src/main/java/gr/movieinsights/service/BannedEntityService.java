@@ -2,7 +2,6 @@ package gr.movieinsights.service;
 
 import gr.movieinsights.domain.BannedEntity;
 import gr.movieinsights.repository.BannedEntityRepository;
-import gr.movieinsights.repository.search.BannedEntitySearchRepository;
 import gr.movieinsights.service.dto.BannedEntityDTO;
 import gr.movieinsights.service.mapper.BannedEntityMapper;
 import org.slf4j.Logger;
@@ -14,9 +13,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
-
-import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 
 /**
  * Service Implementation for managing {@link BannedEntity}.
@@ -31,12 +27,10 @@ public class BannedEntityService {
 
     private final BannedEntityMapper bannedEntityMapper;
 
-    private final BannedEntitySearchRepository bannedEntitySearchRepository;
 
-    public BannedEntityService(BannedEntityRepository bannedEntityRepository, BannedEntityMapper bannedEntityMapper, BannedEntitySearchRepository bannedEntitySearchRepository) {
+    public BannedEntityService(BannedEntityRepository bannedEntityRepository, BannedEntityMapper bannedEntityMapper) {
         this.bannedEntityRepository = bannedEntityRepository;
         this.bannedEntityMapper = bannedEntityMapper;
-        this.bannedEntitySearchRepository = bannedEntitySearchRepository;
     }
 
     /**
@@ -50,7 +44,6 @@ public class BannedEntityService {
         BannedEntity bannedEntity = bannedEntityMapper.toEntity(bannedEntityDTO);
         bannedEntity = bannedEntityRepository.save(bannedEntity);
         BannedEntityDTO result = bannedEntityMapper.toDto(bannedEntity);
-        bannedEntitySearchRepository.save(bannedEntity);
         return result;
     }
 
@@ -89,21 +82,6 @@ public class BannedEntityService {
     public void delete(Long id) {
         log.debug("Request to delete BannedEntity : {}", id);
         bannedEntityRepository.deleteById(id);
-        bannedEntitySearchRepository.deleteById(id);
     }
 
-    /**
-     * Search for the bannedEntity corresponding to the query.
-     *
-     * @param query the query of the search.
-     * @return the list of entities.
-     */
-    @Transactional(readOnly = true)
-    public List<BannedEntityDTO> search(String query) {
-        log.debug("Request to search BannedEntities for query {}", query);
-        return StreamSupport
-            .stream(bannedEntitySearchRepository.search(queryStringQuery(query)).spliterator(), false)
-            .map(bannedEntityMapper::toDto)
-        .collect(Collectors.toList());
-    }
 }

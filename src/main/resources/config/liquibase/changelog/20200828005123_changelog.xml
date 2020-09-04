@@ -1,0 +1,229 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-3.9.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
+    <changeSet author="Nikolas (generated)" id="1598575905507-21">
+        <addColumn tableName="movie_insights">
+            <column name="average_actor_count" type="float8">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    <changeSet author="Nikolas (generated)" id="1598575905507-22">
+        <addColumn tableName="movie_insights">
+            <column name="average_director_count" type="float8">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    <changeSet author="Nikolas (generated)" id="1598575905507-23">
+        <addColumn tableName="movie_insights">
+            <column name="average_genre_count" type="float8">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    <changeSet author="Nikolas (generated)" id="1598575905507-24">
+        <addColumn tableName="movie_insights">
+            <column name="average_producer_count" type="float8">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    <changeSet author="Nikolas (generated)" id="1598575905507-25">
+        <addColumn tableName="movie_insights">
+            <column name="average_production_company_count" type="float8">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    <changeSet author="Nikolas (generated)" id="1598575905507-26">
+        <addColumn tableName="movie_insights">
+            <column name="average_production_country_count" type="float8">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    <changeSet author="Nikolas (generated)" id="1598575905507-27">
+        <addColumn tableName="movie_insights">
+            <column name="average_writer_count" type="float8">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    <changeSet author="Nikolas (generated)" id="1598575905507-28">
+        <addColumn tableName="movie_insights">
+            <column name="highest_rated_logarithmic_movie_id" type="int8"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="Nikolas (generated)" id="1598575905507-29">
+        <addColumn tableName="movie_insights">
+            <column name="least_popular_actor_id" type="int8"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="Nikolas (generated)" id="1598575905507-30">
+        <addColumn tableName="movie_insights">
+            <column name="least_popular_actor_movie_count" type="int4">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    <changeSet author="Nikolas (generated)" id="1598575905507-31">
+        <addColumn tableName="movie_insights">
+            <column name="least_popular_director_id" type="int8"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="Nikolas (generated)" id="1598575905507-32">
+        <addColumn tableName="movie_insights">
+            <column name="least_popular_director_movie_count" type="int4">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    <changeSet author="Nikolas (generated)" id="1598575905507-33">
+        <addColumn tableName="movie_insights">
+            <column name="least_popular_genre_id" type="int8"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="Nikolas (generated)" id="1598575905507-34">
+        <addColumn tableName="movie_insights">
+            <column name="least_popular_genre_movie_count" type="int4">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    <changeSet author="Nikolas (generated)" id="1598575905507-35">
+        <addColumn tableName="movie_insights">
+            <column name="least_popular_producer_id" type="int8"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="Nikolas (generated)" id="1598575905507-36">
+        <addColumn tableName="movie_insights">
+            <column name="least_popular_producer_movie_count" type="int4">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    <changeSet author="Nikolas (generated)" id="1598575905507-37">
+        <addColumn tableName="movie_insights">
+            <column name="least_popular_production_company_id" type="int8"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="Nikolas (generated)" id="1598575905507-38">
+        <addColumn tableName="movie_insights">
+            <column name="least_popular_production_company_movie_count" type="int4">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    <changeSet author="Nikolas (generated)" id="1598575905507-39">
+        <addColumn tableName="movie_insights">
+            <column name="least_popular_production_country_id" type="int8"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="Nikolas (generated)" id="1598575905507-40">
+        <addColumn tableName="movie_insights">
+            <column name="least_popular_production_country_movie_count" type="int4">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    <changeSet author="Nikolas (generated)" id="1598575905507-41">
+        <addColumn tableName="movie_insights">
+            <column name="least_popular_writer_id" type="int8"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="Nikolas (generated)" id="1598575905507-42">
+        <addColumn tableName="movie_insights">
+            <column name="least_popular_writer_movie_count" type="int4">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    <changeSet author="Nikolas (generated)" id="1598575905507-43">
+        <addColumn tableName="movie_insights">
+            <column name="lowest_rated_logarithmic_movie_id" type="int8"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="Nikolas (generated)" id="1598575905507-44">
+        <addColumn tableName="movie_insights">
+            <column name="total_actors" type="int4">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    <changeSet author="Nikolas (generated)" id="1598575905507-45">
+        <addColumn tableName="movie_insights">
+            <column name="total_directors" type="int4">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    <changeSet author="Nikolas (generated)" id="1598575905507-46">
+        <addColumn tableName="movie_insights">
+            <column name="total_genres" type="int4">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    <changeSet author="Nikolas (generated)" id="1598575905507-47">
+        <addColumn tableName="movie_insights">
+            <column name="total_producers" type="int4">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    <changeSet author="Nikolas (generated)" id="1598575905507-48">
+        <addColumn tableName="movie_insights">
+            <column name="total_production_companies" type="int4">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    <changeSet author="Nikolas (generated)" id="1598575905507-49">
+        <addColumn tableName="movie_insights">
+            <column name="total_production_countries" type="int4">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    <changeSet author="Nikolas (generated)" id="1598575905507-50">
+        <addColumn tableName="movie_insights">
+            <column name="total_rated_movies" type="int4">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    <changeSet author="Nikolas (generated)" id="1598575905507-51">
+        <addColumn tableName="movie_insights">
+            <column name="total_writers" type="int4">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    <changeSet author="Nikolas (generated)" id="1598575905507-52">
+        <addForeignKeyConstraint baseColumnNames="least_popular_director_id" baseTableName="movie_insights" constraintName="FK1ihah1i05kxin1xv4gky1al1h" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="person" validate="true"/>
+    </changeSet>
+    <changeSet author="Nikolas (generated)" id="1598575905507-53">
+        <addForeignKeyConstraint baseColumnNames="least_popular_genre_id" baseTableName="movie_insights" constraintName="FK79xgr1tfehrsmlo2l0nmafyg4" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="genre" validate="true"/>
+    </changeSet>
+    <changeSet author="Nikolas (generated)" id="1598575905507-54">
+        <addForeignKeyConstraint baseColumnNames="least_popular_production_country_id" baseTableName="movie_insights" constraintName="FKd2is76w4qne8mnrayh08r1m9g" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="production_country" validate="true"/>
+    </changeSet>
+    <changeSet author="Nikolas (generated)" id="1598575905507-55">
+        <addForeignKeyConstraint baseColumnNames="lowest_rated_logarithmic_movie_id" baseTableName="movie_insights" constraintName="FKjhqc1vguv0s1153n1ohvlrkls" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="movie" validate="true"/>
+    </changeSet>
+    <changeSet author="Nikolas (generated)" id="1598575905507-56">
+        <addForeignKeyConstraint baseColumnNames="least_popular_production_company_id" baseTableName="movie_insights" constraintName="FKmj6yx67o759ejkpnbqohb36wd" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="production_company" validate="true"/>
+    </changeSet>
+    <changeSet author="Nikolas (generated)" id="1598575905507-57">
+        <addForeignKeyConstraint baseColumnNames="least_popular_writer_id" baseTableName="movie_insights" constraintName="FKojp0qomsqemywadeuy6q5h7wj" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="person" validate="true"/>
+    </changeSet>
+    <changeSet author="Nikolas (generated)" id="1598575905507-58">
+        <addForeignKeyConstraint baseColumnNames="least_popular_producer_id" baseTableName="movie_insights" constraintName="FKowhqt71xh5ulmr6x8baxa20ri" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="person" validate="true"/>
+    </changeSet>
+    <changeSet author="Nikolas (generated)" id="1598575905507-59">
+        <addForeignKeyConstraint baseColumnNames="highest_rated_logarithmic_movie_id" baseTableName="movie_insights" constraintName="FKqa0in9fg9kl9fm4ep5u3wglxn" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="movie" validate="true"/>
+    </changeSet>
+    <changeSet author="Nikolas (generated)" id="1598575905507-60">
+        <addForeignKeyConstraint baseColumnNames="least_popular_actor_id" baseTableName="movie_insights" constraintName="FKs45s18q75ppn0or1y9ey4c4s1" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="person" validate="true"/>
+    </changeSet>
+</databaseChangeLog>

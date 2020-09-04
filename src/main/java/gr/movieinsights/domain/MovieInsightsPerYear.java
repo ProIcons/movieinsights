@@ -23,14 +23,13 @@ import java.io.Serializable;
 @Entity
 @Table(name = "movie_insights_per_year")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-@org.springframework.data.elasticsearch.annotations.Document(indexName = "movieinsightsperyear")
-public class MovieInsightsPerYear implements Serializable {
+public class MovieInsightsPerYear implements Serializable, MovieInsightsContainerWithEntity<Integer> {
 
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
-    @SequenceGenerator(name = "sequenceGenerator")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "movieInsightsPerYearSequenceGenerator")
+    @SequenceGenerator(name = "movieInsightsPerYearSequenceGenerator")
     private Long id;
 
     @NotNull
@@ -57,6 +56,10 @@ public class MovieInsightsPerYear implements Serializable {
     @ManyToOne
     @JsonIgnoreProperties(value = "movieInsightsPerYears", allowSetters = true)
     private MovieInsightsPerGenre movieInsightsPerGenre;
+
+    @ManyToOne
+    @JsonIgnoreProperties(value = "movieInsightsPerYears", allowSetters = true)
+    private MovieInsightsGeneral movieInsightsGeneral;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
@@ -144,6 +147,19 @@ public class MovieInsightsPerYear implements Serializable {
     public void setMovieInsightsPerGenre(MovieInsightsPerGenre movieInsightsPerGenre) {
         this.movieInsightsPerGenre = movieInsightsPerGenre;
     }
+
+    public MovieInsightsGeneral getMovieInsightsGeneral() {
+        return movieInsightsGeneral;
+    }
+
+    public MovieInsightsPerYear movieInsightsGeneral(MovieInsightsGeneral movieInsightsGeneral) {
+        this.movieInsightsGeneral = movieInsightsGeneral;
+        return this;
+    }
+
+    public void setMovieInsightsGeneral(MovieInsightsGeneral movieInsightsGeneral) {
+        this.movieInsightsGeneral = movieInsightsGeneral;
+    }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override
@@ -169,5 +185,15 @@ public class MovieInsightsPerYear implements Serializable {
             "id=" + getId() +
             ", year=" + getYear() +
             "}";
+    }
+
+    @Override
+    public Integer getEntity() {
+        return year;
+    }
+
+    @Override
+    public void setEntity(Integer entity) {
+        year = entity;
     }
 }

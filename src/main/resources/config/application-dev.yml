@@ -15,7 +15,7 @@
 
 logging:
   level:
-    ROOT: WARN
+    ROOT: DEBUG
     io.github.jhipster: DEBUG
     gr.movieinsights: DEBUG
     gr.movieinsights.config.tmdb: WARN
@@ -51,8 +51,10 @@ spring:
       auto-commit: false
   jpa:
     database-platform: io.github.jhipster.domain.util.FixedPostgreSQL10Dialect
-    show-sql: false
+    show-sql: true
   data:
+    jest:
+      uri: http://localhost:9200
     elasticsearch:
       properties:
         cluster:
@@ -62,6 +64,10 @@ spring:
                 threshold_enabled: false
         path:
           home: target/elasticsearch
+    # see https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-nosql.html#boot-features-connecting-to-elasticsearch-jest
+  elasticsearch:
+    rest:
+      uris: http://localhost:9200
   liquibase:
     # Remove 'faker' if you do not want the sample data to be loaded automatically
     contexts: dev
@@ -109,12 +115,12 @@ jhipster:
     base-url: http://127.0.0.1:8080
   metrics:
     logs: # Reports metrics in the logs
-      enabled: false
+      enabled: true
       report-frequency: 60 # in seconds
   logging:
     use-json-format: false # By default, logs are not in Json format
     logstash: # Forward logs to logstash over a socket, used by LoggingConfiguration
-      enabled: false
+      enabled: true
       host: localhost
       port: 5000
       queue-size: 512

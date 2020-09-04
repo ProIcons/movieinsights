@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import gr.movieinsights.domain.enumeration.CreditRole;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.springframework.data.elasticsearch.annotations.Field;
+import org.springframework.data.elasticsearch.annotations.FieldType;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -24,14 +26,13 @@ import java.io.Serializable;
 @Entity
 @Table(name = "credit")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-@org.springframework.data.elasticsearch.annotations.Document(indexName = "credit")
 public class Credit implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
-    @SequenceGenerator(name = "sequenceGenerator")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "creditSequenceGenerator")
+    @SequenceGenerator(name = "creditSequenceGenerator")
     private Long id;
 
     @NotNull
@@ -53,6 +54,7 @@ public class Credit implements Serializable {
 
     @ManyToOne
     @JsonIgnoreProperties(value = "credits", allowSetters = true)
+    @Field(type = FieldType.Nested)
     private Movie movie;
 
     @ManyToOne

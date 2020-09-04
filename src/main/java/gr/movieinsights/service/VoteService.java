@@ -2,9 +2,8 @@ package gr.movieinsights.service;
 
 import gr.movieinsights.domain.Vote;
 import gr.movieinsights.repository.VoteRepository;
-import gr.movieinsights.repository.search.VoteSearchRepository;
-import gr.movieinsights.service.dto.VoteDTO;
-import gr.movieinsights.service.mapper.VoteMapper;
+import gr.movieinsights.service.dto.vote.VoteDTO;
+import gr.movieinsights.service.mapper.vote.VoteMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -14,9 +13,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
-
-import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 
 /**
  * Service Implementation for managing {@link Vote}.
@@ -31,12 +27,10 @@ public class VoteService {
 
     private final VoteMapper voteMapper;
 
-    private final VoteSearchRepository voteSearchRepository;
 
-    public VoteService(VoteRepository voteRepository, VoteMapper voteMapper, VoteSearchRepository voteSearchRepository) {
+    public VoteService(VoteRepository voteRepository, VoteMapper voteMapper) {
         this.voteRepository = voteRepository;
         this.voteMapper = voteMapper;
-        this.voteSearchRepository = voteSearchRepository;
     }
 
     /**
@@ -50,7 +44,6 @@ public class VoteService {
         Vote vote = voteMapper.toEntity(voteDTO);
         vote = voteRepository.save(vote);
         VoteDTO result = voteMapper.toDto(vote);
-        voteSearchRepository.save(vote);
         return result;
     }
 
@@ -89,21 +82,6 @@ public class VoteService {
     public void delete(Long id) {
         log.debug("Request to delete Vote : {}", id);
         voteRepository.deleteById(id);
-        voteSearchRepository.deleteById(id);
     }
 
-    /**
-     * Search for the vote corresponding to the query.
-     *
-     * @param query the query of the search.
-     * @return the list of entities.
-     */
-    @Transactional(readOnly = true)
-    public List<VoteDTO> search(String query) {
-        log.debug("Request to search Votes for query {}", query);
-        return StreamSupport
-            .stream(voteSearchRepository.search(queryStringQuery(query)).spliterator(), false)
-            .map(voteMapper::toDto)
-            .collect(Collectors.toList());
-    }
 }

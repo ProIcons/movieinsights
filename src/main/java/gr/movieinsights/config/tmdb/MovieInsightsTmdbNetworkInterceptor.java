@@ -47,7 +47,8 @@ public class MovieInsightsTmdbNetworkInterceptor implements Interceptor {
         }
 
         try {
-            return responseSupplier.apply(chain);
+            return rateLimitedIntercept(chain);
+            //return responseSupplier.apply(chain);
         } catch (Throwable throwable) {
             if (throwable instanceof IOException) {
                 throw (IOException) throwable;

@@ -3,14 +3,11 @@ package gr.movieinsights.web.rest;
 import gr.movieinsights.MovieInsightsApp;
 import gr.movieinsights.domain.Vote;
 import gr.movieinsights.repository.VoteRepository;
-import gr.movieinsights.repository.search.VoteSearchRepository;
 import gr.movieinsights.service.VoteService;
-import gr.movieinsights.service.dto.VoteDTO;
-import gr.movieinsights.service.mapper.VoteMapper;
-
+import gr.movieinsights.service.dto.vote.VoteDTO;
+import gr.movieinsights.service.mapper.vote.VoteMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,14 +17,12 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
+
 import javax.persistence.EntityManager;
-import java.util.Collections;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 import static org.hamcrest.Matchers.hasItem;
-import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -54,14 +49,6 @@ public class VoteResourceIT {
 
     @Autowired
     private VoteService voteService;
-
-    /**
-     * This repository is mocked in the gr.movieinsights.repository.search test package.
-     *
-     * @see gr.movieinsights.repository.search.VoteSearchRepositoryMockConfiguration
-     */
-    @Autowired
-    private VoteSearchRepository mockVoteSearchRepository;
 
     @Autowired
     private EntityManager em;
@@ -118,9 +105,6 @@ public class VoteResourceIT {
         Vote testVote = voteList.get(voteList.size() - 1);
         assertThat(testVote.getAverage()).isEqualTo(DEFAULT_AVERAGE);
         assertThat(testVote.getVotes()).isEqualTo(DEFAULT_VOTES);
-
-        // Validate the Vote in Elasticsearch
-        verify(mockVoteSearchRepository, times(1)).save(testVote);
     }
 
     @Test
@@ -141,9 +125,6 @@ public class VoteResourceIT {
         // Validate the Vote in the database
         List<Vote> voteList = voteRepository.findAll();
         assertThat(voteList).hasSize(databaseSizeBeforeCreate);
-
-        // Validate the Vote in Elasticsearch
-        verify(mockVoteSearchRepository, times(0)).save(vote);
     }
 
 
@@ -201,7 +182,7 @@ public class VoteResourceIT {
             .andExpect(jsonPath("$.[*].average").value(hasItem(DEFAULT_AVERAGE.doubleValue())))
             .andExpect(jsonPath("$.[*].votes").value(hasItem(DEFAULT_VOTES)));
     }
-    
+
     @Test
     @Transactional
     public void getVote() throws Exception {
@@ -252,9 +233,6 @@ public class VoteResourceIT {
         Vote testVote = voteList.get(voteList.size() - 1);
         assertThat(testVote.getAverage()).isEqualTo(UPDATED_AVERAGE);
         assertThat(testVote.getVotes()).isEqualTo(UPDATED_VOTES);
-
-        // Validate the Vote in Elasticsearch
-        verify(mockVoteSearchRepository, times(1)).save(testVote);
     }
 
     @Test
@@ -274,9 +252,6 @@ public class VoteResourceIT {
         // Validate the Vote in the database
         List<Vote> voteList = voteRepository.findAll();
         assertThat(voteList).hasSize(databaseSizeBeforeUpdate);
-
-        // Validate the Vote in Elasticsearch
-        verify(mockVoteSearchRepository, times(0)).save(vote);
     }
 
     @Test
@@ -295,26 +270,5 @@ public class VoteResourceIT {
         // Validate the database contains one less item
         List<Vote> voteList = voteRepository.findAll();
         assertThat(voteList).hasSize(databaseSizeBeforeDelete - 1);
-
-        // Validate the Vote in Elasticsearch
-        verify(mockVoteSearchRepository, times(1)).deleteById(vote.getId());
-    }
-
-    @Test
-    @Transactional
-    public void searchVote() throws Exception {
-        // Configure the mock search repository
-        // Initialize the database
-        voteRepository.saveAndFlush(vote);
-        when(mockVoteSearchRepository.search(queryStringQuery("id:" + vote.getId())))
-            .thenReturn(Collections.singletonList(vote));
-
-        // Search the vote
-        restVoteMockMvc.perform(get("/api/_search/votes?query=id:" + vote.getId()))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(vote.getId().intValue())))
-            .andExpect(jsonPath("$.[*].average").value(hasItem(DEFAULT_AVERAGE.doubleValue())))
-            .andExpect(jsonPath("$.[*].votes").value(hasItem(DEFAULT_VOTES)));
     }
 }

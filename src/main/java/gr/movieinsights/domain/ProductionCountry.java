@@ -23,14 +23,13 @@ import java.util.Set;
 @Entity
 @Table(name = "production_country")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-@org.springframework.data.elasticsearch.annotations.Document(indexName = "productioncountry")
-public class ProductionCountry implements Serializable, IdentifiedEntity {
+public class ProductionCountry implements Serializable, IdentifiedNamedEntity {
 
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
-    @SequenceGenerator(name = "sequenceGenerator")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "countrySequenceGenerator")
+    @SequenceGenerator(name = "countrySequenceGenerator")
     private Long id;
 
     @NotNull
@@ -101,6 +100,7 @@ public class ProductionCountry implements Serializable, IdentifiedEntity {
         movie.getCountries().remove(this);
         return this;
     }
+
 
     public void setMovies(Set<Movie> movies) {
         this.movies = movies;

@@ -2,6 +2,7 @@ package gr.movieinsights.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import gr.movieinsights.domain.enumeration.CreditRole;
+import gr.movieinsights.models.MovieInsightsContainerWithYearsWithEntity;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -29,14 +30,13 @@ import java.util.Set;
 @Entity
 @Table(name = "movie_insights_per_person")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-@org.springframework.data.elasticsearch.annotations.Document(indexName = "movieinsightsperperson")
-public class MovieInsightsPerPerson implements Serializable {
+public class MovieInsightsPerPerson implements Serializable, MovieInsightsContainerWithYearsWithEntity<Person> {
 
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
-    @SequenceGenerator(name = "sequenceGenerator")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "movieInsightsPerPersonSequenceGenerator")
+    @SequenceGenerator(name = "movieInsightsPerPersonSequenceGenerator")
     private Long id;
 
     @NotNull
@@ -155,5 +155,15 @@ public class MovieInsightsPerPerson implements Serializable {
             "id=" + getId() +
             ", as='" + getAs() + "'" +
             "}";
+    }
+
+    @Override
+    public Person getEntity() {
+        return person;
+    }
+
+    @Override
+    public void setEntity(Person entity) {
+        person = entity;
     }
 }

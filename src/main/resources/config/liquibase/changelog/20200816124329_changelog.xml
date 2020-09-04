@@ -1,0 +1,16 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-3.9.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
+    <changeSet author="Nikolas (generated)" id="1597581821654-6">
+        <addColumn tableName="movie_insights_general">
+            <column name="movie_insights_id" type="int8">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    <changeSet author="Nikolas (generated)" id="1597581821654-7">
+        <addUniqueConstraint columnNames="movie_insights_id" constraintName="UK_j8qjs6ra0okymymqawpja6lge" tableName="movie_insights_general"/>
+    </changeSet>
+    <changeSet author="Nikolas (generated)" id="1597581821654-8">
+        <addForeignKeyConstraint baseColumnNames="movie_insights_id" baseTableName="movie_insights_general" constraintName="FKq0rga8b4whxccwfwa3qeq4qm" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="movie_insights" validate="true"/>
+    </changeSet>
+</databaseChangeLog>

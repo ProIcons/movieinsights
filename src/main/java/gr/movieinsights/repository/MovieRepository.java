@@ -27,6 +27,14 @@ public interface MovieRepository extends TmdbIdentifiedRepository<Movie, Long>, 
     @Query("select distinct movie from Movie movie left join fetch movie.companies left join fetch movie.countries left join fetch movie.genres left join fetch movie.credits")
     List<Movie> findAllWithEagerRelationships();
 
+    @Query("select distinct movie from Movie movie left join fetch movie.companies left join fetch movie.countries left join fetch movie.genres left join fetch movie.credits where movie.releaseDate is not null and YEAR(movie.releaseDate) = :year")
+    List<Movie> findAllWithEagerRelationships(@Param("year") int year);
+
+    @Query("select distinct movie from Movie movie left join fetch movie.companies left join fetch movie.countries left join fetch movie.genres left join fetch movie.credits where movie.releaseDate is not null and YEAR(movie.releaseDate) > :year")
+    List<Movie> findAllWithEagerRelationshipsWhenYearIsAfterThan(@Param("year") int year);
+
+    List<Movie> findAll();
+
     @Query("select movie from Movie movie left join fetch movie.companies left join fetch movie.countries left join fetch movie.genres where movie.id =:id")
     Optional<Movie> findOneWithEagerRelationships(@Param("id") Long id);
 

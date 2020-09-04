@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.net.SocketFactory;
 import java.io.IOException;
+import java.net.Inet6Address;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.NetworkInterface;
@@ -122,6 +123,8 @@ public class AddressUtils {
                 Enumeration<InetAddress> enumAdds = ifc.getInetAddresses();
                 while (enumAdds.hasMoreElements()) {
                     InetAddress addr = enumAdds.nextElement();
+                    if (addr instanceof Inet6Address)
+                        continue;
                     if (!addr.isLinkLocalAddress() && !addr.isLoopbackAddress() && !addr.isAnyLocalAddress() && addr.isSiteLocalAddress()) {
                         if (checkAccessibilitySite == null || isIPAddressConnectableToInternet(addr, checkAccessibilitySite)) {
                             lAddrList.add(addr);

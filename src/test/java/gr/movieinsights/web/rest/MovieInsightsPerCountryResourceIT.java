@@ -1,18 +1,17 @@
+/*
 package gr.movieinsights.web.rest;
 
 import gr.movieinsights.MovieInsightsApp;
-import gr.movieinsights.domain.MovieInsightsPerCountry;
 import gr.movieinsights.domain.MovieInsights;
+import gr.movieinsights.domain.MovieInsightsPerCountry;
 import gr.movieinsights.domain.ProductionCountry;
 import gr.movieinsights.repository.MovieInsightsPerCountryRepository;
-import gr.movieinsights.repository.search.MovieInsightsPerCountrySearchRepository;
 import gr.movieinsights.service.MovieInsightsPerCountryService;
-import gr.movieinsights.service.dto.MovieInsightsPerCountryDTO;
-import gr.movieinsights.service.mapper.MovieInsightsPerCountryMapper;
-
+import gr.movieinsights.service.dto.movieinsights.country.MovieInsightsPerCountryDTO;
+import gr.movieinsights.service.mapper.movieinsights.country.MovieInsightsPerCountryMapper;
+import gr.movieinsights.web.rest.movieinsights.MovieInsightsPerCountryResource;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,20 +21,20 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
+
 import javax.persistence.EntityManager;
-import java.util.Collections;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 import static org.hamcrest.Matchers.hasItem;
-import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+*/
 /**
  * Integration tests for the {@link MovieInsightsPerCountryResource} REST controller.
- */
+ *//*
+
 @SpringBootTest(classes = MovieInsightsApp.class)
 @ExtendWith(MockitoExtension.class)
 @AutoConfigureMockMvc
@@ -51,14 +50,6 @@ public class MovieInsightsPerCountryResourceIT {
     @Autowired
     private MovieInsightsPerCountryService movieInsightsPerCountryService;
 
-    /**
-     * This repository is mocked in the gr.movieinsights.repository.search test package.
-     *
-     * @see gr.movieinsights.repository.search.MovieInsightsPerCountrySearchRepositoryMockConfiguration
-     */
-    @Autowired
-    private MovieInsightsPerCountrySearchRepository mockMovieInsightsPerCountrySearchRepository;
-
     @Autowired
     private EntityManager em;
 
@@ -67,12 +58,14 @@ public class MovieInsightsPerCountryResourceIT {
 
     private MovieInsightsPerCountry movieInsightsPerCountry;
 
-    /**
+    */
+/**
      * Create an entity for this test.
      *
      * This is a static method, as tests for other entities might also need it,
      * if they test an entity which requires the current entity.
-     */
+     *//*
+
     public static MovieInsightsPerCountry createEntity(EntityManager em) {
         MovieInsightsPerCountry movieInsightsPerCountry = new MovieInsightsPerCountry();
         // Add required entity
@@ -97,12 +90,14 @@ public class MovieInsightsPerCountryResourceIT {
         movieInsightsPerCountry.setCountry(productionCountry);
         return movieInsightsPerCountry;
     }
-    /**
+    */
+/**
      * Create an updated entity for this test.
      *
      * This is a static method, as tests for other entities might also need it,
      * if they test an entity which requires the current entity.
-     */
+     *//*
+
     public static MovieInsightsPerCountry createUpdatedEntity(EntityManager em) {
         MovieInsightsPerCountry movieInsightsPerCountry = new MovieInsightsPerCountry();
         // Add required entity
@@ -148,9 +143,6 @@ public class MovieInsightsPerCountryResourceIT {
         List<MovieInsightsPerCountry> movieInsightsPerCountryList = movieInsightsPerCountryRepository.findAll();
         assertThat(movieInsightsPerCountryList).hasSize(databaseSizeBeforeCreate + 1);
         MovieInsightsPerCountry testMovieInsightsPerCountry = movieInsightsPerCountryList.get(movieInsightsPerCountryList.size() - 1);
-
-        // Validate the MovieInsightsPerCountry in Elasticsearch
-        verify(mockMovieInsightsPerCountrySearchRepository, times(1)).save(testMovieInsightsPerCountry);
     }
 
     @Test
@@ -171,9 +163,6 @@ public class MovieInsightsPerCountryResourceIT {
         // Validate the MovieInsightsPerCountry in the database
         List<MovieInsightsPerCountry> movieInsightsPerCountryList = movieInsightsPerCountryRepository.findAll();
         assertThat(movieInsightsPerCountryList).hasSize(databaseSizeBeforeCreate);
-
-        // Validate the MovieInsightsPerCountry in Elasticsearch
-        verify(mockMovieInsightsPerCountrySearchRepository, times(0)).save(movieInsightsPerCountry);
     }
 
 
@@ -189,7 +178,7 @@ public class MovieInsightsPerCountryResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(movieInsightsPerCountry.getId().intValue())));
     }
-    
+
     @Test
     @Transactional
     public void getMovieInsightsPerCountry() throws Exception {
@@ -233,9 +222,6 @@ public class MovieInsightsPerCountryResourceIT {
         List<MovieInsightsPerCountry> movieInsightsPerCountryList = movieInsightsPerCountryRepository.findAll();
         assertThat(movieInsightsPerCountryList).hasSize(databaseSizeBeforeUpdate);
         MovieInsightsPerCountry testMovieInsightsPerCountry = movieInsightsPerCountryList.get(movieInsightsPerCountryList.size() - 1);
-
-        // Validate the MovieInsightsPerCountry in Elasticsearch
-        verify(mockMovieInsightsPerCountrySearchRepository, times(1)).save(testMovieInsightsPerCountry);
     }
 
     @Test
@@ -255,9 +241,6 @@ public class MovieInsightsPerCountryResourceIT {
         // Validate the MovieInsightsPerCountry in the database
         List<MovieInsightsPerCountry> movieInsightsPerCountryList = movieInsightsPerCountryRepository.findAll();
         assertThat(movieInsightsPerCountryList).hasSize(databaseSizeBeforeUpdate);
-
-        // Validate the MovieInsightsPerCountry in Elasticsearch
-        verify(mockMovieInsightsPerCountrySearchRepository, times(0)).save(movieInsightsPerCountry);
     }
 
     @Test
@@ -276,24 +259,6 @@ public class MovieInsightsPerCountryResourceIT {
         // Validate the database contains one less item
         List<MovieInsightsPerCountry> movieInsightsPerCountryList = movieInsightsPerCountryRepository.findAll();
         assertThat(movieInsightsPerCountryList).hasSize(databaseSizeBeforeDelete - 1);
-
-        // Validate the MovieInsightsPerCountry in Elasticsearch
-        verify(mockMovieInsightsPerCountrySearchRepository, times(1)).deleteById(movieInsightsPerCountry.getId());
-    }
-
-    @Test
-    @Transactional
-    public void searchMovieInsightsPerCountry() throws Exception {
-        // Configure the mock search repository
-        // Initialize the database
-        movieInsightsPerCountryRepository.saveAndFlush(movieInsightsPerCountry);
-        when(mockMovieInsightsPerCountrySearchRepository.search(queryStringQuery("id:" + movieInsightsPerCountry.getId())))
-            .thenReturn(Collections.singletonList(movieInsightsPerCountry));
-
-        // Search the movieInsightsPerCountry
-        restMovieInsightsPerCountryMockMvc.perform(get("/api/_search/movie-insights-per-countries?query=id:" + movieInsightsPerCountry.getId()))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(movieInsightsPerCountry.getId().intValue())));
     }
 }
+*/

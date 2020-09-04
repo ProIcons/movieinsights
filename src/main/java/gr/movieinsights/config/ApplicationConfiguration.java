@@ -1,6 +1,9 @@
 package gr.movieinsights.config;
 
+import gr.movieinsights.repository.GenreRepository;
+import gr.movieinsights.repository.MovieInsightsRepository;
 import gr.movieinsights.repository.VoteRepository;
+import gr.movieinsights.repository.search.GenreSearchRepository;
 import gr.movieinsights.service.ElasticsearchIndexService;
 import gr.movieinsights.service.ImportService;
 import gr.movieinsights.service.MovieInsightsService;
@@ -20,14 +23,20 @@ public class ApplicationConfiguration {
     private final VoteRepository voteRepository;
     private final ImportService importService;
     private final MovieInsightsService movieInsightsService;
-private final ElasticsearchIndexService elasticsearchIndexService;
+    private final MovieInsightsRepository movieInsightsRepository;
+    private final ElasticsearchIndexService elasticsearchIndexService;
+    private final GenreSearchRepository genreSearchRepository;
+    private final GenreRepository genreRepository;
 
 
-    public ApplicationConfiguration(VoteRepository voteRepository, ImportService importService, MovieInsightsService movieInsightsService, ElasticsearchIndexService elasticsearchIndexService) {
+    public ApplicationConfiguration(VoteRepository voteRepository, ImportService importService, MovieInsightsService movieInsightsService, MovieInsightsRepository movieInsightsRepository, ElasticsearchIndexService elasticsearchIndexService, GenreSearchRepository genreSearchRepository, GenreRepository genreRepository) {
         this.voteRepository = voteRepository;
         this.importService = importService;
         this.movieInsightsService = movieInsightsService;
+        this.movieInsightsRepository = movieInsightsRepository;
         this.elasticsearchIndexService = elasticsearchIndexService;
+        this.genreSearchRepository = genreSearchRepository;
+        this.genreRepository = genreRepository;
     }
 
     @PostConstruct
@@ -37,10 +46,12 @@ private final ElasticsearchIndexService elasticsearchIndexService;
 
             log.info("Importing Data...");
             importService.initializeDemoDatabase();
-
+        }
+        if (movieInsightsRepository.count() == 0) {
             log.info("Calculating Movie Insights...");
-            movieInsightsService.calculateMovieInsights();
-
+            movieInsightsService.generateAndSaveMovieInsights();
+        }
+        if (genreSearchRepository.count() == 0) {
             log.info("Reindexing Elasticsearch...");
             elasticsearchIndexService.reindexAll();
         }

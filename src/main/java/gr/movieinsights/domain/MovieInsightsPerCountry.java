@@ -1,6 +1,7 @@
 package gr.movieinsights.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import gr.movieinsights.models.MovieInsightsContainerWithYearsWithEntity;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -25,14 +26,13 @@ import java.util.Set;
 @Entity
 @Table(name = "movie_insights_per_country")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-@org.springframework.data.elasticsearch.annotations.Document(indexName = "movieinsightspercountry")
-public class MovieInsightsPerCountry implements Serializable {
+public class MovieInsightsPerCountry implements Serializable, MovieInsightsContainerWithYearsWithEntity<ProductionCountry> {
 
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
-    @SequenceGenerator(name = "sequenceGenerator")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "movieInsightsPerCountrySequenceGenerator")
+    @SequenceGenerator(name = "movieInsightsPerCountrySequenceGenerator")
     private Long id;
 
     @OneToOne(optional = false)
@@ -132,5 +132,15 @@ public class MovieInsightsPerCountry implements Serializable {
         return "MovieInsightsPerCountry{" +
             "id=" + getId() +
             "}";
+    }
+
+    @Override
+    public ProductionCountry getEntity() {
+        return country;
+    }
+
+    @Override
+    public void setEntity(ProductionCountry entity) {
+        country = entity;
     }
 }

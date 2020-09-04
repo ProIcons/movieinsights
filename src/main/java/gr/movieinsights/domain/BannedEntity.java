@@ -24,14 +24,13 @@ import java.time.LocalDate;
 @Entity
 @Table(name = "banned_entity")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-@org.springframework.data.elasticsearch.annotations.Document(indexName = "bannedentity")
 public class BannedEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
-    @SequenceGenerator(name = "sequenceGenerator")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "bannedEntitySequenceGenerator")
+    @SequenceGenerator(name = "bannedEntitySequenceGenerator")
     private Long id;
 
     @Column(name = "tmdb_id")

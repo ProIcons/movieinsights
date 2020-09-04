@@ -2,15 +2,15 @@ package gr.movieinsights.web.rest;
 
 import gr.movieinsights.MovieInsightsApp;
 import gr.movieinsights.domain.BannedEntity;
+import gr.movieinsights.domain.enumeration.BanReason;
+import gr.movieinsights.domain.enumeration.TmdbEntityType;
 import gr.movieinsights.repository.BannedEntityRepository;
-import gr.movieinsights.repository.search.BannedEntitySearchRepository;
 import gr.movieinsights.service.BannedEntityService;
 import gr.movieinsights.service.dto.BannedEntityDTO;
 import gr.movieinsights.service.mapper.BannedEntityMapper;
-
+import gr.movieinsights.web.rest.admin.BannedEntityResource;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,21 +20,17 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
+
 import javax.persistence.EntityManager;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.Collections;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 import static org.hamcrest.Matchers.hasItem;
-import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-import gr.movieinsights.domain.enumeration.TmdbEntityType;
-import gr.movieinsights.domain.enumeration.BanReason;
 /**
  * Integration tests for the {@link BannedEntityResource} REST controller.
  */
@@ -70,14 +66,6 @@ public class BannedEntityResourceIT {
 
     @Autowired
     private BannedEntityService bannedEntityService;
-
-    /**
-     * This repository is mocked in the gr.movieinsights.repository.search test package.
-     *
-     * @see gr.movieinsights.repository.search.BannedEntitySearchRepositoryMockConfiguration
-     */
-    @Autowired
-    private BannedEntitySearchRepository mockBannedEntitySearchRepository;
 
     @Autowired
     private EntityManager em;
@@ -147,8 +135,6 @@ public class BannedEntityResourceIT {
         assertThat(testBannedEntity.getReasonText()).isEqualTo(DEFAULT_REASON_TEXT);
         assertThat(testBannedEntity.getTimestamp()).isEqualTo(DEFAULT_TIMESTAMP);
 
-        // Validate the BannedEntity in Elasticsearch
-        verify(mockBannedEntitySearchRepository, times(1)).save(testBannedEntity);
     }
 
     @Test
@@ -169,9 +155,6 @@ public class BannedEntityResourceIT {
         // Validate the BannedEntity in the database
         List<BannedEntity> bannedEntityList = bannedEntityRepository.findAll();
         assertThat(bannedEntityList).hasSize(databaseSizeBeforeCreate);
-
-        // Validate the BannedEntity in Elasticsearch
-        verify(mockBannedEntitySearchRepository, times(0)).save(bannedEntity);
     }
 
 
@@ -253,7 +236,7 @@ public class BannedEntityResourceIT {
             .andExpect(jsonPath("$.[*].reasonText").value(hasItem(DEFAULT_REASON_TEXT)))
             .andExpect(jsonPath("$.[*].timestamp").value(hasItem(DEFAULT_TIMESTAMP.toString())));
     }
-    
+
     @Test
     @Transactional
     public void getBannedEntity() throws Exception {
@@ -316,9 +299,6 @@ public class BannedEntityResourceIT {
         assertThat(testBannedEntity.getReason()).isEqualTo(UPDATED_REASON);
         assertThat(testBannedEntity.getReasonText()).isEqualTo(UPDATED_REASON_TEXT);
         assertThat(testBannedEntity.getTimestamp()).isEqualTo(UPDATED_TIMESTAMP);
-
-        // Validate the BannedEntity in Elasticsearch
-        verify(mockBannedEntitySearchRepository, times(1)).save(testBannedEntity);
     }
 
     @Test
@@ -338,9 +318,6 @@ public class BannedEntityResourceIT {
         // Validate the BannedEntity in the database
         List<BannedEntity> bannedEntityList = bannedEntityRepository.findAll();
         assertThat(bannedEntityList).hasSize(databaseSizeBeforeUpdate);
-
-        // Validate the BannedEntity in Elasticsearch
-        verify(mockBannedEntitySearchRepository, times(0)).save(bannedEntity);
     }
 
     @Test
@@ -359,30 +336,5 @@ public class BannedEntityResourceIT {
         // Validate the database contains one less item
         List<BannedEntity> bannedEntityList = bannedEntityRepository.findAll();
         assertThat(bannedEntityList).hasSize(databaseSizeBeforeDelete - 1);
-
-        // Validate the BannedEntity in Elasticsearch
-        verify(mockBannedEntitySearchRepository, times(1)).deleteById(bannedEntity.getId());
-    }
-
-    @Test
-    @Transactional
-    public void searchBannedEntity() throws Exception {
-        // Configure the mock search repository
-        // Initialize the database
-        bannedEntityRepository.saveAndFlush(bannedEntity);
-        when(mockBannedEntitySearchRepository.search(queryStringQuery("id:" + bannedEntity.getId())))
-            .thenReturn(Collections.singletonList(bannedEntity));
-
-        // Search the bannedEntity
-        restBannedEntityMockMvc.perform(get("/api/_search/banned-entities?query=id:" + bannedEntity.getId()))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(bannedEntity.getId().intValue())))
-            .andExpect(jsonPath("$.[*].tmdbId").value(hasItem(DEFAULT_TMDB_ID.intValue())))
-            .andExpect(jsonPath("$.[*].imdbId").value(hasItem(DEFAULT_IMDB_ID)))
-            .andExpect(jsonPath("$.[*].type").value(hasItem(DEFAULT_TYPE.toString())))
-            .andExpect(jsonPath("$.[*].reason").value(hasItem(DEFAULT_REASON.toString())))
-            .andExpect(jsonPath("$.[*].reasonText").value(hasItem(DEFAULT_REASON_TEXT)))
-            .andExpect(jsonPath("$.[*].timestamp").value(hasItem(DEFAULT_TIMESTAMP.toString())));
     }
 }

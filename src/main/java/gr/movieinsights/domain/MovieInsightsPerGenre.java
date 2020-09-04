@@ -1,6 +1,7 @@
 package gr.movieinsights.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import gr.movieinsights.models.MovieInsightsContainerWithYearsWithEntity;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -25,14 +26,13 @@ import java.util.Set;
 @Entity
 @Table(name = "movie_insights_per_genre")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-@org.springframework.data.elasticsearch.annotations.Document(indexName = "movieinsightspergenre")
-public class MovieInsightsPerGenre implements Serializable {
+public class MovieInsightsPerGenre implements Serializable, MovieInsightsContainerWithYearsWithEntity<Genre> {
 
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
-    @SequenceGenerator(name = "sequenceGenerator")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "movieInsightsPerGenreSequenceGenerator")
+    @SequenceGenerator(name = "movieInsightsPerGenreSequenceGenerator")
     private Long id;
 
     @OneToOne(optional = false)
@@ -132,5 +132,15 @@ public class MovieInsightsPerGenre implements Serializable {
         return "MovieInsightsPerGenre{" +
             "id=" + getId() +
             "}";
+    }
+
+    @Override
+    public Genre getEntity() {
+        return genre;
+    }
+
+    @Override
+    public void setEntity(Genre entity) {
+        genre = entity;
     }
 }

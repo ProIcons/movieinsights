@@ -1,0 +1,48 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-3.9.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
+    <changeSet author="Nikolas (generated)" id="1598087586928-1">
+        <createSequence incrementBy="50" sequenceName="banned_entity_sequence_generator" startValue="1"/>
+    </changeSet>
+    <changeSet author="Nikolas (generated)" id="1598087586928-2">
+        <createSequence incrementBy="50" sequenceName="company_sequence_generator" startValue="1"/>
+    </changeSet>
+    <changeSet author="Nikolas (generated)" id="1598087586928-3">
+        <createSequence incrementBy="50" sequenceName="country_sequence_generator" startValue="1"/>
+    </changeSet>
+    <changeSet author="Nikolas (generated)" id="1598087586928-4">
+        <createSequence incrementBy="50" sequenceName="credit_sequence_generator" startValue="1"/>
+    </changeSet>
+    <changeSet author="Nikolas (generated)" id="1598087586928-5">
+        <createSequence incrementBy="50" sequenceName="genre_sequence_generator" startValue="1"/>
+    </changeSet>
+    <changeSet author="Nikolas (generated)" id="1598087586928-6">
+        <createSequence incrementBy="50" sequenceName="movie_insights_general_sequence_generator" startValue="1"/>
+    </changeSet>
+    <changeSet author="Nikolas (generated)" id="1598087586928-7">
+        <createSequence incrementBy="50" sequenceName="movie_insights_per_company_sequence_generator" startValue="1"/>
+    </changeSet>
+    <changeSet author="Nikolas (generated)" id="1598087586928-8">
+        <createSequence incrementBy="50" sequenceName="movie_insights_per_country_sequence_generator" startValue="1"/>
+    </changeSet>
+    <changeSet author="Nikolas (generated)" id="1598087586928-9">
+        <createSequence incrementBy="50" sequenceName="movie_insights_per_genre_sequence_generator" startValue="1"/>
+    </changeSet>
+    <changeSet author="Nikolas (generated)" id="1598087586928-10">
+        <createSequence incrementBy="50" sequenceName="movie_insights_per_person_sequence_generator" startValue="1"/>
+    </changeSet>
+    <changeSet author="Nikolas (generated)" id="1598087586928-11">
+        <createSequence incrementBy="50" sequenceName="movie_insights_per_year_sequence_generator" startValue="1"/>
+    </changeSet>
+    <changeSet author="Nikolas (generated)" id="1598087586928-12">
+        <createSequence incrementBy="50" sequenceName="movie_insights_sequence_generator" startValue="1"/>
+    </changeSet>
+    <changeSet author="Nikolas (generated)" id="1598087586928-13">
+        <createSequence incrementBy="50" sequenceName="movie_sequence_generator" startValue="1"/>
+    </changeSet>
+    <changeSet author="Nikolas (generated)" id="1598087586928-14">
+        <createSequence incrementBy="50" sequenceName="person_sequence_generator" startValue="1"/>
+    </changeSet>
+    <changeSet author="Nikolas (generated)" id="1598087586928-15">
+        <createSequence incrementBy="50" sequenceName="vote_sequence_generator" startValue="1"/>
+    </changeSet>
+</databaseChangeLog>

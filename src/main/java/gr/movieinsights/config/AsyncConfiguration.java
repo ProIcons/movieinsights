@@ -35,6 +35,13 @@ public class AsyncConfiguration implements AsyncConfigurer {
         executor.setMaxPoolSize(taskExecutionProperties.getPool().getMaxSize());
         executor.setQueueCapacity(taskExecutionProperties.getPool().getQueueCapacity());
         executor.setThreadNamePrefix(taskExecutionProperties.getThreadNamePrefix());
+        executor.setRejectedExecutionHandler((task, executor1) -> {
+            try {
+                executor1.getQueue().put(task);
+            } catch (InterruptedException e) {
+                throw new RuntimeException("Thread limit exceeded replacing blocked worker");
+            }
+        });
         return new ExceptionHandlingAsyncTaskExecutor(executor);
     }
 

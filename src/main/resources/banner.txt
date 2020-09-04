@@ -1,10 +1,13 @@
+${AnsiColor.WHITE}██████████████████████████████████████████████████████████████████████████████████████████████████████
 
-  ${AnsiColor.GREEN}      ██╗${AnsiColor.CYAN} ██╗   ██╗ ████████╗ ███████╗   ██████╗ ████████╗ ████████╗ ███████╗
-  ${AnsiColor.GREEN}      ██║${AnsiColor.CYAN} ██║   ██║ ╚══██╔══╝ ██╔═══██╗ ██╔════╝ ╚══██╔══╝ ██╔═════╝ ██╔═══██╗
-  ${AnsiColor.GREEN}      ██║${AnsiColor.CYAN} ████████║    ██║    ███████╔╝ ╚█████╗     ██║    ██████╗   ███████╔╝
-  ${AnsiColor.GREEN}██╗   ██║${AnsiColor.CYAN} ██╔═══██║    ██║    ██╔════╝   ╚═══██╗    ██║    ██╔═══╝   ██╔══██║
-  ${AnsiColor.GREEN}╚██████╔╝${AnsiColor.CYAN} ██║   ██║ ████████╗ ██║       ██████╔╝    ██║    ████████╗ ██║  ╚██╗
-  ${AnsiColor.GREEN} ╚═════╝ ${AnsiColor.CYAN} ╚═╝   ╚═╝ ╚═══════╝ ╚═╝       ╚═════╝     ╚═╝    ╚═══════╝ ╚═╝   ╚═╝
+${AnsiColor.BLUE}███╗   ███╗${AnsiColor.BRIGHT_BLUE} ██████╗ ██╗   ██╗██╗███████╗    ${AnsiColor.BLUE}██╗${AnsiColor.BRIGHT_BLUE}███╗   ██╗███████╗██╗ ██████╗ ██╗  ██╗████████╗███████╗
+${AnsiColor.BLUE}████╗ ████║${AnsiColor.BRIGHT_BLUE}██╔═══██╗██║   ██║██║██╔════╝    ${AnsiColor.BLUE}██║${AnsiColor.BRIGHT_BLUE}████╗  ██║██╔════╝██║██╔════╝ ██║  ██║╚══██╔══╝██╔════╝
+${AnsiColor.BLUE}██╔████╔██║${AnsiColor.BRIGHT_BLUE}██║   ██║██║   ██║██║█████╗      ${AnsiColor.BLUE}██║${AnsiColor.BRIGHT_BLUE}██╔██╗ ██║███████╗██║██║  ███╗███████║   ██║   ███████╗
+${AnsiColor.BLUE}██║╚██╔╝██║${AnsiColor.BRIGHT_BLUE}██║   ██║╚██╗ ██╔╝██║██╔══╝      ${AnsiColor.BLUE}██║${AnsiColor.BRIGHT_BLUE}██║╚██╗██║╚════██║██║██║   ██║██╔══██║   ██║   ╚════██║
+${AnsiColor.BLUE}██║ ╚═╝ ██║${AnsiColor.BRIGHT_BLUE}╚██████╔╝ ╚████╔╝ ██║███████╗    ${AnsiColor.BLUE}██║${AnsiColor.BRIGHT_BLUE}██║ ╚████║███████║██║╚██████╔╝██║  ██║   ██║   ███████║
+${AnsiColor.BLUE}╚═╝     ╚═╝${AnsiColor.BRIGHT_BLUE} ╚═════╝   ╚═══╝  ╚═╝╚══════╝    ${AnsiColor.BLUE}╚═╝${AnsiColor.BRIGHT_BLUE}╚═╝  ╚═══╝╚══════╝╚═╝ ╚═════╝ ╚═╝  ╚═╝   ╚═╝   ╚══════╝
 
-${AnsiColor.BRIGHT_BLUE}:: JHipster 🤓  :: Running Spring Boot ${spring-boot.version} ::
-:: https://www.jhipster.tech ::${AnsiColor.DEFAULT}
+${AnsiColor.WHITE}██████████████████████████████████████████████████████████████████████████████████████████████████████
+${AnsiColor.BRIGHT_BLUE}:: MovieInsights ${application.formatted-version} Developed by ${AnsiColor.BLUE}Nikolas Mavropoulos${AnsiColor.BRIGHT_BLUE} ::
+:: Powered By ${AnsiColor.BLUE}JHipster${AnsiColor.BRIGHT_BLUE} :: Running Spring Boot ${spring-boot.formatted-version} ::
+:: https://www.movieinsights.gr ::${AnsiColor.DEFAULT}

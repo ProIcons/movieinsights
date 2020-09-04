@@ -1,18 +1,18 @@
+/*
 package gr.movieinsights.web.rest;
 
 import gr.movieinsights.MovieInsightsApp;
-import gr.movieinsights.domain.MovieInsightsPerPerson;
 import gr.movieinsights.domain.MovieInsights;
+import gr.movieinsights.domain.MovieInsightsPerPerson;
 import gr.movieinsights.domain.Person;
+import gr.movieinsights.domain.enumeration.CreditRole;
 import gr.movieinsights.repository.MovieInsightsPerPersonRepository;
-import gr.movieinsights.repository.search.MovieInsightsPerPersonSearchRepository;
 import gr.movieinsights.service.MovieInsightsPerPersonService;
-import gr.movieinsights.service.dto.MovieInsightsPerPersonDTO;
-import gr.movieinsights.service.mapper.MovieInsightsPerPersonMapper;
-
+import gr.movieinsights.service.dto.movieinsights.person.MovieInsightsPerPersonDTO;
+import gr.movieinsights.service.mapper.movieinsights.person.MovieInsightsPerPersonMapper;
+import gr.movieinsights.web.rest.movieinsights.MovieInsightsPerPersonResource;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,21 +22,19 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
+
 import javax.persistence.EntityManager;
-import java.util.Collections;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 import static org.hamcrest.Matchers.hasItem;
-import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
-import gr.movieinsights.domain.enumeration.CreditRole;
+*/
 /**
  * Integration tests for the {@link MovieInsightsPerPersonResource} REST controller.
- */
+ *//*
+
 @SpringBootTest(classes = MovieInsightsApp.class)
 @ExtendWith(MockitoExtension.class)
 @AutoConfigureMockMvc
@@ -55,14 +53,6 @@ public class MovieInsightsPerPersonResourceIT {
     @Autowired
     private MovieInsightsPerPersonService movieInsightsPerPersonService;
 
-    /**
-     * This repository is mocked in the gr.movieinsights.repository.search test package.
-     *
-     * @see gr.movieinsights.repository.search.MovieInsightsPerPersonSearchRepositoryMockConfiguration
-     */
-    @Autowired
-    private MovieInsightsPerPersonSearchRepository mockMovieInsightsPerPersonSearchRepository;
-
     @Autowired
     private EntityManager em;
 
@@ -71,12 +61,14 @@ public class MovieInsightsPerPersonResourceIT {
 
     private MovieInsightsPerPerson movieInsightsPerPerson;
 
-    /**
+    */
+/**
      * Create an entity for this test.
      *
      * This is a static method, as tests for other entities might also need it,
      * if they test an entity which requires the current entity.
-     */
+     *//*
+
     public static MovieInsightsPerPerson createEntity(EntityManager em) {
         MovieInsightsPerPerson movieInsightsPerPerson = new MovieInsightsPerPerson()
             .as(DEFAULT_AS);
@@ -102,12 +94,14 @@ public class MovieInsightsPerPersonResourceIT {
         movieInsightsPerPerson.setPerson(person);
         return movieInsightsPerPerson;
     }
-    /**
+    */
+/**
      * Create an updated entity for this test.
      *
      * This is a static method, as tests for other entities might also need it,
      * if they test an entity which requires the current entity.
-     */
+     *//*
+
     public static MovieInsightsPerPerson createUpdatedEntity(EntityManager em) {
         MovieInsightsPerPerson movieInsightsPerPerson = new MovieInsightsPerPerson()
             .as(UPDATED_AS);
@@ -155,9 +149,6 @@ public class MovieInsightsPerPersonResourceIT {
         assertThat(movieInsightsPerPersonList).hasSize(databaseSizeBeforeCreate + 1);
         MovieInsightsPerPerson testMovieInsightsPerPerson = movieInsightsPerPersonList.get(movieInsightsPerPersonList.size() - 1);
         assertThat(testMovieInsightsPerPerson.getAs()).isEqualTo(DEFAULT_AS);
-
-        // Validate the MovieInsightsPerPerson in Elasticsearch
-        verify(mockMovieInsightsPerPersonSearchRepository, times(1)).save(testMovieInsightsPerPerson);
     }
 
     @Test
@@ -178,9 +169,6 @@ public class MovieInsightsPerPersonResourceIT {
         // Validate the MovieInsightsPerPerson in the database
         List<MovieInsightsPerPerson> movieInsightsPerPersonList = movieInsightsPerPersonRepository.findAll();
         assertThat(movieInsightsPerPersonList).hasSize(databaseSizeBeforeCreate);
-
-        // Validate the MovieInsightsPerPerson in Elasticsearch
-        verify(mockMovieInsightsPerPersonSearchRepository, times(0)).save(movieInsightsPerPerson);
     }
 
 
@@ -217,7 +205,7 @@ public class MovieInsightsPerPersonResourceIT {
             .andExpect(jsonPath("$.[*].id").value(hasItem(movieInsightsPerPerson.getId().intValue())))
             .andExpect(jsonPath("$.[*].as").value(hasItem(DEFAULT_AS.toString())));
     }
-    
+
     @Test
     @Transactional
     public void getMovieInsightsPerPerson() throws Exception {
@@ -265,9 +253,6 @@ public class MovieInsightsPerPersonResourceIT {
         assertThat(movieInsightsPerPersonList).hasSize(databaseSizeBeforeUpdate);
         MovieInsightsPerPerson testMovieInsightsPerPerson = movieInsightsPerPersonList.get(movieInsightsPerPersonList.size() - 1);
         assertThat(testMovieInsightsPerPerson.getAs()).isEqualTo(UPDATED_AS);
-
-        // Validate the MovieInsightsPerPerson in Elasticsearch
-        verify(mockMovieInsightsPerPersonSearchRepository, times(1)).save(testMovieInsightsPerPerson);
     }
 
     @Test
@@ -287,9 +272,6 @@ public class MovieInsightsPerPersonResourceIT {
         // Validate the MovieInsightsPerPerson in the database
         List<MovieInsightsPerPerson> movieInsightsPerPersonList = movieInsightsPerPersonRepository.findAll();
         assertThat(movieInsightsPerPersonList).hasSize(databaseSizeBeforeUpdate);
-
-        // Validate the MovieInsightsPerPerson in Elasticsearch
-        verify(mockMovieInsightsPerPersonSearchRepository, times(0)).save(movieInsightsPerPerson);
     }
 
     @Test
@@ -308,25 +290,6 @@ public class MovieInsightsPerPersonResourceIT {
         // Validate the database contains one less item
         List<MovieInsightsPerPerson> movieInsightsPerPersonList = movieInsightsPerPersonRepository.findAll();
         assertThat(movieInsightsPerPersonList).hasSize(databaseSizeBeforeDelete - 1);
-
-        // Validate the MovieInsightsPerPerson in Elasticsearch
-        verify(mockMovieInsightsPerPersonSearchRepository, times(1)).deleteById(movieInsightsPerPerson.getId());
-    }
-
-    @Test
-    @Transactional
-    public void searchMovieInsightsPerPerson() throws Exception {
-        // Configure the mock search repository
-        // Initialize the database
-        movieInsightsPerPersonRepository.saveAndFlush(movieInsightsPerPerson);
-        when(mockMovieInsightsPerPersonSearchRepository.search(queryStringQuery("id:" + movieInsightsPerPerson.getId())))
-            .thenReturn(Collections.singletonList(movieInsightsPerPerson));
-
-        // Search the movieInsightsPerPerson
-        restMovieInsightsPerPersonMockMvc.perform(get("/api/_search/movie-insights-per-people?query=id:" + movieInsightsPerPerson.getId()))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(movieInsightsPerPerson.getId().intValue())))
-            .andExpect(jsonPath("$.[*].as").value(hasItem(DEFAULT_AS.toString())));
     }
 }
+*/

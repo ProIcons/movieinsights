@@ -2,15 +2,13 @@ package gr.movieinsights.web.rest;
 
 import gr.movieinsights.MovieInsightsApp;
 import gr.movieinsights.domain.Credit;
+import gr.movieinsights.domain.enumeration.CreditRole;
 import gr.movieinsights.repository.CreditRepository;
-import gr.movieinsights.repository.search.CreditSearchRepository;
 import gr.movieinsights.service.CreditService;
-import gr.movieinsights.service.dto.CreditDTO;
-import gr.movieinsights.service.mapper.CreditMapper;
-
+import gr.movieinsights.service.dto.credit.CreditDTO;
+import gr.movieinsights.service.mapper.credit.CreditMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,18 +18,15 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
+
 import javax.persistence.EntityManager;
-import java.util.Collections;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 import static org.hamcrest.Matchers.hasItem;
-import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-import gr.movieinsights.domain.enumeration.CreditRole;
 /**
  * Integration tests for the {@link CreditResource} REST controller.
  */
@@ -61,14 +56,6 @@ public class CreditResourceIT {
 
     @Autowired
     private CreditService creditService;
-
-    /**
-     * This repository is mocked in the gr.movieinsights.repository.search test package.
-     *
-     * @see gr.movieinsights.repository.search.CreditSearchRepositoryMockConfiguration
-     */
-    @Autowired
-    private CreditSearchRepository mockCreditSearchRepository;
 
     @Autowired
     private EntityManager em;
@@ -131,9 +118,6 @@ public class CreditResourceIT {
         assertThat(testCredit.getPersonTmdbId()).isEqualTo(DEFAULT_PERSON_TMDB_ID);
         assertThat(testCredit.getMovieTmdbId()).isEqualTo(DEFAULT_MOVIE_TMDB_ID);
         assertThat(testCredit.getRole()).isEqualTo(DEFAULT_ROLE);
-
-        // Validate the Credit in Elasticsearch
-        verify(mockCreditSearchRepository, times(1)).save(testCredit);
     }
 
     @Test
@@ -154,9 +138,6 @@ public class CreditResourceIT {
         // Validate the Credit in the database
         List<Credit> creditList = creditRepository.findAll();
         assertThat(creditList).hasSize(databaseSizeBeforeCreate);
-
-        // Validate the Credit in Elasticsearch
-        verify(mockCreditSearchRepository, times(0)).save(credit);
     }
 
 
@@ -256,7 +237,7 @@ public class CreditResourceIT {
             .andExpect(jsonPath("$.[*].movieTmdbId").value(hasItem(DEFAULT_MOVIE_TMDB_ID.intValue())))
             .andExpect(jsonPath("$.[*].role").value(hasItem(DEFAULT_ROLE.toString())));
     }
-    
+
     @Test
     @Transactional
     public void getCredit() throws Exception {
@@ -313,9 +294,6 @@ public class CreditResourceIT {
         assertThat(testCredit.getPersonTmdbId()).isEqualTo(UPDATED_PERSON_TMDB_ID);
         assertThat(testCredit.getMovieTmdbId()).isEqualTo(UPDATED_MOVIE_TMDB_ID);
         assertThat(testCredit.getRole()).isEqualTo(UPDATED_ROLE);
-
-        // Validate the Credit in Elasticsearch
-        verify(mockCreditSearchRepository, times(1)).save(testCredit);
     }
 
     @Test
@@ -335,9 +313,6 @@ public class CreditResourceIT {
         // Validate the Credit in the database
         List<Credit> creditList = creditRepository.findAll();
         assertThat(creditList).hasSize(databaseSizeBeforeUpdate);
-
-        // Validate the Credit in Elasticsearch
-        verify(mockCreditSearchRepository, times(0)).save(credit);
     }
 
     @Test
@@ -356,28 +331,5 @@ public class CreditResourceIT {
         // Validate the database contains one less item
         List<Credit> creditList = creditRepository.findAll();
         assertThat(creditList).hasSize(databaseSizeBeforeDelete - 1);
-
-        // Validate the Credit in Elasticsearch
-        verify(mockCreditSearchRepository, times(1)).deleteById(credit.getId());
-    }
-
-    @Test
-    @Transactional
-    public void searchCredit() throws Exception {
-        // Configure the mock search repository
-        // Initialize the database
-        creditRepository.saveAndFlush(credit);
-        when(mockCreditSearchRepository.search(queryStringQuery("id:" + credit.getId())))
-            .thenReturn(Collections.singletonList(credit));
-
-        // Search the credit
-        restCreditMockMvc.perform(get("/api/_search/credits?query=id:" + credit.getId()))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(credit.getId().intValue())))
-            .andExpect(jsonPath("$.[*].creditId").value(hasItem(DEFAULT_CREDIT_ID)))
-            .andExpect(jsonPath("$.[*].personTmdbId").value(hasItem(DEFAULT_PERSON_TMDB_ID.intValue())))
-            .andExpect(jsonPath("$.[*].movieTmdbId").value(hasItem(DEFAULT_MOVIE_TMDB_ID.intValue())))
-            .andExpect(jsonPath("$.[*].role").value(hasItem(DEFAULT_ROLE.toString())));
     }
 }

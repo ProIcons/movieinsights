@@ -6,7 +6,7 @@
     xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd
                         http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
 
-    
+
     <!--
         Added the entity Movie.
     -->
@@ -21,7 +21,7 @@
             <column name="name" type="varchar(255)">
                 <constraints nullable="false" />
             </column>
-            <column name="tagline" type="varchar(255)">
+            <column name="tagline" type="${clobType}">
                 <constraints nullable="true" />
             </column>
             <column name="description" type="${clobType}">
@@ -73,7 +73,7 @@
         </createTable>
 
         <addPrimaryKey columnNames="movie_id, companies_id" tableName="movie_companies"/>
-        
+
         <createTable tableName="movie_countries">
             <column name="countries_id" type="bigint">
                 <constraints nullable="false"/>
@@ -84,7 +84,7 @@
         </createTable>
 
         <addPrimaryKey columnNames="movie_id, countries_id" tableName="movie_countries"/>
-        
+
         <createTable tableName="movie_genres">
             <column name="genres_id" type="bigint">
                 <constraints nullable="false"/>
@@ -95,7 +95,7 @@
         </createTable>
 
         <addPrimaryKey columnNames="movie_id, genres_id" tableName="movie_genres"/>
-        
+
     </changeSet>
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here -->
 

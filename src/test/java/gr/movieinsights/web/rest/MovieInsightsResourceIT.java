@@ -3,14 +3,12 @@ package gr.movieinsights.web.rest;
 import gr.movieinsights.MovieInsightsApp;
 import gr.movieinsights.domain.MovieInsights;
 import gr.movieinsights.repository.MovieInsightsRepository;
-import gr.movieinsights.repository.search.MovieInsightsSearchRepository;
 import gr.movieinsights.service.MovieInsightsService;
-import gr.movieinsights.service.dto.MovieInsightsDTO;
-import gr.movieinsights.service.mapper.MovieInsightsMapper;
-
+import gr.movieinsights.service.dto.movieinsights.MovieInsightsDTO;
+import gr.movieinsights.service.mapper.movieinsights.MovieInsightsMapper;
+import gr.movieinsights.web.rest.movieinsights.MovieInsightsResource;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,14 +18,12 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
+
 import javax.persistence.EntityManager;
-import java.util.Collections;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 import static org.hamcrest.Matchers.hasItem;
-import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -81,14 +77,6 @@ public class MovieInsightsResourceIT {
 
     @Autowired
     private MovieInsightsService movieInsightsService;
-
-    /**
-     * This repository is mocked in the gr.movieinsights.repository.search test package.
-     *
-     * @see gr.movieinsights.repository.search.MovieInsightsSearchRepositoryMockConfiguration
-     */
-    @Autowired
-    private MovieInsightsSearchRepository mockMovieInsightsSearchRepository;
 
     @Autowired
     private EntityManager em;
@@ -172,9 +160,6 @@ public class MovieInsightsResourceIT {
         assertThat(testMovieInsights.getMostPopularDirectorMovieCount()).isEqualTo(DEFAULT_MOST_POPULAR_DIRECTOR_MOVIE_COUNT);
         assertThat(testMovieInsights.getMostPopularProductionCompanyMovieCount()).isEqualTo(DEFAULT_MOST_POPULAR_PRODUCTION_COMPANY_MOVIE_COUNT);
         assertThat(testMovieInsights.getMostPopularProductionCountryMovieCount()).isEqualTo(DEFAULT_MOST_POPULAR_PRODUCTION_COUNTRY_MOVIE_COUNT);
-
-        // Validate the MovieInsights in Elasticsearch
-        verify(mockMovieInsightsSearchRepository, times(1)).save(testMovieInsights);
     }
 
     @Test
@@ -195,9 +180,6 @@ public class MovieInsightsResourceIT {
         // Validate the MovieInsights in the database
         List<MovieInsights> movieInsightsList = movieInsightsRepository.findAll();
         assertThat(movieInsightsList).hasSize(databaseSizeBeforeCreate);
-
-        // Validate the MovieInsights in Elasticsearch
-        verify(mockMovieInsightsSearchRepository, times(0)).save(movieInsights);
     }
 
 
@@ -444,7 +426,7 @@ public class MovieInsightsResourceIT {
             .andExpect(jsonPath("$.[*].mostPopularProductionCompanyMovieCount").value(hasItem(DEFAULT_MOST_POPULAR_PRODUCTION_COMPANY_MOVIE_COUNT)))
             .andExpect(jsonPath("$.[*].mostPopularProductionCountryMovieCount").value(hasItem(DEFAULT_MOST_POPULAR_PRODUCTION_COUNTRY_MOVIE_COUNT)));
     }
-    
+
     @Test
     @Transactional
     public void getMovieInsights() throws Exception {
@@ -522,9 +504,6 @@ public class MovieInsightsResourceIT {
         assertThat(testMovieInsights.getMostPopularDirectorMovieCount()).isEqualTo(UPDATED_MOST_POPULAR_DIRECTOR_MOVIE_COUNT);
         assertThat(testMovieInsights.getMostPopularProductionCompanyMovieCount()).isEqualTo(UPDATED_MOST_POPULAR_PRODUCTION_COMPANY_MOVIE_COUNT);
         assertThat(testMovieInsights.getMostPopularProductionCountryMovieCount()).isEqualTo(UPDATED_MOST_POPULAR_PRODUCTION_COUNTRY_MOVIE_COUNT);
-
-        // Validate the MovieInsights in Elasticsearch
-        verify(mockMovieInsightsSearchRepository, times(1)).save(testMovieInsights);
     }
 
     @Test
@@ -544,9 +523,6 @@ public class MovieInsightsResourceIT {
         // Validate the MovieInsights in the database
         List<MovieInsights> movieInsightsList = movieInsightsRepository.findAll();
         assertThat(movieInsightsList).hasSize(databaseSizeBeforeUpdate);
-
-        // Validate the MovieInsights in Elasticsearch
-        verify(mockMovieInsightsSearchRepository, times(0)).save(movieInsights);
     }
 
     @Test
@@ -565,35 +541,5 @@ public class MovieInsightsResourceIT {
         // Validate the database contains one less item
         List<MovieInsights> movieInsightsList = movieInsightsRepository.findAll();
         assertThat(movieInsightsList).hasSize(databaseSizeBeforeDelete - 1);
-
-        // Validate the MovieInsights in Elasticsearch
-        verify(mockMovieInsightsSearchRepository, times(1)).deleteById(movieInsights.getId());
-    }
-
-    @Test
-    @Transactional
-    public void searchMovieInsights() throws Exception {
-        // Configure the mock search repository
-        // Initialize the database
-        movieInsightsRepository.saveAndFlush(movieInsights);
-        when(mockMovieInsightsSearchRepository.search(queryStringQuery("id:" + movieInsights.getId())))
-            .thenReturn(Collections.singletonList(movieInsights));
-
-        // Search the movieInsights
-        restMovieInsightsMockMvc.perform(get("/api/_search/movie-insights?query=id:" + movieInsights.getId()))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(movieInsights.getId().intValue())))
-            .andExpect(jsonPath("$.[*].averageRating").value(hasItem(DEFAULT_AVERAGE_RATING.doubleValue())))
-            .andExpect(jsonPath("$.[*].averageBudget").value(hasItem(DEFAULT_AVERAGE_BUDGET.doubleValue())))
-            .andExpect(jsonPath("$.[*].averageRevenue").value(hasItem(DEFAULT_AVERAGE_REVENUE.doubleValue())))
-            .andExpect(jsonPath("$.[*].totalMovies").value(hasItem(DEFAULT_TOTAL_MOVIES)))
-            .andExpect(jsonPath("$.[*].mostPopularGenreMovieCount").value(hasItem(DEFAULT_MOST_POPULAR_GENRE_MOVIE_COUNT)))
-            .andExpect(jsonPath("$.[*].mostPopularActorMovieCount").value(hasItem(DEFAULT_MOST_POPULAR_ACTOR_MOVIE_COUNT)))
-            .andExpect(jsonPath("$.[*].mostPopularWriterMovieCount").value(hasItem(DEFAULT_MOST_POPULAR_WRITER_MOVIE_COUNT)))
-            .andExpect(jsonPath("$.[*].mostPopularProducerMovieCount").value(hasItem(DEFAULT_MOST_POPULAR_PRODUCER_MOVIE_COUNT)))
-            .andExpect(jsonPath("$.[*].mostPopularDirectorMovieCount").value(hasItem(DEFAULT_MOST_POPULAR_DIRECTOR_MOVIE_COUNT)))
-            .andExpect(jsonPath("$.[*].mostPopularProductionCompanyMovieCount").value(hasItem(DEFAULT_MOST_POPULAR_PRODUCTION_COMPANY_MOVIE_COUNT)))
-            .andExpect(jsonPath("$.[*].mostPopularProductionCountryMovieCount").value(hasItem(DEFAULT_MOST_POPULAR_PRODUCTION_COUNTRY_MOVIE_COUNT)));
     }
 }
