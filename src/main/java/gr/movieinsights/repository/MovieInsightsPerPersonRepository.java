@@ -3,9 +3,9 @@ package gr.movieinsights.repository;
 import gr.movieinsights.domain.MovieInsightsPerPerson;
 import gr.movieinsights.domain.enumeration.CreditRole;
 import gr.movieinsights.repository.util.BaseMovieInsightsRepository;
-import gr.movieinsights.repository.util.BaseRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,6 +23,9 @@ public interface MovieInsightsPerPersonRepository extends BaseMovieInsightsRepos
     @Override
     @Query(value = "TRUNCATE TABLE movie_insights_per_person CASCADE", nativeQuery = true)
     void clear();
+
+    @Query("SELECT distinct miy.year FROM MovieInsightsPerPerson mi inner join mi.person p inner join mi.movieInsightsPerYears miy where p.id = :id and mi.as = :role")
+    List<Integer> getYears(@Param("id") Long id, @Param("role") CreditRole role);
 
     Optional<MovieInsightsPerPerson> findByPerson_IdAndAs(Long id, CreditRole role);
     List<MovieInsightsPerPerson> findByPerson_Id(Long id);

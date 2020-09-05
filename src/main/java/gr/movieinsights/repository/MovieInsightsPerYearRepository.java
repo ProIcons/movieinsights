@@ -53,7 +53,7 @@ public interface MovieInsightsPerYearRepository extends BaseRepository<MovieInsi
     @Query("SELECT distinct miy FROM MovieInsightsPerYear miy inner join miy.movieInsightsPerPerson mic inner join mic.person p on p.id = :personId where miy.year = :year")
     Optional<MovieInsightsPerYear> findByPerson(@Param("personId") long personId, @Param("year") int year);
 
-    @Query("SELECT distinct miy FROM MovieInsightsPerYear miy inner join miy.movieInsightsGeneral mic where miy.year = :year")
+    @Query("SELECT distinct miy FROM MovieInsightsPerYear miy where miy.year = :year and miy.movieInsightsGeneral is not null")
     Optional<MovieInsightsPerYear> findGeneral(@Param("year") int year);
 
 }

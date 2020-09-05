@@ -14,6 +14,7 @@ public interface MovieInsightsPerPersonBasicMapper extends EntityMapper<MovieIns
     @Override
     @Mapping(source = "entity", target = "person")
     @Mapping(target = "removeMovieInsightsPerYear",ignore = true)
+    @Mapping(target = "movieInsightsPerYears",ignore = true)
     MovieInsightsPerPerson toEntity(MovieInsightsPerPersonBasicDTO dto);
 
     @Override

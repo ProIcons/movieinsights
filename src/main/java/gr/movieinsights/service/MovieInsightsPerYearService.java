@@ -93,4 +93,12 @@ public class MovieInsightsPerYearService
     public Optional<MovieInsightsPerYearDTO> findGeneral(int year) {
         return getRepository().findGeneral(year).map(getMapper()::toDto);
     }
+
+    public Optional<MovieInsightsPerYearDTO> mapOptionalToDto(Optional<MovieInsightsPerYear> movieInsightsPerYear) {
+        return movieInsightsPerYear.map(mapper::toDto);
+    }
+
+    public MovieInsightsPerYearDTO mapToDto(MovieInsightsPerYear movieInsightsPerYear) {
+        return mapper.toDto(movieInsightsPerYear);
+    }
 }

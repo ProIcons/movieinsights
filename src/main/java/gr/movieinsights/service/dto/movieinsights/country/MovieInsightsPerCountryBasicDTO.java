@@ -1,7 +1,7 @@
 package gr.movieinsights.service.dto.movieinsights.country;
 
 import gr.movieinsights.service.dto.country.BasicProductionCountryDTO;
-import gr.movieinsights.service.dto.movieinsights.BaseMovieInsightsContainerCategorizedDTO;
+import gr.movieinsights.service.dto.movieinsights.BaseMovieInsightsPerYearContainerCategorizedDTO;
 
-public class MovieInsightsPerCountryBasicDTO extends BaseMovieInsightsContainerCategorizedDTO<BasicProductionCountryDTO> {
+public class MovieInsightsPerCountryBasicDTO extends BaseMovieInsightsPerYearContainerCategorizedDTO<BasicProductionCountryDTO> {
 }

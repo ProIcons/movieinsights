@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -22,6 +23,10 @@ public interface MovieInsightsGeneralRepository extends BaseMovieInsightsReposit
     @Query(value = "TRUNCATE TABLE movie_insights_general CASCADE", nativeQuery = true)
     void clear();
 
-    @Query("SELECT DISTINCT miy FROM MovieInsightsPerYear miy WHERE miy.movieInsightsGeneral is not null and miy.year = :year")
-    Optional<MovieInsightsGeneral> findByYear(@Param("year") int year);
+    @Query(value = "SELECT distinct mi from MovieInsightsGeneral mi inner join fetch mi.movieInsightsPerYears mipy", countQuery =
+        "SELECT count(distinct mi) from MovieInsightsGeneral mi")
+    List<MovieInsightsGeneral> findAllWithEagerRelationships();
+
+    @Query(value = "SELECT distinct mi from MovieInsightsGeneral mi inner join fetch mi.movieInsightsPerYears mipy where mi.id =:id")
+    Optional<MovieInsightsGeneral> findAllWithEagerRelationships(@Param("id") Long id);
 }

@@ -1,8 +1,6 @@
 package gr.movieinsights.service;
 
 import gr.movieinsights.domain.MovieInsightsPerCompany;
-import gr.movieinsights.domain.MovieInsightsPerYear;
-import gr.movieinsights.domain.elasticsearch.ProductionCompany;
 import gr.movieinsights.repository.MovieInsightsPerCompanyRepository;
 import gr.movieinsights.service.dto.movieinsights.company.MovieInsightsPerCompanyBasicDTO;
 import gr.movieinsights.service.dto.movieinsights.company.MovieInsightsPerCompanyDTO;
@@ -10,7 +8,6 @@ import gr.movieinsights.service.dto.movieinsights.year.MovieInsightsPerYearDTO;
 import gr.movieinsights.service.mapper.movieinsights.company.MovieInsightsPerCompanyBasicMapper;
 import gr.movieinsights.service.mapper.movieinsights.company.MovieInsightsPerCompanyMapper;
 import gr.movieinsights.service.util.BaseMovieInsightsService;
-import gr.movieinsights.service.util.IBasicDataProviderService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -64,7 +61,9 @@ public class MovieInsightsPerCompanyService
     @Transactional(readOnly = true)
     public Optional<MovieInsightsPerCompanyBasicDTO> findByCompanyIdBasic(Long id) {
         log.debug("Request to get MovieInsightsPerCompany by CompanyId : {}", id);
-        return repository.findByCompany_Id(id).map(getBasicMapper()::toDto);
+        Optional<MovieInsightsPerCompanyBasicDTO> movieInsightsPerCompanyBasicDTO = repository.findByCompany_Id(id).map(getBasicMapper()::toDto);
+        movieInsightsPerCompanyBasicDTO.ifPresent(m -> m.setYears(getYears(m.getId())));
+        return movieInsightsPerCompanyBasicDTO;
     }
 
     @Override

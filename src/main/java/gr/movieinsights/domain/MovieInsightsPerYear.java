@@ -3,9 +3,11 @@ package gr.movieinsights.domain;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Fetch;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -36,7 +38,7 @@ public class MovieInsightsPerYear implements Serializable, MovieInsightsContaine
     @Column(name = "year", nullable = false)
     private Integer year;
 
-    @OneToOne(optional = false)
+    @OneToOne(optional = false, fetch = FetchType.EAGER)
     @NotNull
     @JoinColumn(unique = true)
     private MovieInsights movieInsights;

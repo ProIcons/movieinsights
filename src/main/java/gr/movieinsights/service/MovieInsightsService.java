@@ -12,12 +12,6 @@ import gr.movieinsights.domain.MovieInsightsPerYear;
 import gr.movieinsights.models.MovieInsightsContainerWithYears;
 import gr.movieinsights.repository.CreditRepository;
 import gr.movieinsights.repository.GenreRepository;
-import gr.movieinsights.repository.MovieInsightsGeneralRepository;
-import gr.movieinsights.repository.MovieInsightsPerCompanyRepository;
-import gr.movieinsights.repository.MovieInsightsPerCountryRepository;
-import gr.movieinsights.repository.MovieInsightsPerGenreRepository;
-import gr.movieinsights.repository.MovieInsightsPerPersonRepository;
-import gr.movieinsights.repository.MovieInsightsPerYearRepository;
 import gr.movieinsights.repository.MovieInsightsRepository;
 import gr.movieinsights.repository.MovieRepository;
 import gr.movieinsights.repository.PersonRepository;
@@ -45,12 +39,12 @@ import java.util.stream.Collectors;
 @Service
 @Transactional
 public class MovieInsightsService extends BaseService<MovieInsights, MovieInsightsDTO, MovieInsightsRepository, MovieInsightsMapper> {
-    private final MovieInsightsPerCountryRepository movieInsightsPerCountryRepository;
-    private final MovieInsightsPerCompanyRepository movieInsightsPerCompanyRepository;
-    private final MovieInsightsPerYearRepository movieInsightsPerYearRepository;
-    private final MovieInsightsPerPersonRepository movieInsightsPerPersonRepository;
-    private final MovieInsightsPerGenreRepository movieInsightsPerGenreRepository;
-    private final MovieInsightsGeneralRepository movieInsightsGeneralRepository;
+    private final MovieInsightsPerCountryService movieInsightsPerCountryService;
+    private final MovieInsightsPerCompanyService movieInsightsPerCompanyService;
+    private final MovieInsightsGeneralService movieInsightsGeneralService;
+    private final MovieInsightsPerPersonService movieInsightsPerPersonService;
+    private final MovieInsightsPerGenreService movieInsightsPerGenreService;
+    private final MovieInsightsPerYearService movieInsightsPerYearService;
 
     private final MovieRepository movieRepository;
     private final PersonRepository personRepository;
@@ -61,14 +55,14 @@ public class MovieInsightsService extends BaseService<MovieInsights, MovieInsigh
     private final CreditRepository creditRepository;
     private final CacheManager cacheManager;
 
-    public MovieInsightsService(MovieInsightsRepository movieInsightsRepository, MovieInsightsMapper movieInsightsMapper, MovieInsightsPerCountryRepository movieInsightsPerCountryRepository, MovieInsightsPerCompanyRepository movieInsightsPerCompanyRepository, MovieInsightsPerYearRepository movieInsightsPerYearRepository, MovieInsightsPerPersonRepository movieInsightsPerPersonRepository, MovieInsightsPerGenreRepository movieInsightsPerGenreRepository, MovieInsightsGeneralRepository movieInsightsGeneralRepository, MovieRepository movieRepository, PersonRepository personRepository, GenreRepository genreRepository, ProductionCompanyRepository productionCompanyRepository, ProductionCountryRepository productionCountryRepository, CreditRepository creditRepository, CacheManager cacheManager) {
+    public MovieInsightsService(MovieInsightsRepository movieInsightsRepository, MovieInsightsMapper movieInsightsMapper, MovieInsightsPerCountryService movieInsightsPerCountryService, MovieInsightsPerCompanyService movieInsightsPerCompanyService, MovieInsightsGeneralService movieInsightsGeneralService, MovieInsightsPerPersonService movieInsightsPerPersonService, MovieInsightsPerGenreService movieInsightsPerGenreService, MovieInsightsPerYearService movieInsightsPerYearService, MovieRepository movieRepository, PersonRepository personRepository, GenreRepository genreRepository, ProductionCompanyRepository productionCompanyRepository, ProductionCountryRepository productionCountryRepository, CreditRepository creditRepository, CacheManager cacheManager) {
         super(movieInsightsRepository, movieInsightsMapper);
-        this.movieInsightsPerCountryRepository = movieInsightsPerCountryRepository;
-        this.movieInsightsPerCompanyRepository = movieInsightsPerCompanyRepository;
-        this.movieInsightsPerYearRepository = movieInsightsPerYearRepository;
-        this.movieInsightsPerPersonRepository = movieInsightsPerPersonRepository;
-        this.movieInsightsPerGenreRepository = movieInsightsPerGenreRepository;
-        this.movieInsightsGeneralRepository = movieInsightsGeneralRepository;
+        this.movieInsightsPerCountryService = movieInsightsPerCountryService;
+        this.movieInsightsPerCompanyService = movieInsightsPerCompanyService;
+        this.movieInsightsGeneralService = movieInsightsGeneralService;
+        this.movieInsightsPerPersonService = movieInsightsPerPersonService;
+        this.movieInsightsPerGenreService = movieInsightsPerGenreService;
+        this.movieInsightsPerYearService = movieInsightsPerYearService;
         this.movieRepository = movieRepository;
         this.personRepository = personRepository;
         this.genreRepository = genreRepository;
@@ -76,8 +70,19 @@ public class MovieInsightsService extends BaseService<MovieInsights, MovieInsigh
         this.productionCountryRepository = productionCountryRepository;
         this.creditRepository = creditRepository;
         this.cacheManager = cacheManager;
+
     }
 
+    @Override
+    public void clear() {
+        super.clear();
+        movieInsightsPerYearService.clear();
+        movieInsightsPerPersonService.clear();
+        movieInsightsPerGenreService.clear();
+        movieInsightsPerCompanyService.clear();
+        movieInsightsPerCountryService.clear();
+        movieInsightsGeneralService.clear();
+    }
 
     @Transactional
     DTO fetchMovies() {
@@ -147,12 +152,12 @@ public class MovieInsightsService extends BaseService<MovieInsights, MovieInsigh
 
     protected void save(ProcessResult processResult) {
         repository.saveAll(processResult.getMovieInsights());
-        movieInsightsPerYearRepository.saveAll(processResult.getMovieInsightsPerYear());
-        movieInsightsPerCompanyRepository.saveAll(processResult.getMovieInsightsPerCompany());
-        movieInsightsPerGenreRepository.saveAll(processResult.getMovieInsightsPerGenre());
-        movieInsightsPerCountryRepository.saveAll(processResult.getMovieInsightsPerCountry());
-        movieInsightsPerPersonRepository.saveAll(processResult.getMovieInsightsPerPerson());
-        movieInsightsGeneralRepository.save(processResult.getMovieInsightsGeneral());
+        movieInsightsPerYearService.getRepository().saveAll(processResult.getMovieInsightsPerYear());
+        movieInsightsPerCompanyService.getRepository().saveAll(processResult.getMovieInsightsPerCompany());
+        movieInsightsPerGenreService.getRepository().saveAll(processResult.getMovieInsightsPerGenre());
+        movieInsightsPerCountryService.getRepository().saveAll(processResult.getMovieInsightsPerCountry());
+        movieInsightsPerPersonService.getRepository().saveAll(processResult.getMovieInsightsPerPerson());
+        movieInsightsGeneralService.getRepository().save(processResult.getMovieInsightsGeneral());
     }
 
     /*public BaseRepository<?,Long> getRepository(Class<? extends BaseRepository<?,Long>> repoClass) {
@@ -196,7 +201,7 @@ public class MovieInsightsService extends BaseService<MovieInsights, MovieInsigh
 
         log.debug("\t\tPushing MovieInsightsPerCompanies...");*/
         /*Instant companyInstant = Instant.now();*/
-        movieInsightsPerCompanyRepository.saveAll(result.parallelStream()
+        movieInsightsPerCompanyService.getRepository().saveAll(result.parallelStream()
             .filter(movieInsightsContainer -> movieInsightsContainer instanceof MovieInsightsPerCompany)
             .map(movieInsightsContainer -> (MovieInsightsPerCompany) movieInsightsContainer)
             .collect(Collectors.toList())
@@ -206,7 +211,7 @@ public class MovieInsightsService extends BaseService<MovieInsights, MovieInsigh
 
         log.info("\t\tPushing MovieInsightsPerGenres...");
         Instant genreInstant = Instant.now();*/
-        movieInsightsPerGenreRepository.saveAll(result.parallelStream()
+        movieInsightsPerGenreService.getRepository().saveAll(result.parallelStream()
             .filter(movieInsightsContainer -> movieInsightsContainer instanceof MovieInsightsPerGenre)
             .map(movieInsightsContainer -> (MovieInsightsPerGenre) movieInsightsContainer)
             .collect(Collectors.toList()));
@@ -216,7 +221,7 @@ public class MovieInsightsService extends BaseService<MovieInsights, MovieInsigh
 
         log.debug("\t\tPushing MovieInsightsPerCountries...");
         Instant countryInstant = Instant.now();*/
-        movieInsightsPerCountryRepository.saveAll(result.parallelStream()
+        movieInsightsPerCountryService.getRepository().saveAll(result.parallelStream()
             .filter(movieInsightsContainer -> movieInsightsContainer instanceof MovieInsightsPerCountry)
             .map(movieInsightsContainer -> (MovieInsightsPerCountry) movieInsightsContainer)
             .collect(Collectors.toList()));
@@ -227,7 +232,7 @@ public class MovieInsightsService extends BaseService<MovieInsights, MovieInsigh
 
         log.debug("\t\tPushing MovieInsightsPerPeople...");
         Instant creditsInstant = Instant.now();*/
-        movieInsightsPerPersonRepository.saveAll(result.parallelStream()
+        movieInsightsPerPersonService.getRepository().saveAll(result.parallelStream()
             .filter(movieInsightsContainer -> movieInsightsContainer instanceof MovieInsightsPerPerson)
             .map(movieInsightsContainer -> (MovieInsightsPerPerson) movieInsightsContainer)
             .collect(Collectors.toList()));
@@ -237,7 +242,7 @@ public class MovieInsightsService extends BaseService<MovieInsights, MovieInsigh
 
         log.debug("\t\tPushing MovieInsightsGenerals...");
         Instant generalsInstant = Instant.now();*/
-        movieInsightsGeneralRepository.saveAll(result.parallelStream()
+        movieInsightsGeneralService.getRepository().saveAll(result.parallelStream()
             .filter(movieInsightsContainer -> movieInsightsContainer instanceof MovieInsightsGeneral)
             .map(movieInsightsContainer -> (MovieInsightsGeneral) movieInsightsContainer)
             .collect(Collectors.toList()));
@@ -247,7 +252,7 @@ public class MovieInsightsService extends BaseService<MovieInsights, MovieInsigh
 
         log.debug("\t\tPushing MovieInsightsPerYears...");
         Instant yearsInstant = Instant.now();*/
-        movieInsightsPerYearRepository.saveAll(result.parallelStream()
+        movieInsightsPerYearService.getRepository().saveAll(result.parallelStream()
             .filter(movieInsightContainer -> movieInsightContainer instanceof MovieInsightsContainerWithYears)
             .map(movieInsightContainer -> ((MovieInsightsContainerWithYears) movieInsightContainer).getMovieInsightsPerYears())
             .flatMap(Collection::parallelStream)
@@ -255,12 +260,12 @@ public class MovieInsightsService extends BaseService<MovieInsights, MovieInsigh
         );
 
         repository.flush();
-        movieInsightsPerCompanyRepository.flush();
-        movieInsightsPerGenreRepository.flush();
-        movieInsightsPerCountryRepository.flush();
-        movieInsightsPerPersonRepository.flush();
-        movieInsightsGeneralRepository.flush();
-        movieInsightsPerYearRepository.flush();
+        movieInsightsPerCompanyService.getRepository().flush();
+        movieInsightsPerGenreService.getRepository().flush();
+        movieInsightsPerCountryService.getRepository().flush();
+        movieInsightsPerPersonService.getRepository().flush();
+        movieInsightsGeneralService.getRepository().flush();
+        movieInsightsPerYearService.getRepository().flush();
 //        log.debug("\t\t\tSaved MovieInsightsPerYears in {}ms", Duration.between(yearsInstant, Instant.now()).toMillis());
     }
 }

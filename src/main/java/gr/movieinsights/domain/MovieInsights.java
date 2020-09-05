@@ -71,7 +71,7 @@ public class MovieInsights implements Serializable, IdentifiedEntity {
     //region Budget
     @NotNull
     @Column(name = "average_budget", nullable = false)
-    private Double averageBudget =0D;
+    private Double averageBudget = 0D;
 
     @NotNull
     @Column(name = "total_budget", nullable = false)
@@ -79,7 +79,7 @@ public class MovieInsights implements Serializable, IdentifiedEntity {
 
     @NotNull
     @Column(name = "total_budget_movies", nullable = false)
-    private Integer totalBudgetMovies =0;
+    private Integer totalBudgetMovies = 0;
 
     @ManyToOne
     @JsonIgnoreProperties(value = "movieInsights", allowSetters = true)

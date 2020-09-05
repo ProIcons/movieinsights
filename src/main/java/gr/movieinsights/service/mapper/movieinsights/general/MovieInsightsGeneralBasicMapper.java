@@ -17,6 +17,7 @@ import org.mapstruct.Mapping;
 public interface MovieInsightsGeneralBasicMapper extends EntityMapper<MovieInsightsGeneralBasicDTO, MovieInsightsGeneral> {
     @Override
     @Mapping(target = "removeMovieInsightsPerYear",ignore = true)
+    @Mapping(target = "movieInsightsPerYears",ignore = true)
     MovieInsightsGeneral toEntity(MovieInsightsGeneralBasicDTO dto);
 
     @Override

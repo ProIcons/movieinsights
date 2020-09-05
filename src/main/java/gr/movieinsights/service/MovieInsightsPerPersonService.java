@@ -12,9 +12,15 @@ import gr.movieinsights.service.mapper.movieinsights.person.MovieInsightsPerPers
 import gr.movieinsights.service.mapper.movieinsights.person.MovieInsightsPerPersonMapper;
 import gr.movieinsights.service.util.BaseMovieInsightsService;
 import gr.movieinsights.service.util.IBasicDataProviderService;
+import io.vavr.Tuple2;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -36,6 +42,19 @@ public class MovieInsightsPerPersonService
         this.basicMovieInsightsPerPersonMapper = basicMovieInsightsPerPersonMapper;
         this.movieInsightsPerYearService = movieInsightsPerYearService;
     }
+
+    protected List<Integer> getYears(Tuple2<Long,CreditRole> idRolePair) {
+        List<Integer> years;
+        synchronized (yearMap) {
+            if (!yearMap.containsKey(idRolePair)) {
+                yearMap.put(idRolePair, (years = repository.getYears(idRolePair._1,idRolePair._2)));
+            } else {
+                years = yearMap.get(idRolePair);
+            }
+        }
+        return years;
+    }
+
 
     @Override
     public MovieInsightsPerPersonBasicMapper getBasicMapper() {
@@ -71,7 +90,9 @@ public class MovieInsightsPerPersonService
     @Transactional(readOnly = true)
     public Optional<MovieInsightsPerPersonBasicDTO> findByPersonIdBasic(Long id, CreditRole role) {
         log.debug("Request to get MovieInsightsPerPerson : {}", id);
-        return repository.findByPerson_IdAndAs(id, role).map(getBasicMapper()::toDto);
+        Optional<MovieInsightsPerPersonBasicDTO> movieInsightsPerPersonBasicDTO = repository.findByPerson_IdAndAs(id, role).map(getBasicMapper()::toDto);
+        movieInsightsPerPersonBasicDTO.ifPresent(m->m.setYears(getYears(new Tuple2<>(id,role))));
+        return movieInsightsPerPersonBasicDTO;
     }
 
     /**

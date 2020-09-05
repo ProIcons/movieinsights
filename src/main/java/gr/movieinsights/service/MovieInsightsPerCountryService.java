@@ -64,7 +64,9 @@ public class MovieInsightsPerCountryService
     @Transactional(readOnly = true)
     public Optional<MovieInsightsPerCountryBasicDTO> findByCountryIsoBasic(String iso) {
         log.debug("Request to get MovieInsightsPerCountry : {}", iso);
-        return repository.findByCountry(iso).map(basicMovieInsightsPerCountryMapper::toDto);
+        Optional<MovieInsightsPerCountryBasicDTO> movieInsightsPerCountryBasicDTO = repository.findByCountry(iso).map(basicMovieInsightsPerCountryMapper::toDto);
+        movieInsightsPerCountryBasicDTO.ifPresent(m->m.setYears(getYears(m.getId())));
+        return movieInsightsPerCountryBasicDTO;
     }
 
     public Optional<MovieInsightsPerYearDTO> findByYear(String countryIso, int year) {

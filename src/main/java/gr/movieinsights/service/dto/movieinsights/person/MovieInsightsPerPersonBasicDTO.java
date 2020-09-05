@@ -1,7 +1,7 @@
 package gr.movieinsights.service.dto.movieinsights.person;
 
 import gr.movieinsights.domain.enumeration.CreditRole;
-import gr.movieinsights.service.dto.movieinsights.BaseMovieInsightsContainerCategorizedDTO;
+import gr.movieinsights.service.dto.movieinsights.BaseMovieInsightsPerYearContainerCategorizedDTO;
 import gr.movieinsights.service.dto.person.BasicPersonDTO;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -9,7 +9,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import javax.validation.constraints.NotNull;
 
-public class MovieInsightsPerPersonBasicDTO extends BaseMovieInsightsContainerCategorizedDTO<BasicPersonDTO> {
+public class MovieInsightsPerPersonBasicDTO extends BaseMovieInsightsPerYearContainerCategorizedDTO<BasicPersonDTO> {
     @NotNull
     private CreditRole as;
     public CreditRole getAs() {
