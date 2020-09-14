@@ -1,6 +1,7 @@
 package gr.movieinsights.web.rest;
 
 
+import gr.movieinsights.config.converters.ExtendedParam;
 import gr.movieinsights.domain.elasticsearch.Genre;
 import gr.movieinsights.domain.elasticsearch.Person;
 import gr.movieinsights.domain.elasticsearch.ProductionCompany;
@@ -82,9 +83,9 @@ public class SearchResource extends BaseResource {
      * @return the result of the search.
      */
     @GetMapping("ac")
-    public ResponseEntity<AutoCompleteResult> autocomplete(@RequestParam("q") String query) {
+    public ResponseEntity<AutoCompleteResult> autocomplete(@RequestParam("q") String query,@ExtendedParam boolean extended) {
         log.debug("REST request to search for a page for query {}", query);
-        AutoCompleteResult autoComplete = searchService.autocomplete(query);
+        AutoCompleteResult autoComplete = searchService.autocomplete(query,extended);
         //HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().body(autoComplete);
     }

@@ -1,0 +1,140 @@
+// Chart background, point stroke for markers and columns etc
+$background-color: transparent;
+
+// Colors for data series and points.
+$colors: #90ee7e #d16767 #f9b115 #7798bf #c14f4f #4799eb #eeaaee #55bf3b #df5353 #7798bf #aaeeee;
+
+// Neutral colors
+$neutral-color-100: var(--secondary);
+$neutral-color-80: #e0e0e3;
+$neutral-color-60: #e0e0e3;
+$neutral-color-40: #666;
+$neutral-color-20: var(--success);
+$neutral-color-10: #707073;
+$neutral-color-5: #505053;
+
+// Colored, shades
+$highlight-color-100: #f0f0f3;
+$highlight-color-60: rgba(255, 255, 255, 0.1);
+$highlight-color-20: $neutral-color-10;
+
+// Data-labels
+$data-label-color: $neutral-color-60;
+$data-label-stroke-size: 0.07em;
+$data-label-size: 1.4em;
+$data-label-stroke-color: #043e51;
+
+// Fonts
+$title-font-size: 12px;
+
+$subtitle-font-size: 12px;
+
+$legend-font-size: 12px;
+
+$axis-labels-font-size: 12px;
+
+// Tooltip
+$tooltip-background: rgba(0, 0, 0, 0.85);
+
+// Range-selector
+$range-selector-input-text: silver;
+$range-selector-input-border: $neutral-color-5;
+
+// Buttons
+$highcharts-button-background: $neutral-color-5;
+$highcharts-button-text: #ccc;
+
+$highcharts-button-pressed-background: #000003;
+$highcharts-button-pressed-text: $neutral-color-100;
+
+$highcharts-button-hover-background: $neutral-color-10;
+$highcharts-button-hover-text: $neutral-color-100;
+
+$context-button-background: $neutral-color-5;
+
+// Navigator
+$navigator-series-fill: #7798bf;
+$navigator-series-border: #a6c7ed;
+
+// Navigator
+$scrollbar-track-background: #404043;
+$scrollbar-track-border: #404043;
+
+// Titles
+.highcharts-title,
+.highcharts-subtitle {
+  //text-transform: ;
+}
+
+// Tooltip
+.highcharts-tooltip text {
+  fill: #f0f0f0;
+}
+
+// Range-selector
+.highcharts-range-selector-buttons text {
+  fill: silver;
+}
+
+// Axes
+.highcharts-yaxis-grid {
+  stroke-width: 1px;
+}
+
+.highcharts-axis-labels,
+.highcharts-axis-title {
+  fill: #e0e0e3;
+}
+
+// Navigator
+.highcharts-navigator .highcharts-navigator-handle {
+  fill: $neutral-color-40;
+  stroke: #aaa;
+}
+
+.highcharts-navigator .highcharts-navigator-outline {
+  stroke: #ccc;
+}
+
+.highcharts-navigator .highcharts-navigator-xaxis .highcharts-grid-line {
+  stroke: $neutral-color-5;
+}
+
+// Scrollbar
+.highcharts-scrollbar .highcharts-scrollbar-rifles {
+  stroke: $neutral-color-100;
+}
+
+.highcharts-scrollbar .highcharts-scrollbar-button {
+  stroke: #606063;
+  fill: #606063;
+}
+
+.highcharts-scrollbar .highcharts-scrollbar-arrow {
+  fill: #ccc;
+}
+
+.highcharts-scrollbar .highcharts-scrollbar-thumb {
+  fill: #808083;
+  stroke: #808083;
+}
+
+// Navigation
+.highcharts-contextbutton .highcharts-button-symbol {
+  stroke: #dddddd;
+}
+
+@import 'node_modules/highcharts/css/highcharts';
+.highcharts-data-label {
+  font-size: $data-label-size;
+  font-weight: bold;
+  text-shadow: -$data-label-stroke-size -$data-label-stroke-size 0 $data-label-stroke-color,
+    $data-label-stroke-size -$data-label-stroke-size 0 $data-label-stroke-color,
+    -$data-label-stroke-size $data-label-stroke-size 0 $data-label-stroke-color,
+    $data-label-stroke-size $data-label-stroke-size 0 $data-label-stroke-color;
+}
+
+.highcharts-map-series .highcharts-point {
+  transition: fill 500ms, fill-opacity 500ms, stroke-width 250ms;
+  stroke: $neutral-color-5;
+}

@@ -6,8 +6,11 @@ import gr.movieinsights.service.mapper.EntityMapper;
 import gr.movieinsights.service.mapper.country.BasicProductionCountryMapper;
 import gr.movieinsights.service.mapper.movieinsights.MovieInsightsMapper;
 import gr.movieinsights.service.mapper.movieinsights.year.MovieInsightsPerYearMapper;
+import gr.movieinsights.service.mapper.util.MappingUtils;
+import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 
 @Mapper(componentModel = "spring", uses = {MovieInsightsMapper.class, MovieInsightsPerYearMapper.class, BasicProductionCountryMapper.class})
 public interface MovieInsightsPerCountryBasicMapper extends EntityMapper<MovieInsightsPerCountryBasicDTO, MovieInsightsPerCountry> {
@@ -20,4 +23,9 @@ public interface MovieInsightsPerCountryBasicMapper extends EntityMapper<MovieIn
     @Override
     @Mapping(source = "country", target = "entity")
     MovieInsightsPerCountryBasicDTO toDto(MovieInsightsPerCountry entity);
+
+    @AfterMapping
+    default void calculateTotals(MovieInsightsPerCountry movieInsightsPerEntity, @MappingTarget MovieInsightsPerCountryBasicDTO movieInsightsPerEntityBasicDTO) {
+        movieInsightsPerEntityBasicDTO.setYearData(MappingUtils.calculateMovieInsightsPerYearsToTotals(movieInsightsPerEntity));
+    }
 }

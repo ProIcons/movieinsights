@@ -90,4 +90,25 @@ public class MovieInsightsPerGenreResource extends BaseMovieInsightsContainerRes
             return ResponseUtil.wrapOrNotFound(getService().findByGenreId(id));
     }
 
+
+    /**
+     * {@code GET /:genreId/:year} : get the movieInsightsPerGenre by genre and by year.
+     *
+     * @param id
+     *     the id of the genre to retrieve.
+     * @param year
+     *     the year
+     *
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the movieInsightsPerYearDTO, or
+     * with status {@code 404 (Not Found)}.
+     */
+    @GetMapping(path = {"/i/{genreId}/{year}","/{genreId}/{year}"})
+    public ResponseEntity<MovieInsightsPerYearDTO> getByYear(
+        @PathVariable("genreId") Long id,
+        @PathVariable("year") int year) {
+
+        return ResponseUtil.wrapOrNotFound(getService().findByYear(id, year));
+
+    }
+
 }

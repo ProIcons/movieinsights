@@ -65,7 +65,36 @@ public class MovieInsightsPerCountryService
     public Optional<MovieInsightsPerCountryBasicDTO> findByCountryIsoBasic(String iso) {
         log.debug("Request to get MovieInsightsPerCountry : {}", iso);
         Optional<MovieInsightsPerCountryBasicDTO> movieInsightsPerCountryBasicDTO = repository.findByCountry(iso).map(basicMovieInsightsPerCountryMapper::toDto);
-        movieInsightsPerCountryBasicDTO.ifPresent(m->m.setYears(getYears(m.getId())));
+        //TODO FIX movieInsightsPerCountryBasicDTO.ifPresent(m->m.setYears(getYears(m.getId())));
+        return movieInsightsPerCountryBasicDTO;
+    }
+
+    /**
+     * Get one movieInsightsPerCountry by iso.
+     *
+     * @param id
+     *     the id of the entity.
+     *
+     * @return the entity.
+     */
+    @Transactional(readOnly = true)
+    public Optional<MovieInsightsPerCountryDTO> findByCountryId(Long id) {
+        log.debug("Request to get MovieInsightsPerCountry : {}", id);
+        return repository.findByCountry_Id(id).map(mapper::toDto);
+    }
+
+    /**
+     * Get one movieInsightsPerCountry by iso.
+     *
+     * @param id
+     *     the id of the entity.
+     *
+     * @return the entity.
+     */
+    @Transactional(readOnly = true)
+    public Optional<MovieInsightsPerCountryBasicDTO> findByCountryIdBasic(Long id) {
+        log.debug("Request to get MovieInsightsPerCountry : {}", id);
+        Optional<MovieInsightsPerCountryBasicDTO> movieInsightsPerCountryBasicDTO = repository.findByCountry_Id(id).map(basicMovieInsightsPerCountryMapper::toDto);
         return movieInsightsPerCountryBasicDTO;
     }
 

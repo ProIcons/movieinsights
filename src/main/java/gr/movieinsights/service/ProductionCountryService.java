@@ -1,6 +1,7 @@
 package gr.movieinsights.service;
 
 import gr.movieinsights.domain.ProductionCountry;
+import gr.movieinsights.models.CountryData;
 import gr.movieinsights.repository.ProductionCountryRepository;
 import gr.movieinsights.repository.search.ProductionCountrySearchRepository;
 import gr.movieinsights.service.dto.country.ProductionCountryDTO;
@@ -12,6 +13,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -29,6 +32,8 @@ public class ProductionCountryService {
 
     private final ProductionCountrySearchRepository productionCountrySearchRepository;
 
+    private final List<CountryData> countryDataCache = new ArrayList<>();
+
     public ProductionCountryService(ProductionCountryRepository productionCountryRepository, ProductionCountryMapper productionCountryMapper, ProductionCountrySearchRepository productionCountrySearchRepository) {
         this.productionCountryRepository = productionCountryRepository;
         this.productionCountryMapper = productionCountryMapper;
@@ -38,7 +43,9 @@ public class ProductionCountryService {
     /**
      * Save a productionCountry.
      *
-     * @param productionCountryDTO the entity to save.
+     * @param productionCountryDTO
+     *     the entity to save.
+     *
      * @return the persisted entity.
      */
     public ProductionCountryDTO save(ProductionCountryDTO productionCountryDTO) {
@@ -53,7 +60,9 @@ public class ProductionCountryService {
     /**
      * Get all the productionCountries.
      *
-     * @param pageable the pagination information.
+     * @param pageable
+     *     the pagination information.
+     *
      * @return the list of entities.
      */
     @Transactional(readOnly = true)
@@ -67,7 +76,9 @@ public class ProductionCountryService {
     /**
      * Get one productionCountry by id.
      *
-     * @param id the id of the entity.
+     * @param id
+     *     the id of the entity.
+     *
      * @return the entity.
      */
     @Transactional(readOnly = true)
@@ -80,7 +91,8 @@ public class ProductionCountryService {
     /**
      * Delete the productionCountry by id.
      *
-     * @param id the id of the entity.
+     * @param id
+     *     the id of the entity.
      */
     public void delete(Long id) {
         log.debug("Request to delete ProductionCountry : {}", id);
@@ -103,11 +115,26 @@ public class ProductionCountryService {
             .map(productionCountryMapper::toDto);
     }
 
+
+    public List<CountryData> getCountryData() {
+        if (countryDataCache.size() <= 0) {
+            countryDataCache.addAll(productionCountryRepository.getCountryData());
+        }
+        return countryDataCache;
+    }
+
+    public void clearCache() {
+        countryDataCache.clear();
+    }
+
     /**
      * Search for the productionCountry corresponding to the query.
      *
-     * @param query the query of the search.
-     * @param pageable the pagination information.
+     * @param query
+     *     the query of the search.
+     * @param pageable
+     *     the pagination information.
+     *
      * @return the list of entities.
      */
     @Transactional(readOnly = true)

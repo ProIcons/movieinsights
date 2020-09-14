@@ -142,6 +142,7 @@
   -webkit-animation-delay: -0.67s;
   animation-delay: -1s;
 }
+
 .app-loading .lds-pacman > div:nth-child(1) div:nth-child(2) {
   -webkit-animation-delay: -0.33s;
   animation-delay: -0.5s;

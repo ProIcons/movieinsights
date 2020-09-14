@@ -3,5 +3,5 @@ services:
   movieinsights-sonar:
     image: sonarqube:8.3.1-community
     ports:
-      - 9001:9000
-      - 9092:9092
+      - 127.0.0.1:9001:9000
+      - 127.0.0.1:9092:9092

@@ -1,6 +1,7 @@
 package gr.movieinsights.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import gr.movieinsights.domain.enumeration.TmdbEntityType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,34 +35,34 @@ public class AutoCompleteResult {
 
     public static class EntityResult {
 
-        EntityResult(String indexName, List<Entity> entities) {
+        EntityResult(TmdbEntityType indexName, List<Object> entities) {
             this.entities = entities;
             this.indexName = indexName;
         }
 
         @JsonProperty("e")
-        protected final List<Entity> entities;
+        protected final List<Object> entities;
         @JsonProperty("i")
-        protected final String indexName;
+        protected final TmdbEntityType indexName;
 
-        public List<Entity> getEntities() {
+        public List<Object> getEntities() {
             return entities;
         }
 
-        public String getIndexName() {
+        public TmdbEntityType getIndexName() {
             return indexName;
         }
 
         public static class Builder extends EntityResult {
-            public static Builder of(String indexName) {
+            public static Builder of(TmdbEntityType indexName) {
                 return new Builder(indexName);
             }
 
-            Builder(String indexName) {
+            Builder(TmdbEntityType indexName) {
                 super(indexName, new ArrayList<>());
             }
 
-            public Builder add(Entity entity) {
+            public Builder add(Object entity) {
                 entities.add(entity);
                 return this;
             }

@@ -46,4 +46,25 @@ public class MovieInsightsPerCompanyResource extends BaseMovieInsightsContainerR
         else
             return ResponseUtil.wrapOrNotFound(getService().findByCompanyId(id));
     }
+
+
+    /**
+     * {@code GET /:companyId/:year} : get the movieInsightsPerCompany by company and by year.
+     *
+     * @param id
+     *     the id of the company to retrieve.
+     * @param year
+     *     the year
+     *
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the movieInsightsPerYearDTO, or
+     * with status {@code 404 (Not Found)}.
+     */
+    @GetMapping(path = {"/{companyId}/{year}"})
+    public ResponseEntity<MovieInsightsPerYearDTO> getByYear(
+        @PathVariable("companyId") Long id,
+        @PathVariable("year") int year) {
+
+        return ResponseUtil.wrapOrNotFound(getService().findByYear(id, year));
+
+    }
 }

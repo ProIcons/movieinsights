@@ -1,6 +1,7 @@
 package gr.movieinsights.repository;
 
 import gr.movieinsights.domain.ProductionCountry;
+import gr.movieinsights.models.CountryData;
 import gr.movieinsights.repository.util.BaseSearchableEntityNonSearchableRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -41,6 +42,9 @@ public interface ProductionCountryRepository extends BaseSearchableEntityNonSear
     default Map<Long, Long> findAllWithMovieCounts() {
         return findAllWithMovieCountsObjects().stream().collect(Collectors.toMap(o -> (Long) o[0], o -> (Long) o[1]));
     }
+
+    @Query("select new gr.movieinsights.models.CountryData(country,count(m)) from ProductionCountry country inner join country.movies m group by country.id")
+    List<CountryData> getCountryData();
 
     @Override
     @Query("SELECT new gr.movieinsights.domain.elasticsearch.ProductionCountry(country,count(distinct m.id),sum(v.votes),sum(v.average)) FROM ProductionCountry country left join country.movies m left join m.vote v group by country.id")

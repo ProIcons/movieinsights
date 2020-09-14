@@ -1,0 +1,24 @@
+.c-vr,
+hr {
+  background-color: rgba(255, 255, 255, 0.15);
+}
+.card-body .c-icon {
+  margin-top: -5px;
+}
+
+.mi-filler {
+  min-width: 165px;
+  @media (max-width: 1580px) {
+    display: none;
+  }
+}
+.mi-map-col {
+  min-width: 60%;
+
+  @media (max-width: 1200px) {
+    max-height: 400px;
+  }
+  @media (min-width: 1201px) {
+    max-height: 1000px;
+  }
+}

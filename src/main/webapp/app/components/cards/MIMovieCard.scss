@@ -1,0 +1,69 @@
+@import './MIEntityCard.scss';
+
+.mi-movie-poster {
+  position: relative;
+  overflow: hidden;
+  margin-left: -10px;
+  max-height: 150px;
+  min-height: 50px;
+
+  border-top-left-radius: 5px;
+
+  img {
+    position: relative;
+    overflow: hidden;
+    max-height: 150px;
+
+    min-height: 50px;
+    border: 2px solid rgb(32, 32, 42);
+    border-radius: 10px;
+  }
+}
+
+.mi-movie-still {
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  max-height: 100px;
+}
+
+.mi-movie-body {
+  width: 100%;
+  min-height: 75px;
+
+  .mi-movie-prop {
+    margin-top: -10px;
+    font-size: 18px;
+    color: #7f7f7f;
+    margin-left: 100px;
+    width: 70%;
+    text-align: center;
+    vertical-align: before-edge;
+  }
+
+  .mi-movie-val {
+    font-size: 24px;
+    margin-left: 100px;
+    width: 70%;
+    text-align: center;
+  }
+}
+
+.mi-movie-title-overlay {
+  width: 100%;
+  height: 105px;
+  background: rgb(32, 32, 42, 0.5);
+  margin-left: -20px;
+  margin-top: -20px;
+  position: absolute;
+  vertical-align: middle;
+
+  .mi-movie-title {
+    height: 105px;
+    text-align: center;
+    vertical-align: middle;
+    margin-left: 120px;
+    width: 60%;
+    font-size: medium;
+  }
+}

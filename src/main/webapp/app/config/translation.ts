@@ -1,6 +1,7 @@
-import { TranslatorContext, Storage } from 'react-jhipster';
+import { Storage } from 'app/utils';
 
 import { setLocale } from 'app/shared/reducers/locale';
+import { TranslatorContext } from 'app/translate';
 
 TranslatorContext.setDefaultLocale('en');
 TranslatorContext.setRenderInnerTextForMissingKeys(false);

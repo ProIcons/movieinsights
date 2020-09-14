@@ -1,0 +1,58 @@
+.c-header-brand {
+  height: 100px;
+  vertical-align: middle;
+
+  img {
+    max-height: 100px;
+    height: 80%;
+    padding-left: 10px;
+  }
+  &:after {
+    padding-left: 30px;
+    margin-top: -8px;
+    padding-right: 5px;
+    font-size: 300%;
+    opacity: 35%;
+    content: ' | ';
+  }
+  &:hover .logo-slice img.img-slice {
+    animation: moveUp 0.05s;
+    margin: -2px 0 0 2px;
+  }
+}
+.logo-slice {
+  position: absolute;
+  height: 50px;
+  left: 0;
+  margin-left: 46px;
+  margin-top: -32px;
+
+  img.img-slice {
+    height: 80%;
+  }
+}
+.loading-bar {
+  height: 3px;
+  background-color: #009cd8;
+  position: absolute;
+  top: 0;
+  z-index: 1031;
+  display: block;
+}
+
+@-webkit-keyframes moveUp {
+  0% {
+    margin: 0 0 0 0;
+  }
+  100% {
+    margin: -2px 0 0 2px;
+  }
+}
+@keyframes moveUp {
+  0% {
+    margin: 0 0 0 0;
+  }
+  100% {
+    margin: -2px 0 0 2px;
+  }
+}

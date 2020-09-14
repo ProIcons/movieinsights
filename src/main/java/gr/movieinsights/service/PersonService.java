@@ -62,7 +62,7 @@ public class PersonService
     @Override
     protected QueryConfiguration queryConfiguration() {
         QueryConfiguration q = QueryConfiguration.CreateDefault();
-        q.setBoost(0.7f);
+        q.setBoost(0.8f);
         return q;
     }
 }

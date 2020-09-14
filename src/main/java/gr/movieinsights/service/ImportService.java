@@ -66,6 +66,7 @@ public class ImportService {
     private final ImdbService imdbService;
     private final TmdbService tmdbService;
 
+    private final ProductionCountryService productionCountryService;
     private final ProductionCompanyRepository companyRepository;
     private final ProductionCountryRepository countryRepository;
     private final PersonRepository personRepository;
@@ -75,10 +76,11 @@ public class ImportService {
     private final GenreRepository genreRepository;
     private final BannedEntityRepository bannedEntityRepository;
 
-    public ImportService(MovieInsightsTmdb tmdb, ImdbService imdbService, TmdbService tmdbService, ProductionCompanyRepository companyRepository, ProductionCountryRepository countryRepository, PersonRepository personRepository, MovieRepository movieRepository, CreditRepository creditRepository, VoteRepository voteRepository, GenreRepository genreRepository, BannedEntityRepository bannedEntityRepository) {
+    public ImportService(MovieInsightsTmdb tmdb, ImdbService imdbService, TmdbService tmdbService, ProductionCountryService productionCountryService, ProductionCompanyRepository companyRepository, ProductionCountryRepository countryRepository, PersonRepository personRepository, MovieRepository movieRepository, CreditRepository creditRepository, VoteRepository voteRepository, GenreRepository genreRepository, BannedEntityRepository bannedEntityRepository) {
         this.tmdb = tmdb;
         this.tmdbService = tmdbService;
         this.imdbService = imdbService;
+        this.productionCountryService = productionCountryService;
         this.companyRepository = companyRepository;
         this.countryRepository = countryRepository;
         this.personRepository = personRepository;
@@ -311,6 +313,7 @@ public class ImportService {
 
             log.info("\tImport finished in {}", DurationUtils.getDurationInTimeFormat(fetchMoviesStart));
 
+            productionCountryService.clearCache();
         }
 
         private void fetchMovies(List<List<CallWrapper<com.uwetrottmann.tmdb2.entities.Movie>>> movieCallsPartitionedLists) {
@@ -365,7 +368,6 @@ public class ImportService {
         private MovieImportWrapper processTmdbMovie(com.uwetrottmann.tmdb2.entities.Movie tmdbMovie) {
             if (tmdbMovie == null || tmdbMovie.id == null)
                 return null;
-
 
 
             //TODO: Review - This is not necessary since we can still calculate credit's appearances on these movies. After all that's how popularity is described atm.
@@ -613,7 +615,11 @@ public class ImportService {
             ProductionCountry country;
 
             country = new ProductionCountry();
-            country.setName(tmdbCountry.name);
+
+            String name;
+            name = Objects.equals(tmdbCountry.iso_3166_1, "MK") ? "North Macedonia" : tmdbCountry.name;
+
+            country.setName(name);
             country.setIso31661(tmdbCountry.iso_3166_1);
             pendingCountries.put(country.getIso31661(), country);
 

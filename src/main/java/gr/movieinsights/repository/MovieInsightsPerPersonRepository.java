@@ -28,5 +28,10 @@ public interface MovieInsightsPerPersonRepository extends BaseMovieInsightsRepos
     List<Integer> getYears(@Param("id") Long id, @Param("role") CreditRole role);
 
     Optional<MovieInsightsPerPerson> findByPerson_IdAndAs(Long id, CreditRole role);
+
     List<MovieInsightsPerPerson> findByPerson_Id(Long id);
+
+
+    @Query("SELECT distinct mi FROM MovieInsightsPerPerson mi inner join fetch mi.person p inner join fetch mi.movieInsightsPerYears miy where p.id = :id and miy.year = :year")
+    List<MovieInsightsPerPerson> findByYear(@Param("id") Long id, @Param("year") int year);
 }

@@ -1,5 +1,6 @@
 package gr.movieinsights.domain.elasticsearch;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import gr.movieinsights.domain.IdentifiedNamedEntity;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.InnerField;
@@ -10,6 +11,7 @@ import javax.validation.constraints.NotNull;
 import static org.springframework.data.elasticsearch.annotations.FieldType.Keyword;
 import static org.springframework.data.elasticsearch.annotations.FieldType.Text;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public abstract class BaseElasticSearchIndex<T extends IdentifiedNamedEntity> {
 
     BaseElasticSearchIndex() {

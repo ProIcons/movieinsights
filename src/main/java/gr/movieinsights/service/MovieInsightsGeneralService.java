@@ -57,7 +57,7 @@ public class MovieInsightsGeneralService
 
     public Optional<MovieInsightsGeneralBasicDTO> getBasic() {
         Optional<MovieInsightsGeneralBasicDTO> movieInsightsGeneralBasicDTO = getFirst().map(movieInsightsGeneralBasicMapper::toDto);
-        movieInsightsGeneralBasicDTO.ifPresent((m) -> m.setYears(getYears(null)));
+        //todo fix movieInsightsGeneralBasicDTO.ifPresent((m) -> m.setYearData(getYears(null)));
         return movieInsightsGeneralBasicDTO;
     }
 

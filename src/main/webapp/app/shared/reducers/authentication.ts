@@ -1,7 +1,7 @@
 import axios from 'axios';
-import { Storage } from 'react-jhipster';
+import { Storage } from 'app/utils';
 
-import { REQUEST, SUCCESS, FAILURE } from 'app/shared/reducers/action-type.util';
+import { FAILURE, REQUEST, SUCCESS } from 'app/shared/reducers/action-type.util';
 import { setLocale } from 'app/shared/reducers/locale';
 
 export const ACTION_TYPES = {
@@ -12,7 +12,7 @@ export const ACTION_TYPES = {
   ERROR_MESSAGE: 'authentication/ERROR_MESSAGE',
 };
 
-const AUTH_TOKEN_KEY = 'jhi-authenticationToken';
+const AUTH_TOKEN_KEY = 'mi-authenticationToken';
 
 const initialState = {
   loading: false,
@@ -120,9 +120,9 @@ export const login: (username: string, password: string, rememberMe?: boolean) =
     type: ACTION_TYPES.LOGIN,
     payload: axios.post('api/authenticate', { username, password, rememberMe }),
   });
-  const bearerToken = result.value.headers.authorization;
-  if (bearerToken && bearerToken.slice(0, 7) === 'Bearer ') {
-    const jwt = bearerToken.slice(7, bearerToken.length);
+  const bearerToken = result.value.data.id_token;
+  if (bearerToken) {
+    const jwt = bearerToken;
     if (rememberMe) {
       Storage.local.set(AUTH_TOKEN_KEY, jwt);
     } else {

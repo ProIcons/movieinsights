@@ -11,8 +11,9 @@
     "noImplicitAny": false,
     "suppressImplicitAnyIndexErrors": true,
     "outDir": "target/classes/static/app",
-    "lib": ["dom", "es2015", "es2016", "es2017"],
-    "types": ["jest", "webpack-env"],
+    "lib": ["dom", "es2015", "es2016", "es2017", "es2019"],
+    "types": ["jest", "webpack-env", "node"],
+    "typeRoots": ["@types", "node_modules/@types"],
     "allowJs": true,
     "checkJs": false,
     "baseUrl": "./",
@@ -23,6 +24,6 @@
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true
   },
-  "include": ["src/main/webapp/app", "src/test/javascript/spec"],
+  "include": ["src/main/webapp/app"],
   "exclude": ["node_modules"]
 }

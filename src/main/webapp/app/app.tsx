@@ -1,62 +1,41 @@
-import 'react-toastify/dist/ReactToastify.css';
-import './app.scss';
-
-import React, { useEffect } from 'react';
-import { connect } from 'react-redux';
-import { Card } from 'reactstrap';
-import { BrowserRouter as Router } from 'react-router-dom';
-import { ToastContainer, toast } from 'react-toastify';
-import { hot } from 'react-hot-loader';
-
-import { IRootState } from 'app/shared/reducers';
-import { getSession } from 'app/shared/reducers/authentication';
-import { getProfile } from 'app/shared/reducers/application-profile';
-import { setLocale } from 'app/shared/reducers/locale';
-import Header from 'app/shared/layout/header/header';
-import Footer from 'app/shared/layout/footer/footer';
-import { hasAnyAuthority } from 'app/shared/auth/private-route';
-import ErrorBoundary from 'app/shared/error/error-boundary';
-import { AUTHORITIES } from 'app/config/constants';
-import AppRoutes from 'app/routes';
+import React, {Component} from "react";
+import {IRootState} from "app/shared/reducers";
+import {hasAnyAuthority} from "app/modules/admin/admin-route";
+import {AUTHORITIES} from "app/config/constants";
+import {setLocale} from "app/shared/reducers/locale";
+import {getSession} from "app/shared/reducers/authentication";
+import {getProfile} from "app/shared/reducers/application-profile";
+import {connect} from "react-redux";
+import {hot} from "react-hot-loader";
+import {BrowserRouter as Router} from "react-router-dom";
+import Layout from "app/modules/layout";
 
 const baseHref = document.querySelector('base').getAttribute('href').replace(/\/$/, '');
-
 export interface IAppProps extends StateProps, DispatchProps {}
+class App extends Component<IAppProps, any> {
+    componentDidMount() {
+      this.updateSessionAndProfile();
+    }
 
-export const App = (props: IAppProps) => {
-  useEffect(() => {
-    props.getSession();
-    props.getProfile();
-  }, []);
+    componentDidUpdate(prevProps: Readonly<IAppProps>, prevState: Readonly<any>, snapshot?: any) {
+      this.updateSessionAndProfile();
+    }
 
-  const paddingTop = '60px';
-  return (
-    <Router basename={baseHref}>
-      <div className="app-container" style={{ paddingTop }}>
-        <ToastContainer position={toast.POSITION.TOP_LEFT} className="toastify-container" toastClassName="toastify-toast" />
-        <ErrorBoundary>
-          <Header
-            isAuthenticated={props.isAuthenticated}
-            isAdmin={props.isAdmin}
-            currentLocale={props.currentLocale}
-            onLocaleChange={props.setLocale}
-            ribbonEnv={props.ribbonEnv}
-            isInProduction={props.isInProduction}
-            isSwaggerEnabled={props.isSwaggerEnabled}
-          />
-        </ErrorBoundary>
-        <div className="container-fluid view-container" id="app-view-container">
-          <Card className="jh-card">
-            <ErrorBoundary>
-              <AppRoutes />
-            </ErrorBoundary>
-          </Card>
-          <Footer />
-        </div>
-      </div>
-    </Router>
-  );
-};
+    updateSessionAndProfile() {
+    /*  this.props.getSession();
+      this.props.getProfile();*/
+    }
+
+    render() {
+      const props = this.props;
+      return (
+        <Router basename={baseHref}>
+          <Layout appProps={props}/>
+        </Router>
+      );
+    }
+}
+
 
 const mapStateToProps = ({ authentication, applicationProfile, locale }: IRootState) => ({
   currentLocale: locale.currentLocale,

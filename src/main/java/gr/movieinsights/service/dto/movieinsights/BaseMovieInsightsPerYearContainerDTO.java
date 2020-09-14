@@ -7,14 +7,14 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import java.util.List;
 
 public class BaseMovieInsightsPerYearContainerDTO extends BaseMovieInsightsContainerDTO {
-    private List<Integer> years;
+    private List<List<Object>> yearData;
 
-    public List<Integer> getYears() {
-        return years;
+    public List<List<Object>> getYearData() {
+        return yearData;
     }
 
-    public void setYears(List<Integer> years) {
-        this.years = years;
+    public void setYearData(List<List<Object>> yearData) {
+        this.yearData = yearData;
     }
 
     @Override
@@ -27,7 +27,7 @@ public class BaseMovieInsightsPerYearContainerDTO extends BaseMovieInsightsConta
 
         return new EqualsBuilder()
             .appendSuper(super.equals(o))
-            .append(years, that.years)
+            .append(yearData, that.yearData)
             .isEquals();
     }
 
@@ -35,14 +35,14 @@ public class BaseMovieInsightsPerYearContainerDTO extends BaseMovieInsightsConta
     public int hashCode() {
         return new HashCodeBuilder(17, 37)
             .appendSuper(super.hashCode())
-            .append(years)
+            .append(yearData)
             .toHashCode();
     }
 
     @Override
     public String toString() {
         return new ToStringBuilder(this)
-            .append("years", years)
+            .append("years", yearData)
             .append("movieInsights", getMovieInsights())
             .append("id", getId())
             .toString();

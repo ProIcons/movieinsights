@@ -3,5 +3,19 @@
   "parserOptions": {
     "project": "./tsconfig.e2e.json"
   },
-  "rules": {}
+  "parser": "@typescript-eslint/parser",
+  "plugins": ["@typescript-eslint", "typescript"],
+  "rules": {
+    "no-case-declarations": "off",
+    "@typescript-eslint/no-empty-interface": "off",
+    "@typescript-eslint/no-namespace": "off",
+    "@typescript-eslint/restrict-plus-operands": "off",
+    "@typescript-eslint/no-unsafe-call": "off",
+    "@typescript-eslint/no-unsafe-member-access": "off",
+    "@typescript-eslint/no-unsafe-return": "off",
+    "@typescript-eslint/restrict-template-expressions": "off",
+    "@typescript-eslint/no-unsafe-assignment": "off",
+    "@typescript-eslint/explicit-module-boundary-types": "off",
+    "no-shadow": "off"
+  }
 }

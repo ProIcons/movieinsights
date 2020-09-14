@@ -1,4 +1,4 @@
-import { isPromise } from 'react-jhipster';
+import { isPromise } from 'app/utils/promise-utils';
 
 const getErrorMessage = errorData => {
   let message = errorData.message;

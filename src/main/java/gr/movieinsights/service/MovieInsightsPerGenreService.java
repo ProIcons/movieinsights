@@ -62,7 +62,7 @@ public class MovieInsightsPerGenreService
     public Optional<MovieInsightsPerGenreBasicDTO> findByGenreIdBasic(Long id) {
         log.debug("Request to get MovieInsightsPerGenre by GenreId : {}", id);
         Optional<MovieInsightsPerGenreBasicDTO> movieInsightsPerGenreBasicDTO = repository.findByGenre_Id(id).map(getBasicMapper()::toDto);
-        movieInsightsPerGenreBasicDTO.ifPresent(m->m.setYears(getYears(m.getId())));
+        //TODO FIX movieInsightsPerGenreBasicDTO.ifPresent(m->m.setYears(getYears(m.getId())));
         return movieInsightsPerGenreBasicDTO;
     }
 

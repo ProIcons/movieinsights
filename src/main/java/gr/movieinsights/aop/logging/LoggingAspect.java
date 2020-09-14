@@ -1,5 +1,6 @@
 package gr.movieinsights.aop.logging;
 
+import gr.movieinsights.util.DurationUtils;
 import io.github.jhipster.config.JHipsterConstants;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -12,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.core.env.Environment;
 import org.springframework.core.env.Profiles;
 
+import java.time.Instant;
 import java.util.Arrays;
 
 /**
@@ -95,13 +97,14 @@ public class LoggingAspect {
     @Around("applicationPackagePointcut() && springBeanPointcut()")
     public Object logAround(ProceedingJoinPoint joinPoint) throws Throwable {
         Logger log = logger(joinPoint);
+        Instant instant = Instant.now();
         if (log.isDebugEnabled()) {
             log.debug("Enter: {}() with argument[s] = {}", joinPoint.getSignature().getName(), Arrays.toString(joinPoint.getArgs()));
         }
         try {
             Object result = joinPoint.proceed();
             if (log.isDebugEnabled()) {
-                log.debug("Exit: {}() with result = {}", joinPoint.getSignature().getName(), result);
+                log.debug("Exit: {}() in {}ms with result = {}", joinPoint.getSignature().getName(), DurationUtils.getDurationInMillis(instant), result);
             }
             return result;
         } catch (IllegalArgumentException e) {

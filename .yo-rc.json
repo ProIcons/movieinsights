@@ -38,6 +38,10 @@
     "enableTranslation": true,
     "nativeLanguage": "en",
     "languages": ["en", "el"],
-    "blueprints": []
+    "blueprints": [],
+    "appsFolders": ["jHipster-Postgres"],
+    "directoryPath": "../",
+    "monitoring": "elk",
+    "consoleOptions": ["curator"]
   }
 }

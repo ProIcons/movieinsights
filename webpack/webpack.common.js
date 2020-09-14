@@ -2,6 +2,7 @@ const path = require('path');
 const webpack = require('webpack');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const BrotliPlugin = require('brotli-webpack-plugin');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const MergeJsonWebpackPlugin = require('merge-jsons-webpack-plugin');
 const utils = require('./utils.js');
@@ -68,7 +69,11 @@ module.exports = options => ({
       {
         enforce: 'pre',
         test: /\.jsx?$/,
-        loader: 'source-map-loader'
+        loader: 'source-map-loader',
+        exclude: [
+          path.join(process.cwd(), 'node_modules/react-responsive')
+        ]
+
       },
       {
         test: /\.(j|t)sx?$/,
@@ -107,16 +112,21 @@ module.exports = options => ({
         SERVER_API_URL: `''`
       }
     }),
-    new ForkTsCheckerWebpackPlugin({ eslint: true }),
+    new ForkTsCheckerWebpackPlugin({eslint: true}),
     new CopyWebpackPlugin([
-      { from: './node_modules/swagger-ui-dist/*.{js,css,html,png}', to: 'swagger-ui', flatten: true, ignore: ['index.html']},
-      { from: './node_modules/axios/dist/axios.min.js', to: 'swagger-ui'},
-      { from: './src/main/webapp//swagger-ui/', to: 'swagger-ui' },
-      { from: './src/main/webapp/content/', to: 'content' },
-      { from: './src/main/webapp/favicon.ico', to: 'favicon.ico' },
-      { from: './src/main/webapp/manifest.webapp', to: 'manifest.webapp' },
+      {
+        from: './node_modules/swagger-ui-dist/*.{js,css,html,png}',
+        to: 'swagger-ui',
+        flatten: true,
+        ignore: ['index.html']
+      },
+      {from: './node_modules/axios/dist/axios.min.js', to: 'swagger-ui'},
+      {from: './src/main/webapp//swagger-ui/', to: 'swagger-ui'},
+      {from: './src/main/webapp/content/', to: 'content'},
+      {from: './src/main/webapp/favicon.ico', to: 'favicon.ico'},
+      {from: './src/main/webapp/manifest.webapp', to: 'manifest.webapp'},
       // jhipster-needle-add-assets-to-webpack - JHipster will add/remove third-party resources in this array
-      { from: './src/main/webapp/robots.txt', to: 'robots.txt' }
+      {from: './src/main/webapp/robots.txt', to: 'robots.txt'}
     ]),
     new HtmlWebpackPlugin({
       template: './src/main/webapp/index.html',
@@ -124,13 +134,19 @@ module.exports = options => ({
       inject: 'body',
       base: '/',
     }),
+    /*new BrotliPlugin({
+      asset: '[path].br[query]',
+      test: /\.(js|css|html|svg)$/,
+      threshold: 10240,
+      minRatio: 0.8
+    }),*/
     new MergeJsonWebpackPlugin({
       output: {
         groupBy: [
-                    { pattern: "./src/main/webapp/i18n/en/*.json", fileName: "./i18n/en.json" },
-                    { pattern: "./src/main/webapp/i18n/el/*.json", fileName: "./i18n/el.json" }
-                    // jhipster-needle-i18n-language-webpack - JHipster will add/remove languages in this array
-                ]
+          {pattern: "./src/main/webapp/i18n/en/*.json", fileName: "./i18n/en.json"},
+          {pattern: "./src/main/webapp/i18n/el/*.json", fileName: "./i18n/el.json"}
+          // jhipster-needle-i18n-language-webpack - JHipster will add/remove languages in this array
+        ]
       }
     }),
   ]

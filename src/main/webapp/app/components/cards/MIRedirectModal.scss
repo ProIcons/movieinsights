@@ -1,0 +1,50 @@
+.btn-tumblr {
+  color: #fff;
+  background-color: #32506d;
+  border-color: #32506d;
+}
+
+@media (hover: hover), (-ms-high-contrast: none) {
+  .btn-tumblr:hover {
+    color: #fff;
+    background-color: #263d53;
+    border-color: #22364a;
+  }
+}
+
+.btn-tumblr:focus,
+.btn-tumblr.focus {
+  color: #fff;
+  background-color: #263d53;
+  border-color: #22364a;
+  box-shadow: 0 0 0 0.2rem rgba(81, 106, 131, 0.5);
+}
+
+.btn-tumblr.disabled,
+.btn-tumblr:disabled {
+  color: #fff;
+  background-color: #32506d;
+  border-color: #32506d;
+}
+
+.btn-tumblr:not(:disabled):not(.disabled):active,
+.show > .btn-tumblr.dropdown-toggle {
+  color: #fff;
+  background-color: #22364a;
+  border-color: #1e3041;
+}
+
+.btn-tumblr:not(:disabled):not(.disabled):active:focus,
+.show > .btn-tumblr.dropdown-toggle:focus {
+  box-shadow: 0 0 0 0.2rem rgba(81, 106, 131, 0.5);
+}
+
+.show > .btn-tumblr.dropdown-toggle {
+  color: #fff;
+  background-color: #22364a;
+  border-color: #1e3041;
+}
+
+.show > .btn-tumblr.dropdown-toggle:focus {
+  box-shadow: 0 0 0 0.2rem rgba(81, 106, 131, 0.5);
+}

@@ -36,7 +36,7 @@ public class MovieInsightsPerCountryResource extends BaseMovieInsightsContainerR
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the movieInsightsPerYearDTO, or
      * with status {@code 404 (Not Found)}.
      */
-    @GetMapping(path = {"/{iso}"})
+    @GetMapping(path = {"/n/{iso}"})
     public ResponseEntity<? extends MovieInsightsPerCountryBasicDTO> getByCountryIso(
         @PathVariable("iso") String iso,
         @ExtendedParam boolean extended) {
@@ -58,7 +58,7 @@ public class MovieInsightsPerCountryResource extends BaseMovieInsightsContainerR
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the movieInsightsPerYearDTO, or
      * with status {@code 404 (Not Found)}.
      */
-    @GetMapping(path = {"/{iso}/{year}"})
+    @GetMapping(path = {"/n/{iso}/{year}"})
     public ResponseEntity<MovieInsightsPerYearDTO> getByYear(
         @PathVariable("iso") String iso,
         @PathVariable("year") int year) {
@@ -66,4 +66,46 @@ public class MovieInsightsPerCountryResource extends BaseMovieInsightsContainerR
         return ResponseUtil.wrapOrNotFound(getService().findByYear(iso, year));
 
     }
+
+
+    /**
+     * {@code GET /:id?extended} : get the movieInsightsPerCountry by country.
+     *
+     * @param id
+     *     the id of the movieInsightsPerCountryDTO to retrieve.
+     * @param extended
+     *     whether to include extended information of not
+     *
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the movieInsightsPerYearDTO, or
+     * with status {@code 404 (Not Found)}.
+     */
+    @GetMapping(path = {"/{id}","/i/{id}"})
+    public ResponseEntity<? extends MovieInsightsPerCountryBasicDTO> getByCountryId(
+        @PathVariable("id") Long id,
+        @ExtendedParam boolean extended) {
+        log.debug("REST request to get{} movieInsightsPerCountry By Country {}", extended ? " extended" : "", id);
+        if (extended)
+            return ResponseUtil.wrapOrNotFound(getService().findByCountryId(id));
+        else
+            return ResponseUtil.wrapOrNotFound(getService().findByCountryIdBasic(id));
+    }
+
+    /**
+     * {@code GET /:id/:year} : get the movieInsightsPerEntity by country and by year.
+     *
+     * @param id
+     *     the id of the movieInsightsPerCountryDTO to retrieve.
+     * @param year
+     *     the year
+     *
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the movieInsightsPerYearDTO, or
+     * with status {@code 404 (Not Found)}.
+     */
+    @GetMapping(path = {"/{id}/{year}","/i/{id}/{year}"})
+    public ResponseEntity<MovieInsightsPerYearDTO> getByYear(
+        @PathVariable("id") Long id,
+        @PathVariable("year") int year) {
+        return ResponseUtil.wrapOrNotFound(getService().findByYear(id, year));
+    }
+
 }

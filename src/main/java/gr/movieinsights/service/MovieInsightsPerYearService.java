@@ -1,6 +1,7 @@
 package gr.movieinsights.service;
 
 import gr.movieinsights.domain.MovieInsightsPerYear;
+import gr.movieinsights.domain.enumeration.CreditRole;
 import gr.movieinsights.repository.MovieInsightsPerYearRepository;
 import gr.movieinsights.service.dto.movieinsights.year.MovieInsightsPerYearDTO;
 import gr.movieinsights.service.mapper.movieinsights.year.MovieInsightsPerYearMapper;
@@ -8,7 +9,6 @@ import gr.movieinsights.service.util.BaseService;
 import gr.movieinsights.service.util.IBasicDataProviderService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -88,6 +88,10 @@ public class MovieInsightsPerYearService
 
     public Optional<MovieInsightsPerYearDTO> findByPerson(long personId, int year) {
         return getRepository().findByPerson(personId, year).map(getMapper()::toDto);
+    }
+
+    public Optional<MovieInsightsPerYearDTO> findByPerson(long personId, CreditRole role, int year) {
+        return getRepository().findByPerson(personId, role, year).map(getMapper()::toDto);
     }
 
     public Optional<MovieInsightsPerYearDTO> findGeneral(int year) {

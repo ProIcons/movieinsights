@@ -1,0 +1,40 @@
+.mi-person-profile {
+  height: 150px;
+  overflow: hidden;
+  z-index: 5;
+
+  img {
+    position: absolute;
+    height: 150px;
+    border: 1px solid black;
+    border-radius: 10px;
+    overflow: hidden;
+    z-index: 5;
+  }
+}
+
+.mi-person-title-overlay {
+  width: 135%;
+  background: rgb(0, 0, 0, 0.2);
+  z-index: 4;
+  position: absolute;
+  margin-left: -65px;
+
+  height: 30px;
+}
+
+.mi-person-title {
+  font-size: 18px;
+  font-weight: bold;
+  width: 200px;
+  height: 40px;
+  position: absolute;
+  margin-left: -54px;
+  display: inline-block;
+  vertical-align: middle;
+  text-align: center;
+}
+
+.mi-person-body {
+  margin-bottom: -12px;
+}

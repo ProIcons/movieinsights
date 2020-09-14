@@ -138,3 +138,9 @@ jhipster:
 # ===================================================================
 
 # application:
+application:
+  tmdb:
+    api-key: ${TMDB_API_KEY}
+    cache:
+      max-age: 364d
+      path: tmdb.cache

@@ -62,7 +62,7 @@ public class MovieInsightsPerCompanyService
     public Optional<MovieInsightsPerCompanyBasicDTO> findByCompanyIdBasic(Long id) {
         log.debug("Request to get MovieInsightsPerCompany by CompanyId : {}", id);
         Optional<MovieInsightsPerCompanyBasicDTO> movieInsightsPerCompanyBasicDTO = repository.findByCompany_Id(id).map(getBasicMapper()::toDto);
-        movieInsightsPerCompanyBasicDTO.ifPresent(m -> m.setYears(getYears(m.getId())));
+        //TODO FIX movieInsightsPerCompanyBasicDTO.ifPresent(m -> m.setYears(getYears(m.getId())));
         return movieInsightsPerCompanyBasicDTO;
     }
 

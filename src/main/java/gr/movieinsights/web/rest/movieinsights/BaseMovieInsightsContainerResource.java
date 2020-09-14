@@ -15,23 +15,5 @@ public abstract class BaseMovieInsightsContainerResource<TEntity extends Identif
         super(service, entityName);
     }
 
-    /**
-     * {@code GET /:entityId/:year} : get the movieInsightsPerEntity by entity and by year.
-     *
-     * @param id
-     *     the id of the entity to retrieve.
-     * @param year
-     *     the year
-     *
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the movieInsightsPerYearDTO, or
-     * with status {@code 404 (Not Found)}.
-     */
-    @GetMapping(path = {"/{entityId}/{year}"})
-    public ResponseEntity<MovieInsightsPerYearDTO> getByYear(
-        @PathVariable("entityId") Long id,
-        @PathVariable("year") int year) {
 
-        return ResponseUtil.wrapOrNotFound(getService().findByYear(id, year));
-
-    }
 }

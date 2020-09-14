@@ -7,8 +7,11 @@ import gr.movieinsights.service.dto.movieinsights.general.MovieInsightsGeneralBa
 import gr.movieinsights.service.mapper.EntityMapper;
 import gr.movieinsights.service.mapper.movieinsights.MovieInsightsMapper;
 import gr.movieinsights.service.mapper.movieinsights.year.MovieInsightsPerYearMapper;
+import gr.movieinsights.service.mapper.util.MappingUtils;
+import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 
 /**
  * Mapper for the entity {@link MovieInsightsPerCountry} and its DTO {@link MovieInsightsPerCountryDTO}.
@@ -30,5 +33,10 @@ public interface MovieInsightsGeneralBasicMapper extends EntityMapper<MovieInsig
         MovieInsightsGeneral movieInsightsGeneral = new MovieInsightsGeneral();
         movieInsightsGeneral.setId(id);
         return movieInsightsGeneral;
+    }
+
+    @AfterMapping
+    default void calculateTotals(MovieInsightsGeneral movieInsightsPerEntity, @MappingTarget MovieInsightsGeneralBasicDTO movieInsightsPerEntityBasicDTO) {
+        movieInsightsPerEntityBasicDTO.setYearData(MappingUtils.calculateMovieInsightsPerYearsToTotals(movieInsightsPerEntity));
     }
 }

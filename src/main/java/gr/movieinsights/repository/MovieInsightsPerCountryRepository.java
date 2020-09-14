@@ -28,4 +28,6 @@ public interface MovieInsightsPerCountryRepository extends BaseMovieInsightsRepo
 
     @Query("SELECT distinct mipc FROM MovieInsightsPerCountry mipc LEFT JOIN FETCH mipc.country c LEFT JOIN fetch mipc.movieInsights LEFT Join fetch mipc.movieInsightsPerYears WHERE lower(c.iso31661) = lower(:iso31661)")
     Optional<MovieInsightsPerCountry> findByCountry(@Param("iso31661") String iso31661);
+
+    Optional<MovieInsightsPerCountry> findByCountry_Id(@Param("id") Long id);
 }

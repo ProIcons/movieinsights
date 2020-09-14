@@ -1,6 +1,7 @@
 package gr.movieinsights.repository;
 
 import gr.movieinsights.domain.MovieInsightsPerYear;
+import gr.movieinsights.domain.enumeration.CreditRole;
 import gr.movieinsights.repository.util.BaseRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -52,6 +53,10 @@ public interface MovieInsightsPerYearRepository extends BaseRepository<MovieInsi
 
     @Query("SELECT distinct miy FROM MovieInsightsPerYear miy inner join miy.movieInsightsPerPerson mic inner join mic.person p on p.id = :personId where miy.year = :year")
     Optional<MovieInsightsPerYear> findByPerson(@Param("personId") long personId, @Param("year") int year);
+
+    @Query("SELECT distinct miy FROM MovieInsightsPerYear miy inner join miy.movieInsightsPerPerson mic on mic.as = :role inner join mic.person p on p.id = :personId where miy.year = :year")
+    Optional<MovieInsightsPerYear> findByPerson(@Param("personId") long personId, @Param("role") CreditRole role, @Param("year") int year);
+
 
     @Query("SELECT distinct miy FROM MovieInsightsPerYear miy where miy.year = :year and miy.movieInsightsGeneral is not null")
     Optional<MovieInsightsPerYear> findGeneral(@Param("year") int year);

@@ -2,11 +2,11 @@ import SockJS from 'sockjs-client';
 
 import Stomp from 'webstomp-client';
 import { Observable } from 'rxjs';
-import { Storage } from 'react-jhipster';
+import { Storage } from 'app/utils';
 
-import { ACTION_TYPES as ADMIN_ACTIONS } from 'app/modules/administration/administration.reducer';
+import { ACTION_TYPES as ADMIN_ACTIONS } from 'app/modules/admin/administration.reducer';
 import { ACTION_TYPES as AUTH_ACTIONS } from 'app/shared/reducers/authentication';
-import { SUCCESS, FAILURE } from 'app/shared/reducers/action-type.util';
+import { FAILURE, SUCCESS } from 'app/shared/reducers/action-type.util';
 
 let stompClient = null;
 
@@ -25,17 +25,17 @@ const createListener = (): Observable<any> =>
   });
 
 const sendActivity = () => {
-  connection.then(() => {
+  void connection.then(() => {
     stompClient.send(
       '/topic/activity', // destination
-      JSON.stringify({ page: window.location.hash }), // body
+      JSON.stringify({ page: window.location.pathname }), // body
       {} // header
     );
   });
 };
 
 const subscribe = () => {
-  connection.then(() => {
+  void connection.then(() => {
     subscriber = stompClient.subscribe('/topic/tracker', data => {
       listenerObserver.next(JSON.parse(data.body));
     });
@@ -56,7 +56,7 @@ const connect = () => {
 
   const headers = {};
   let url = '//' + loc.host + baseHref + '/websocket/tracker';
-  const authToken = Storage.local.get('jhi-authenticationToken') || Storage.session.get('jhi-authenticationToken');
+  const authToken = Storage.local.get('mi-authenticationToken') || Storage.session.get('mi-authenticationToken');
   if (authToken) {
     url += '?access_token=' + authToken;
   }

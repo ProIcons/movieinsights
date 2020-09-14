@@ -1,0 +1,193 @@
+$searchbar-width: 575px;
+
+.react-autosuggest__container {
+  position: relative;
+  @media (min-width: 1200px) {
+    width: 50%;
+    transition: width 400ms;
+  }
+  @media (max-width: 1200px) {
+    width: 95%;
+    transition: width 400ms;
+  }
+}
+
+.react-autosuggest__input {
+  width: 100%;
+  height: 45px;
+  padding: 10px 20px;
+  font-family: Helvetica, sans-serif;
+  font-weight: 300;
+  font-size: 1rem;
+  border: 1px solid var(--secondary);
+  background: var(--dark);
+  color: var(--white);
+  border-radius: 4px;
+}
+
+.react-autosuggest__input--focused {
+  outline: none;
+}
+
+.react-autosuggest__input--open {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.react-autosuggest__suggestions-container {
+  display: none;
+}
+
+.react-autosuggest__suggestions-container--open {
+  display: block;
+  position: absolute;
+  top: 61px;
+  width: 100%;
+  border: 1px solid var(--secondary);
+  background-color: #2c2c35;
+  font-family: Helvetica, sans-serif;
+  font-weight: 300;
+  font-size: 16px;
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
+  z-index: 2;
+}
+
+.react-autosuggest__suggestions-list {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+}
+
+.react-autosuggest__suggestion {
+  cursor: pointer;
+  padding: 10px 20px;
+}
+
+.react-autosuggest__suggestion--highlighted {
+  background-color: var(--info);
+  color: var(--gray);
+  font-weight: bold;
+}
+
+.react-autosuggest__suggestion:not(:first-child) {
+  border-top: 1px solid var(--secondary);
+}
+
+.react-autosuggest__section-container {
+  border-top: 1px solid var(--dark);
+}
+
+.react-autosuggest__section-container--first {
+  border-top: 0;
+}
+
+.react-autosuggest__section-title {
+  padding: 10px 0 0 10px;
+  font-size: 12px;
+  color: var(--info);
+}
+
+.suggestion-content {
+  display: flex;
+  align-items: center;
+  background-repeat: no-repeat;
+}
+
+.highlight {
+  color: var(--info);
+  font-weight: bold;
+}
+
+.react-autosuggest__suggestion--highlighted .highlight {
+  color: var(--dark);
+}
+
+.react-autosuggest__suggestion--highlighted .suggestion-content .autosuggest__image .svg-inline--fa {
+  color: var(--dark) !important;
+}
+
+.react-autosuggest__suggestion--focused {
+  background-color: #0c7eaf;
+  color: #fff;
+}
+
+.autosuggest__image {
+  width: 45px;
+  height: 45px;
+  align-content: center;
+  display: inline-block;
+  vertical-align: middle;
+  position: relative;
+
+  img {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    margin: auto;
+    object-fit: cover;
+    width: 45px;
+    max-height: 45px;
+  }
+
+  svg {
+    width: 45px;
+    max-height: 45px;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    position: absolute;
+    margin-left: -3px;
+    margin-top: 5px;
+  }
+
+  .radius {
+    border-radius: 25%;
+  }
+
+  .svg-inline--fa {
+    margin-top: 5px;
+  }
+
+  .c-icon {
+    margin-top: 5px;
+    width: 40px !important;
+    height: 40px !important;
+    font-size: 2rem !important;
+  }
+}
+
+.name {
+  font-size: 1.2rem;
+  margin-left: 15px;
+  line-height: 45px;
+}
+.mi-search-warning {
+  --info: var(--warning);
+  --muted: var(--warning);
+}
+.mi-search-fatal {
+  --info: var(--danger);
+  --muted: var(--danger);
+}
+.react-autosuggest__container {
+  &:hover .input-group-text {
+    background-color: #0a0b18;
+    transition: background-color 400ms;
+    .c-icon {
+      transition: color 400ms;
+      color: var(--info) !important;
+    }
+  }
+  & .input-group-text {
+    background-color: var(--dark);
+    .c-icon {
+      transition: color 400ms;
+      color: var(--muted) !important;
+    }
+    transition: background-color 400ms;
+  }
+}

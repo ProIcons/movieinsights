@@ -1,0 +1,55 @@
+$imageSize: 30%;
+$imageHeight: 541;
+$imageWidth: 352;
+.mi-movieInfo-card {
+  width: 100%;
+  text-align: center;
+}
+.mi-movieInfo-header {
+  background: #20202b;
+  position: relative;
+}
+.mi-movieInfo-card-container {
+  position: relative;
+  height: 340px;
+
+  .mi-movieInfo-card-backdrop {
+    width: 100%;
+    background: rgb(255, 255, 255, 0.5);
+    position: absolute;
+    height: 175px;
+    margin-left: -15px;
+    margin-top: -15px;
+    overflow: hidden;
+    padding: 0;
+    img {
+      position: relative;
+      width: 100%;
+    }
+  }
+
+  .mi-movieInfo-card-poster {
+    height: 300px;
+    width: 200px;
+    border: 2px solid #2b2b2c;
+    border-radius: 15px;
+    background: #23242e;
+    position: absolute;
+
+    img {
+      max-width: 100%;
+      max-height: 100%;
+      border-radius: 13px;
+    }
+  }
+  .mi-movieInfo-card-content {
+    position: absolute;
+    margin-left: 220px;
+    margin-top: 175px;
+    width: 520px;
+    height: 120px;
+  }
+}
+.mi-money-field {
+  font-size: 1.5em;
+}
