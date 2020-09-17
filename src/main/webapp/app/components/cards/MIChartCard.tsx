@@ -7,6 +7,7 @@ import numeral from '../../utils/numeral-utils';
 import {deepObjectsMerge} from '@coreui/utils/src'
 import Skeleton, {SkeletonTheme} from "react-loading-skeleton";
 import deepEqual from 'fast-deep-equal';
+import {MIValueNumeralFormat} from "app/shared/enumerations/MIValueNumeralFormat";
 
 export interface MIChartCardField {
   valueFormat?: MIValueNumeralFormat;
@@ -45,13 +46,6 @@ export interface MIChartCardProps extends HTMLProps<any> {
   headerBackgroundClassName: string;
   fields: MIChartCardField[];
   footer?: MIChartCardFooterField;
-}
-
-export enum MIValueNumeralFormat {
-  Money = '0,0$',
-  Decimal = '0,0.00',
-  Integer = '0,0',
-  Custom = ''
 }
 
 export const fieldDefaults = (): MIChartCardField => {

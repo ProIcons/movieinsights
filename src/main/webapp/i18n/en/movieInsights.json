@@ -1,46 +1,23 @@
 {
   "movieInsightsApp": {
     "movieInsights": {
-      "home": {
-        "title": "Movie Insights",
-        "createLabel": "Create a new Movie Insights",
-        "createOrEditLabel": "Create or edit a Movie Insights",
-        "search": "Search for Movie Insights",
-        "notFound": "No Movie Insights found"
+      "worldwide": "Worldwide",
+      "categories": {
+        "genres": "Genres",
+        "movies": "Movies",
+        "productionCompanies": "Production Companies",
+        "productionCountries": "Production Countries",
+        "credits": "Credits",
+        "actors": "Actors",
+        "directors": "Directors",
+        "writers": "Writers",
+        "producers": "Producers"
       },
-      "created": "A new Movie Insights is created with identifier {{ param }}",
-      "updated": "A Movie Insights is updated with identifier {{ param }}",
-      "deleted": "A Movie Insights is deleted with identifier {{ param }}",
-      "delete": {
-        "question": "Are you sure you want to delete Movie Insights {{ id }}?"
-      },
-      "detail": {
-        "title": "Movie Insights"
-      },
-      "averageRating": "Average Rating",
-      "averageBudget": "Average Budget",
-      "averageRevenue": "Average Revenue",
-      "totalMovies": "Total Movies",
-      "mostPopularGenreMovieCount": "Most Popular Genre Movie Count",
-      "mostPopularActorMovieCount": "Most Popular Actor Movie Count",
-      "mostPopularWriterMovieCount": "Most Popular Writer Movie Count",
-      "mostPopularProducerMovieCount": "Most Popular Producer Movie Count",
-      "mostPopularDirectorMovieCount": "Most Popular Director Movie Count",
-      "mostPopularProductionCompanyMovieCount": "Most Popular Production Company Movie Count",
-      "mostPopularProductionCountryMovieCount": "Most Popular Production Country Movie Count",
-      "highestRatedMovie": "Highest Rated Movie",
-      "lowestRatedMovie": "Lowest Rated Movie",
-      "highestBudgetMovie": "Highest Budget Movie",
-      "lowestBudgetMovie": "Lowest Budget Movie",
-      "highestRevenueMovie": "Highest Revenue Movie",
-      "lowestRevenueMovie": "Lowest Revenue Movie",
-      "mostPopularGenre": "Most Popular Genre",
-      "mostPopularActor": "Most Popular Actor",
-      "mostPopularProducer": "Most Popular Producer",
-      "mostPopularWriter": "Most Popular Writer",
-      "mostPopularDirector": "Most Popular Director",
-      "mostPopularProductionCountry": "Most Popular Production Country",
-      "mostPopularProductionCompany": "Most Popular Production Company"
+      "actor": "Actor",
+      "director": "Director",
+      "producer": "Producer",
+      "writer": "Writer",
+      "movie": "Movie"
     }
   }
 }

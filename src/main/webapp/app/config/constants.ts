@@ -73,3 +73,5 @@ function getRandomInt(min: number, max: number): number {
 export const MOVIE_POSTER_PLACEHOLDER = '/content/images/movie_poster_placeholder_big.svg';
 export const PERSON_PROFILE_PLACEHOLDER_RAND = () => `/content/images/jhipster_family_member_${getRandomInt(0, 4)}.svg`;
 export const PERSON_PROFILE_PLACEHOLDER = `/content/images/person_profile_placeholder.svg`;
+
+export const TRANSLATION_ROOT_INDEX = 'movieInsightsApp';

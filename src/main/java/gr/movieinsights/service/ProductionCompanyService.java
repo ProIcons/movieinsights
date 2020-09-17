@@ -18,16 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional
 public class ProductionCompanyService extends BaseSearchableService<ProductionCompany, gr.movieinsights.domain.elasticsearch.ProductionCompany, ProductionCompanyDTO, BasicProductionCompanyDTO, ProductionCompanyRepository, ProductionCompanySearchRepository, ProductionCompanyMapper, BasicProductionCompanyMapper> {
-
-    private final BasicProductionCompanyMapper basicProductionCompanyMapper;
-
     public ProductionCompanyService(ProductionCompanyRepository productionCompanyRepository, ProductionCompanySearchRepository productionCompanySearchRepository, ProductionCompanyMapper productionCompanyMapper, BasicProductionCompanyMapper basicProductionCompanyMapper, SearchableEntityMovieCountMap searchableEntityMovieCountMap) {
         super(productionCompanyRepository, productionCompanySearchRepository, productionCompanyMapper,basicProductionCompanyMapper,searchableEntityMovieCountMap);
-        this.basicProductionCompanyMapper = basicProductionCompanyMapper;
-    }
-
-    @Override
-    public BasicProductionCompanyMapper getBasicMapper() {
-        return basicProductionCompanyMapper;
     }
 }

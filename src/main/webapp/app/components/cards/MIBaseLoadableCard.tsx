@@ -1,7 +1,8 @@
-import React, {Component} from "react";
+import React from "react";
 
 import {deepEqual} from "app/utils";
 import {BaseEntity} from "app/models/BaseEntity.Model";
+import TranslatableComponent from "app/components/TranslatableComponent";
 
 export interface MIBaseLoadableCardProps<T extends BaseEntity> {
   entity: T
@@ -13,12 +14,12 @@ export interface MIBaseLoadableCardState<T extends BaseEntity> extends MIBaseLoa
   subEntitiesLoaded: boolean
 }
 
-export default abstract class MIBaseLoadableCard<P extends MIBaseLoadableCardProps<T>, S extends MIBaseLoadableCardState<T>, T extends BaseEntity> extends Component<P, S> {
+export default abstract class MIBaseLoadableCard<P extends MIBaseLoadableCardProps<T>, S extends MIBaseLoadableCardState<T>, T extends BaseEntity> extends TranslatableComponent<P, S> {
   private declare readonly entityDefaultValue: T;
   private declare entityStateMap: Map<string, boolean>;
 
-  protected constructor(props, entityDefaultValue: T) {
-    super(props);
+  protected constructor(props: P, entityDefaultValue: T) {
+    super(props, "card");
     this.entityDefaultValue = entityDefaultValue;
     this.entityStateMap = new Map<string, boolean>();
     this.state = {
@@ -67,7 +68,7 @@ export default abstract class MIBaseLoadableCard<P extends MIBaseLoadableCardPro
   }
 
   public componentDidUpdate(prevProps: Readonly<MIBaseLoadableCardProps<T>>, prevState: Readonly<MIBaseLoadableCardState<T>>, snapshot?: any) {
-    if (!deepEqual(this.state.entity,this.props.entity)) {
+    if (!deepEqual(this.state.entity, this.props.entity)) {
       if (this.props.entity !== this.entityDefaultValue) {
         if (this.state.entity !== this.entityDefaultValue) {
           this.reset();

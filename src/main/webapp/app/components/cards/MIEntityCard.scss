@@ -12,13 +12,18 @@ $width: 330px !default;
   width: $width;
   min-width: $width;
   max-width: $width;
+  border: 2px solid rgb(10, 11, 24) !important;
+  border-radius: 10px;
 }
 
 .mi-entity-header {
   max-height: 30px;
   text-align: center;
-
+  border-top-right-radius: 10px !important;
+  border-top-left-radius: 10px !important;
   div {
+    color: var(--info);
+    font-size: 0.94em;
     font-weight: bold;
     margin-top: -7px;
     text-transform: uppercase;
@@ -34,7 +39,7 @@ $width: 330px !default;
   vertical-align: center;
   text-align: center;
   background: rgb(24, 25, 36);
-  z-index: 9999;
+  z-index: 1000;
 }
 
 .mi-entity-profile {

@@ -7,6 +7,7 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {NavLink} from "react-router-dom";
 import MIEntityNotFound from "app/components/MIEntityNotFound";
 
+
 import MIBaseLoadableCard, {
   MIBaseLoadableCardProps,
   MIBaseLoadableCardState
@@ -14,12 +15,9 @@ import MIBaseLoadableCard, {
 import {AppUtils} from "app/utils/app-utils";
 import {BaseNamedEntity} from "app/models/BaseEntity.Model";
 import {TmdbEntityType} from "app/models/enumerations";
+import _ from "lodash";
+import {MIValueType} from "app/shared/enumerations/MIValueType";
 
-
-export enum MIValueType {
-  Most = "Most",
-  Least = "Least"
-}
 
 export interface MIEntityCardProps<T extends BaseNamedEntity> extends MIBaseLoadableCardProps<T> {
   entityType: TmdbEntityType,
@@ -27,7 +25,7 @@ export interface MIEntityCardProps<T extends BaseNamedEntity> extends MIBaseLoad
   isCooperative?: boolean,
   defaultEntity: T;
   movieCount: number,
-  children: CIcon | typeof FontAwesomeIcon
+  children: CIcon | typeof FontAwesomeIcon,
 }
 
 export type MIEntityCardState<T extends BaseNamedEntity> = MIBaseLoadableCardState<T>;
@@ -52,13 +50,15 @@ export default class MIEntityCard<T extends BaseNamedEntity> extends MIBaseLoada
 
 
   renderContent() {
-    const title = `${this.props.valueType} Popular ${this.props.isCooperative?"Co-":""}${this.props.entityType}`;
-
+    const str =this.props.entityType.split(' ').reverse().reduce(s=>s).toLowerCase();
+    const indexName = _.camelCase(`${this.props.isCooperative?"co-":""}${str}`);
+    const translatedIndex = this.getPublicTranslation(`${_.camelCase(this.props.entityType)}.${indexName}`);
+    const title = `${this.getTranslation(`${this.props.valueType.toLowerCase()}PopularEntity`,{entity:translatedIndex})}`;
     return (
       <>
-        <CCardHeader className="mi-entity-header">
+        <CCardHeader id="mi-entity-header" className="mi-entity-header">
           <div>
-            {title}
+          {title}
           </div>
         </CCardHeader>
         <CCardBody className="mi-entity-body">
@@ -97,7 +97,7 @@ export default class MIEntityCard<T extends BaseNamedEntity> extends MIBaseLoada
                       <CIcon name={`cil-movie`} height="36" className="my-4"/>
                     </td>
                     <td className="text-md-center text-value-lg">
-                      {this.props.movieCount} Movies
+                      {this.props.movieCount} {this.getPublicTranslation("movie.movies")}
                     </td>
                   </tr>
                   </tbody>

@@ -1,10 +1,11 @@
 import React from 'react';
-import { flagSet } from '@coreui/icons-pro/js/flag';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faSearch } from '@fortawesome/free-solid-svg-icons/faSearch';
 import { faTheaterMasks } from '@fortawesome/free-solid-svg-icons/faTheaterMasks';
+import { faGlobeAmericas } from '@fortawesome/free-solid-svg-icons/faGlobeAmericas';
 import { faUser } from '@fortawesome/free-solid-svg-icons/faUser';
 
+import { flagSet } from '@coreui/icons-pro/js/flag';
 import { cibImdb } from '@coreui/icons-pro/js/brand/cib-imdb';
 import { cidBuilding } from '@coreui/icons-pro/js/duotone/cid-building';
 import { cidMagnifyingGlass } from '@coreui/icons-pro/js/duotone/cid-magnifying-glass';
@@ -53,6 +54,6 @@ const icons = Object.assign({}, flagSet, {
 });
 
 export const loadIcons = () => {
-  library.add(faUser, faSearch, faTheaterMasks);
+  library.add(faUser, faSearch, faTheaterMasks, faGlobeAmericas);
   (React as any).icons = icons;
 };

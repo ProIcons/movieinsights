@@ -1,8 +1,9 @@
 import React, {Component} from "react";
 import {defaultValue as countryDefaultValue, IProductionCountry} from "app/models/IProductionCountry.Model";
-import MIEntityCard, {MIValueType} from "app/components/cards/MIEntityCard";
+import MIEntityCard from "app/components/cards/MIEntityCard";
 import CIcon from "@coreui/icons-react";
 import {TmdbEntityType} from "app/models/enumerations";
+import {MIValueType} from "app/shared/enumerations/MIValueType";
 
 export interface MICountryCardProps {
   country: IProductionCountry;

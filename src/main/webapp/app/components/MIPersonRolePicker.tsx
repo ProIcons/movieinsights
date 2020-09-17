@@ -61,9 +61,6 @@ export default class MIPersonRolePicker extends Component<MIPersonRolePickerProp
   }
 
   render() {
-    const radios = Object.keys(CreditRole).map((k, v) => {
-      return {name: CreditRole[k], value: k, enabled: this.props.roles.filter(z => z === CreditRole[k]).length > 0}
-    });
     return (
       <>
         <ButtonGroup toggle>

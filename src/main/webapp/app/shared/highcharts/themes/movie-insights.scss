@@ -124,6 +124,11 @@ $scrollbar-track-border: #404043;
   stroke: #dddddd;
 }
 
+.highcharts-point-select {
+  fill: var(--success) !important;
+  stroke: var(--secondary) !important;
+}
+
 @import 'node_modules/highcharts/css/highcharts';
 .highcharts-data-label {
   font-size: $data-label-size;

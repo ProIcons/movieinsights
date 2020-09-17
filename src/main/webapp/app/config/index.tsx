@@ -14,7 +14,7 @@ export interface ApplicationConfiguration {
 const initApp = (): ApplicationConfiguration => {
 
 
-  const devTools = process.env.NODE_ENV === 'development' ? <DevTools/> : null;
+  // const devTools = process.env.NODE_ENV === 'development' ? <DevTools/> : null;
 
   const store = initStore();
   registerLocale(store);
@@ -23,9 +23,7 @@ const initApp = (): ApplicationConfiguration => {
   setupAxiosInterceptors(() => actions.clearAuthentication('login.error.unauthorized'));
 
   loadIcons();
-
-
-  return {store,devTools};
+  return {store};
 }
 
 export default initApp;

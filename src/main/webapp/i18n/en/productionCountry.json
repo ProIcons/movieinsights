@@ -1,25 +1,9 @@
 {
   "movieInsightsApp": {
     "productionCountry": {
-      "home": {
-        "title": "Production Countries",
-        "createLabel": "Create a new Production Country",
-        "createOrEditLabel": "Create or edit a Production Country",
-        "search": "Search for Production Country",
-        "notFound": "No Production Countries found"
-      },
-      "created": "A new Production Country is created with identifier {{ param }}",
-      "updated": "A Production Country is updated with identifier {{ param }}",
-      "deleted": "A Production Country is deleted with identifier {{ param }}",
-      "delete": {
-        "question": "Are you sure you want to delete Production Country {{ id }}?"
-      },
-      "detail": {
-        "title": "Production Country"
-      },
-      "name": "Name",
-      "iso31661": "Iso 31661",
-      "movies": "Movies"
+      "country": "Production Country",
+      "coCountry": "Co-Production Country",
+      "countries": "Production Countries"
     }
   }
 }

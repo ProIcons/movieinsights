@@ -7,7 +7,7 @@ export default class Footer extends Component<any, any> {
     return (
       <CFooter fixed={false}>
         <div>
-          <a href="https://www.movieinsights.gr/" target="_blank" rel="noopener noreferrer">MovieInsighs</a>
+          <a href="https://www.movieinsights.gr/" target="_blank" rel="noopener noreferrer">MovieInsights</a>
           <span className="ml-1">&copy; 2020 Νικόλαος Μααυρόπουλος.</span>
         </div>
         <div className="mfs-auto">

@@ -12,6 +12,10 @@
 div .btn.active {
   background-color: var(--info) !important;
 }
+.mi-sideinfo-header-icon {
+  min-height: 250px !important;
+  min-width: 250px !important;
+}
 .mi-sideinfo-reset {
   position: absolute;
   right: 0;

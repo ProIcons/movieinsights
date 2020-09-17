@@ -29,16 +29,8 @@ public class PersonService
     TmdbIdentifiedService<Person, PersonDTO, PersonRepository, PersonMapper>,
     ImdbIdentifiedService<Person, PersonDTO, PersonRepository, PersonMapper> {
 
-    private final BasicPersonMapper basicPersonMapper;
-
     public PersonService(PersonRepository personRepository, PersonSearchRepository personSearchRepository, PersonMapper personMapper, BasicPersonMapper basicPersonMapper, SearchableEntityMovieCountMap searchableEntityMovieCountMap) {
         super(personRepository, personSearchRepository, personMapper, basicPersonMapper, searchableEntityMovieCountMap);
-        this.basicPersonMapper = basicPersonMapper;
-    }
-
-    @Override
-    public BasicPersonMapper getBasicMapper() {
-        return basicPersonMapper;
     }
 
     /**
@@ -56,7 +48,7 @@ public class PersonService
      * @return the list of entities.
      */
     public Page<BasicPersonDTO> findAllWithEagerRelationshipsBasic(Pageable pageable) {
-        return repository.findAllWithEagerRelationships(pageable).map(basicPersonMapper::toDto);
+        return repository.findAllWithEagerRelationships(pageable).map(getBasicMapper()::toDto);
     }
 
     @Override

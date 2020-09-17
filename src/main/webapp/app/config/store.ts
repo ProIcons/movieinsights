@@ -2,7 +2,6 @@ import { applyMiddleware, compose, createStore } from 'redux';
 import promiseMiddleware from 'redux-promise-middleware';
 import thunkMiddleware from 'redux-thunk';
 import reducer, { IRootState } from 'app/shared/reducers';
-import DevTools from './devtools';
 import errorMiddleware from './error-middleware';
 import notificationMiddleware from './notification-middleware';
 import loggerMiddleware from './logger-middleware';
@@ -19,9 +18,10 @@ const defaultMiddlewares = [
   }),
   loggerMiddleware,
 ];
+const composeEnhancers = (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({ trace: true, traceLimit: 25 }) || compose;
 const composedMiddlewares = middlewares =>
   process.env.NODE_ENV === 'development'
-    ? compose(applyMiddleware(...defaultMiddlewares, ...middlewares), DevTools.instrument())
+    ? composeEnhancers(applyMiddleware(...defaultMiddlewares, ...middlewares))
     : compose(applyMiddleware(...defaultMiddlewares, ...middlewares));
 
 const initialize = (initialState?: IRootState, middlewares = []) => createStore(reducer, initialState, composedMiddlewares(middlewares));

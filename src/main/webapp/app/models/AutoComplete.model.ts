@@ -17,6 +17,7 @@ export interface ACEntity extends BaseNamedEntity {
   popularity?: number;
   logoPath?: string;
   profilePath?: string;
+  iso31661?: string;
 }
 
 export const defaultValue: AutoComplete = {

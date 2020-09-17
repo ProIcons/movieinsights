@@ -2,6 +2,7 @@ package gr.movieinsights.web.rest;
 
 
 import gr.movieinsights.config.converters.ExtendedParam;
+import gr.movieinsights.domain.elasticsearch.ProductionCountry;
 import gr.movieinsights.domain.elasticsearch.Genre;
 import gr.movieinsights.domain.elasticsearch.Person;
 import gr.movieinsights.domain.elasticsearch.ProductionCompany;
@@ -15,7 +16,6 @@ import gr.movieinsights.service.PersonService;
 import gr.movieinsights.service.ProductionCompanyService;
 import gr.movieinsights.service.ProductionCountryService;
 import gr.movieinsights.service.SearchService;
-import gr.movieinsights.service.dto.country.ProductionCountryDTO;
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.PaginationUtil;
 import org.springframework.data.domain.Page;
@@ -156,9 +156,9 @@ public class SearchResource extends BaseResource {
      * @return the result of the search.
      */
     @GetMapping({"/countries", "/cn"})
-    public ResponseEntity<List<ProductionCountryDTO>> searchProductionCountries(@RequestParam String query, Pageable pageable) {
+    public ResponseEntity<List<ProductionCountry>> searchProductionCountries(@RequestParam String query, Pageable pageable) {
         log.debug("REST request to search for a page of ProductionCountries for query {}", query);
-        Page<ProductionCountryDTO> page = productionCountryService.search(query, pageable);
+        Page<ProductionCountry> page = productionCountryService.search(query, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }

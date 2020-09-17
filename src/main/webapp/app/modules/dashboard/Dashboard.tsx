@@ -1,14 +1,11 @@
 import './dashboard.scss'
 import React, {Component} from "react";
-import {CCard, CCardBody, CCardHeader, CCol, CRow} from "@coreui/react";
-import {MapChart, MapComponent} from "app/components/charts";
+import {WorldMap} from "app/components/charts";
 import {connect} from "react-redux";
 import {RouteComponentProps} from 'react-router-dom'
 import {defaultValue as countryDefaultValue} from 'app/models/IProductionCountry.Model'
 import {defaultValue as movieInsightsDefaultValue} from "app/models/IMovieInsights.Model";
 import {deepEqual, normalizeText} from "app/utils";
-import MISideInfoPane from "app/components/MISideInfoPane";
-import MIInsightsPanel from "app/components/MIInsightsPanel";
 import {match, matchPath} from "react-router";
 import {
   clearView,
@@ -22,26 +19,16 @@ import {
 } from "app/reducers/dashboard-reducer";
 import {IRootState} from "app/shared/reducers";
 import BaseMovieInsightsContainerStateManager, {hasYear} from "app/reducers/utils/base-movie-insights-container-state-manager";
-import {MIPersonRolePickerProps} from "app/components/MIPersonRolePicker";
 import {MovieInsightsPerPersonState} from "app/reducers/movie-insights-per-person-state-manager";
 import {MovieInsightsContainerState} from "app/reducers/utils/base-movie-insights-container-state-manager.models";
 import animateScrollTo from "animated-scroll-to";
-import MISearchBar from "app/components/MISearchBar";
 import {ACEntity} from "app/models/AutoComplete.model";
 import {EntityType} from "app/models/enumerations/EntityType.enum";
 import {AppUtils} from "app/utils/app-utils";
 import {ICountryData} from "app/models/ICountryData";
 import {MovieInsightsPerCountryState} from "app/reducers/movie-insights-per-country-state-manager";
 import {CreditRole, TmdbEntityType} from "app/models/enumerations";
-import {LoadingBar} from "react-redux-loading-bar";
-import MediaQuery from "react-responsive";
-
-
-const opts: Highcharts.Options = {
-  title: {
-    text: undefined,
-  },
-}
+import MIDashboard, {MIDashboardOptions} from "app/components/MIDashboard";
 
 
 export interface DashboardProps extends StateProps, DispatchProps, RouteComponentProps {
@@ -59,7 +46,7 @@ export interface DashboardState {
 }
 
 export class Dashboard extends Component<DashboardProps, DashboardState> {
-  private mapComponent = React.createRef<MapComponent>()
+  private mapComponent = React.createRef<WorldMap>()
 
   constructor(props) {
     super(props);
@@ -256,24 +243,34 @@ export class Dashboard extends Component<DashboardProps, DashboardState> {
           } else {
             this.props.setActiveYear(year);
           }
-          this.setState({pathHandled: true})
-          return;
+          this.setState({pathHandled: !role})
+          if (!role)
+            return;
         }
-      } else if (role) {
+      }
+      if (role) {
         if (activeView._activeEntity.roles.includes(role)) {
-          this.props.setActive(id, role);
+          if (year && activeView.yearRoles[year]?.includes(role)) {
+            this.props.setActiveYear(year, role);
+          } else if (!year) {
+            this.props.setActive(id, role);
+          } else {
+            this.props.history.push(AppUtils.generateNavigationLink(activeView._activeEntity.person, role, null));
+          }
           this.setState({pathHandled: true});
           return;
+        } else {
+          this.props.history.push(AppUtils.generateNavigationLink(activeView._activeEntity.person, null, year));
         }
       }
     }
 
     if (isFetching && activeView.activeEntity?.entity?.id === this.state.fetchingId) {
-      this.setState({fetching: false, pathHandled: !year});
+      this.setState({fetching: false, pathHandled: !year && !role});
       return;
     }
     if (isYearFetching && activeView.activeYearEntity?.entity === year) {
-      this.setState({fetchingYear: false, pathHandled: true});
+      this.setState({fetchingYear: false, pathHandled: !role});
       return;
     }
 
@@ -402,80 +399,40 @@ export class Dashboard extends Component<DashboardProps, DashboardState> {
 
   private onSearchSelected = (val: ACEntity) => {
     this.props.history.push(AppUtils.generateNavigationLink(val, null, null, val.i));
-    // eslint-disable-next-line no-console
   }
 
   render() {
     const activeView = this.props.rootState.dashboardState.activeView();
-    let creditSelector: MIPersonRolePickerProps = null;
+    let roles: CreditRole[] = [];
+
+    let activeRole: CreditRole = null;
     if (activeView.entityType === EntityType.PERSON) {
       const _activeView = activeView as MovieInsightsPerPersonState;
-      creditSelector = {
-        selected: _activeView.activeRole,
-        roles: _activeView.activeRoles,
-        onSelect: this.onCreditSelect
-      }
+      roles = _activeView.isPerYear ? _activeView.yearRoles[_activeView.activeYearEntity.entity] : _activeView.activeRoles;
+      activeRole = _activeView.activeRole;
     }
-
+    const options: MIDashboardOptions = {
+      onSearchBarSelected: this.onSearchSelected,
+      onMapSelected: this.countrySelected,
+      onMapUnselected: this.countryUnselected,
+      onYearPickerSelected: this.yearSelected,
+      onYearPickerUnselected: this.yearUnselected,
+      onCreditBarSelect: this.onCreditSelect,
+      roles,
+      activeRole,
+      movieInsights: activeView.activeMovieInsights,
+      entity: activeView.activeEntity,
+      isPerYear: activeView.isPerYear,
+      year: activeView.isPerYear ? activeView.activeYearEntity.entity : null,
+      countryData: this.getCountryData(),
+      selectedCountry: this.getSelectedCountry(),
+      mapReference: this.mapComponent,
+      entityType: activeView.entityType
+    }
     return (
-      <>
-        <CCard>
-          <CCardHeader>
-            <CRow className="justify-content-center">
-              <MISearchBar onSelected={this.onSearchSelected}/>
-            </CRow>
-            <LoadingBar loading={this.props.rootState.loadingBar.app} scope={"app"} showFastActions
-                        className="loading-bar"/>
-          </CCardHeader>
-        </CCard>
-        <CCard>
-          <CCardBody>
-            <CRow style={{height: "min-content"}}>
-              <MediaQuery minDeviceWidth={"675px"}>
-                <CCol className="mi-map-col">
-                  <MapChart
-                    ref={this.mapComponent}
-                    options={opts}
-                    countryData={this.getCountryData()}
-                    countrySelected={this.countrySelected}
-                    countryUnselected={this.countryUnselected}
-                    defaultSelectedCountry={this.getSelectedCountry()}
-                  />
-                </CCol>
-                <div className="c-vr d-md-none d-lg-block">&nbsp;</div>
-              </MediaQuery>
-              <CCol className="text-center mi-side-info-col">
-                <MISideInfoPane
-                  yearSelected={this.yearSelected}
-                  yearUnselected={this.yearUnselected}
-                  movieInsights={activeView.activeMovieInsights}
-                  movieInsightsData={activeView.activeEntity}
-                  isShowingPerYear={activeView.isPerYear}
-                  year={activeView.isPerYear?activeView.activeYearEntity.entity:null}
-                  creditSelector={creditSelector}
-                />
-              </CCol>
-            </CRow>
-          </CCardBody>
-        </CCard>
-        <hr/>
-        <MIInsightsPanel movieInsights={activeView.activeMovieInsights}/>
-      </>
+      <MIDashboard options={options}/>
     );
   }
-
-  /* private selectCountry(data: Data[]) {
-     let max = 0;
-     let maxObj: Data;
-     for (const dataObj of data) {
-       if (dataObj.value > max) {
-         max = dataObj.value;
-         maxObj = dataObj;
-       }
-     }
-     return maxObj;
-   }*/
-
 }
 
 const mapStateToProps = storeState => ({

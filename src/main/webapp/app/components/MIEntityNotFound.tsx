@@ -27,7 +27,7 @@ export default class MIEntityNotFound extends Component<MIEntityNotFoundProps, a
   }
 
   getIconComponent(): JSX.Element {
-    const icon = this.getIcon();
+    const icon : string = this.getIcon();
     if (icon.startsWith('ci')) {
       return <CIcon size="3xl" name={icon}/>
     } else if (icon) {

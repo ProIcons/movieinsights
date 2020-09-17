@@ -1,7 +1,11 @@
+/**
+ * Adapted from https://github.com/jhipster/react-jhipster
+ * licenced under Apache License 2.0 Copyright 2013-2020 Deepu KS and the respective JHipster contributors
+ * Modified by Nikolas Mavropoulos for MovieInsights Project
+ */
 import * as React from 'react';
 import { TextFormat } from 'app/utils';
 import {Table} from "react-bootstrap";
-
 
 export interface ICacheMetricsProps {
   cacheMetrics: any;

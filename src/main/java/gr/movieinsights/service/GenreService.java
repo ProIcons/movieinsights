@@ -19,16 +19,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional
 public class GenreService extends BaseSearchableService<Genre, gr.movieinsights.domain.elasticsearch.Genre, GenreDTO, BasicGenreDTO, GenreRepository, GenreSearchRepository, GenreMapper, BasicGenreMapper> implements IBasicDataProviderService<Genre,GenreDTO, BasicGenreDTO, GenreRepository, GenreMapper, BasicGenreMapper> {
-
-    private final BasicGenreMapper basicGenreMapper;
-
     public GenreService(GenreRepository genreRepository, GenreMapper genreMapper, GenreSearchRepository genreSearchRepository, BasicGenreMapper basicGenreMapper, SearchableEntityMovieCountMap searchableEntityMovieCountMap) {
         super(genreRepository,genreSearchRepository,genreMapper, basicGenreMapper,searchableEntityMovieCountMap);
-        this.basicGenreMapper = basicGenreMapper;
-    }
 
-    @Override
-    public BasicGenreMapper getBasicMapper() {
-        return basicGenreMapper;
     }
 }

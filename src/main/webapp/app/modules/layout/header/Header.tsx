@@ -3,6 +3,7 @@ import React, {Component} from "react";
 import {CHeader, CHeaderBrand, CHeaderNav, CHeaderNavItem, CHeaderNavLink} from "@coreui/react";
 import {IAppProps} from "app/App";
 import MediaQuery from "react-responsive";
+import LoadingBar from "react-redux-loading-bar";
 
 export interface IHeaderProps {
   appProps: IAppProps;
@@ -20,7 +21,8 @@ class Header extends Component<IHeaderProps, any> {
     const props = this.props;
     return (
       <>
-
+        <LoadingBar scope={"app"}  updateTime={100} maxProgress={95} progressIncrease={10}
+                    className="loading-bar"/>
         <CHeader className="c-header-dark">
 
           <CHeaderBrand className="c-header-brand">

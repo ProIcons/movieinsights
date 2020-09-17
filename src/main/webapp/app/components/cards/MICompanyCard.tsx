@@ -1,9 +1,10 @@
 import React, {Component} from "react";
-import MIEntityCard, {MIValueType} from "app/components/cards/MIEntityCard";
+import MIEntityCard from "app/components/cards/MIEntityCard";
 import CIcon from "@coreui/icons-react";
 import {IProductionCompany} from "app/models/IProductionCompany.Model";
 import {defaultValue as companyDefaultValue} from "app/models/IProductionCompany.Model";
 import {TmdbEntityType} from "app/models/enumerations";
+import {MIValueType} from "app/shared/enumerations/MIValueType";
 
 export interface MICompanyCardProps {
   company: IProductionCompany;

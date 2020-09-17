@@ -1,0 +1,24 @@
+{
+  "movieInsightsApp": {
+    "sideInfoPane": {
+      "worldwide": "Worldwide",
+      "averageRevenueAndBudgetPerYear": "Average Revenue/Budget per Year",
+      "voteAveragePerYear": "Movie Ratings per Year",
+      "totalRevenueAndBudgetPerYear": "Total Revenue/Budget per Year",
+      "totalMoviesPerYear": "Total Movies per Year",
+      "averageRevenue": "AVG Revenue",
+      "totalRevenue": "Total Revenue",
+      "averageBudget": "AVG Budget",
+      "totalBudget": "Total Budget",
+      "averageRating": "Average Rating",
+      "moviesWithBudget": "Movies with Budget",
+      "moviesWithRevenue": "Movies with Revenue",
+      "moviesWithRatings": "Movies with Ratings",
+      "movieProductionDelta": "Difference of Movie Productions per Year",
+      "movieRatingsDelta": "Difference of Movie Ratings per Year",
+      "totalMovies": "Total Movies",
+      "averageNetProfit": "Average Net Profit per Year",
+      "totalNetProfit": "Total Net Profit"
+    }
+  }
+}

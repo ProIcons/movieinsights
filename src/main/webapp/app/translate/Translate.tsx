@@ -1,3 +1,8 @@
+/**
+ * Adapted from https://github.com/jhipster/react-jhipster
+ * licenced under Apache License 2.0 Copyright 2013-2020 Deepu KS and the respective JHipster contributors
+ * Modified by Nikolas Mavropoulos for MovieInsights Project
+ */
 import * as React from 'react';
 import * as get from 'lodash.get';
 import * as sanitizeHtml from 'sanitize-html';
@@ -25,35 +30,53 @@ const flatten = array => {
 };
 
 const toTemplate = string => {
-  const expressionRe = /{{\s?\w+\s?}}/g;
+  const expressionRe = /{#?{\s?(?:\w|\.)+\s?}}/g;
   const match = string.match(expressionRe) || [];
   return [string.split(expressionRe), ...match];
 };
+
+const hasDependentKeys = string => {
+  return string.match(/{#{\s?(?:\w|\.)+\s?}}/g);
+}
 
 const normalizeValue = (value, key) => {
   if (value == null || ['boolean', 'string', 'number'].includes(typeof value)) {
     return value;
   }
   if (value.$$typeof === REACT_ELEMENT) {
-    return React.cloneElement(value, { key });
+    return React.cloneElement(value, {key});
   }
 };
+
+const isNullOrUndefined = (value: any) => value === null || value === undefined;
 
 /**
  * Adapted from https://github.com/bloodyowl/react-translate
  * licenced under The MIT License (MIT) Copyright (c) 2014 Matthias Le Brun
  */
 const render = (string, values) => {
-  if (!values || !string) return string;
+  if (!string || ((!hasDependentKeys(string)) && !values)) return string;
+
   const [parts, ...expressions] = toTemplate(string);
   return flatten(
     parts.reduce((acc, item, index, array) => {
+      if (!values)
+        values=[];
       if (index === array.length - 1) {
         return [...acc, item];
       }
-      const match = expressions[index] && expressions[index].match(/{{\s?(\w+)\s?}}/);
-      const value = match != null ? values[match[1]] : null;
+      let match;
+      let value;
+      if ((match = expressions[index] && expressions[index].match(/{{\s?(\w+)\s?}}/))) {
+        value = values[match[1]] || expressions[index];
+      } else if ((match = expressions[index].match(/{#{\s?((?:\w|\.)+)\s?}}/))) {
+        /* eslint-disable-next-line  @typescript-eslint/no-use-before-define */
+        value = doTranslate(match[1], values, null).content;
+      } else {
+        value = null;
+      }
       return [...acc, item, normalizeValue(value, index)];
+
     }, [])
   );
 };
@@ -152,8 +175,11 @@ const doTranslate = (key, interpolate, children) => {
   }
 
   const preRender = data ? get(data, key) || deepFindDirty(data, key) : null;
-  const preSanitize = render(preRender, interpolate) || showMissingOrDefault(key, children);
-  if (/<[a-z][\s\S]*>/i.test(preSanitize)) {
+  const renderedValue = render(preRender, interpolate);
+
+  const preSanitize = !isNullOrUndefined(renderedValue) ? renderedValue : showMissingOrDefault(key, children);
+
+  if (preSanitize === false || /<[a-z][\s\S]*>/i.test(preSanitize)) {
     // String contains HTML tags. Allow only a super restricted set of tags and attributes
     const content = sanitizeHtml(preSanitize, {
       allowedTags: ['b', 'i', 'em', 'strong', 'a', 'br', 'hr'],
@@ -187,10 +213,10 @@ class Translate extends React.Component<ITranslateProps> {
   }
 
   render() {
-    const { contentKey, interpolate, component, children } = this.props;
+    const {contentKey, interpolate, component, children} = this.props;
     const processed = doTranslate(contentKey, interpolate, children);
     if (processed.html) {
-      return React.createElement(component, { dangerouslySetInnerHTML: { __html: processed.content } });
+      return React.createElement(component, {dangerouslySetInnerHTML: {__html: processed.content}});
     }
     return React.createElement(component, null, processed.content);
   }
@@ -200,7 +226,7 @@ export const translate = (contentKey: string, interpolate?: any, children?: stri
   const translation = doTranslate(contentKey, interpolate, children);
 
   if (translation.html) {
-    return React.createElement('span', { dangerouslySetInnerHTML: { __html: translation.content } });
+    return React.createElement('span', {dangerouslySetInnerHTML: {__html: translation.content}});
   } else {
     return translation.content;
   }

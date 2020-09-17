@@ -8,7 +8,7 @@ import {AUTHORITIES} from "app/config/constants";
 import Page404 from "app/modules/error/Page404";
 import AdminRoute from 'app/modules/admin/admin-route';
 
-const Metrics = React.lazy(()=> import('app/modules/admin/metrics/metrics'));
+const Admin = React.lazy(()=> import('app/modules/admin'));
 
 export default class Router extends Component<any, any>{
   render() {
@@ -17,7 +17,7 @@ export default class Router extends Component<any, any>{
         <ErrorBoundaryRoute path="/login" component={Login} />
         <ErrorBoundaryRoute path="/logout" component={Logout} />
         <ErrorBoundaryRoute path="/app" exact={false} component={Dashboard} />
-          <AdminRoute path="/admin" component={Metrics} hasAnyAuthorities={[AUTHORITIES.ADMIN]} />
+          <AdminRoute path="/admin" component={Admin} hasAnyAuthorities={[AUTHORITIES.ADMIN]} />
         <Redirect exact={true} from="/" to="/app"/>
         <ErrorBoundaryRoute component={Page404} />
       </Switch>

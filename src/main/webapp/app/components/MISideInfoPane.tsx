@@ -1,7 +1,7 @@
 import './MISideInfoPane.scss'
 
 import variables from './MISideInfoPane.scss'
-import React, {Component} from "react";
+import React from "react";
 import CIcon from "@coreui/icons-react";
 import {CCard, CCardHeader, CCol, CRow} from "@coreui/react";
 import {connect} from "react-redux";
@@ -14,8 +14,7 @@ import MIChartCard, {
   fieldDefaults,
   footerFieldDefaults,
   MIChartCardField,
-  MIChartCardFooterField,
-  MIValueNumeralFormat
+  MIChartCardFooterField
 } from "app/components/cards/MIChartCard";
 import MIYearPicker from "app/components/MIYearPicker";
 import Skeleton from "react-loading-skeleton";
@@ -31,8 +30,10 @@ import {TmdbEntityType} from "app/models/enumerations";
 import {isPerson} from "app/models/IPerson.Model";
 import {isCompany} from "app/models/IProductionCompany.Model";
 import {isCountry} from "app/models/IProductionCountry.Model";
+import TranslatableComponent from "app/components/TranslatableComponent";
+import {MIValueNumeralFormat} from "app/shared/enumerations/MIValueNumeralFormat";
+import {TMDB_IMAGE_URL} from "app/config/constants";
 
-const BASE_IMAGE_URL = "https://image.tmdb.org/t/p"
 const BASE_IMAGE_PERSON_PATH = "/w185"
 const BASE_IMAGE_COMPANY_PATH = "/w300"
 const defaultChartOptions = (title: string, format: MIValueNumeralFormat) => {
@@ -43,10 +44,10 @@ const defaultChartOptions = (title: string, format: MIValueNumeralFormat) => {
     tooltip: {
       useHTML: true,
       formatter() {
-        let str = `<div style="text-align: center;font-weight: bold;font-size:20px">${this.x}</div><table><tbody>`;
+        let str = `<div style="text-align: center;font-weight: bold;font-size:20px" class="text-secondary">${this.x}</div><table><tbody>`;
         this.points.forEach((p, i) => {
           const mon = numeral()(p.y).format(format);
-          str += `<tr><td style="color: ${variables.colors.split(' ')[p.series.colorIndex]} !important;">${p.series.name}</td><td>${mon}</td></tr>`
+          str += `<tr><td style="color: ${variables.colors.split(' ')[p.series.colorIndex]} !important;">${p.series.name}</td><td class="text-secondary">${mon}</td></tr>`
         })
         str += `</tbody></table>`
         return str;
@@ -98,12 +99,12 @@ export interface MISideInfoPaneDataGroup {
 
 }
 
-class MISideInfoPane extends Component<MISideInfoPaneProps, MISideInfoPaneState> {
+class MISideInfoPane extends TranslatableComponent<MISideInfoPaneProps, MISideInfoPaneState> {
 
   declare header: JSX.Element;
 
   constructor(props) {
-    super(props);
+    super(props, "sideInfoPane");
     this.state = this.defaultState();
   }
 
@@ -156,6 +157,10 @@ class MISideInfoPane extends Component<MISideInfoPaneProps, MISideInfoPaneState>
     return this.state.movieInsights && !this.props.isShowingPerYear && this.props.movieInsights !== movieInsightsDefaultValue ? text : "";
   }
 
+  private getTranslateText(key: string) {
+    return this.state.movieInsights && !this.props.isShowingPerYear && this.props.movieInsights !== movieInsightsDefaultValue ? this.getTranslation(key) : "";
+  }
+
   private updateData(updateCauseIsYear: boolean) {
     if (this.props.movieInsightsData.yearData?.length > 0 && this.props.movieInsights && this.props.movieInsights !== movieInsightsDefaultValue) {
       let
@@ -163,48 +168,63 @@ class MISideInfoPane extends Component<MISideInfoPaneProps, MISideInfoPaneState>
         vDiffCount = 0,
         mDiff = 0,
         mDiffCount = 0;
+
+      const _budgetTranslation = this.getPublicTranslation("movie.budget");
+      const _revenueTranslation = this.getPublicTranslation("movie.revenue");
+      const _ratingTranslation = this.getPublicTranslation("movie.rating");
+      const _totalMovieTranslation = this.getTranslation("totalMovies");
+      const _moviesWithBudgetTranslation = this.getTranslation("moviesWithBudget");
+      const _moviesWithRevenueTranslation = this.getTranslation("moviesWithRevenue");
+      const _moviesWithRatingsTranslation  = this.getTranslation("moviesWithRatings");
+
+
       const averageRevenueBudgetChartData: SeriesSplineOptions[] = [];
       const totalRevenueBudgetChartData: SeriesSplineOptions[] = [];
       const averageVoteChartData: SeriesSplineOptions[] = [];
       const totalMoviesChartData: SeriesSplineOptions[] = [];
       const avgRevenueLineIndex = averageRevenueBudgetChartData.push({
         type: "spline",
-        name: "Revenue",
+        name: _revenueTranslation,
         data: []
       }) - 1;
       const totalRevenueLineIndex = totalRevenueBudgetChartData.push({
         type: "spline",
-        name: "Revenue",
+        name: _revenueTranslation,
         data: []
       }) - 1;
       const avgBudgetLineIndex = averageRevenueBudgetChartData.push({
         type: "spline",
-        name: "Budget",
+        name: _budgetTranslation,
         data: []
       }) - 1;
       const totalBudgetLineIndex = totalRevenueBudgetChartData.push({
         type: "spline",
-        name: "Budget",
+        name: _budgetTranslation,
         data: []
       }) - 1;
       const voteLineIndex = averageVoteChartData.push({
         type: "spline",
-        name: "Vote Average",
+        name: _ratingTranslation,
         data: []
       }) - 1;
       const moviesLineIndex = totalMoviesChartData.push({
         type: "spline",
-        name: "Total Movies",
+        name: _totalMovieTranslation,
         data: []
       }) - 1;
       const moviesWithBudgetLineIndex = totalMoviesChartData.push({
         type: "spline",
-        name: "Movies with Budget",
+        name: _moviesWithBudgetTranslation,
         data: []
       }) - 1;
       const moviesWithRevenueLineIndex = totalMoviesChartData.push({
         type: "spline",
-        name: "Movies with Revenue",
+        name: _moviesWithRevenueTranslation,
+        data: []
+      }) - 1;
+      const moviesWithRatingsLineIndex = totalMoviesChartData.push({
+        type: "spline",
+        name: _moviesWithRatingsTranslation,
         data: []
       }) - 1;
 
@@ -265,6 +285,7 @@ class MISideInfoPane extends Component<MISideInfoPaneProps, MISideInfoPaneState>
             totalMoviesChartData[moviesLineIndex].data.push([data[0], data[1]]);
             totalMoviesChartData[moviesWithRevenueLineIndex].data.push([data[0], data[6]]);
             totalMoviesChartData[moviesWithBudgetLineIndex].data.push([data[0], data[3]]);
+            totalMoviesChartData[moviesWithRatingsLineIndex].data.push([data[0], data[8]]);
           });
       }
       this.setState({
@@ -273,33 +294,33 @@ class MISideInfoPane extends Component<MISideInfoPaneProps, MISideInfoPaneState>
           value: mDiffCount > 0 ? mDiff / mDiffCount : 0,
           valueFormat: MIValueNumeralFormat.Custom,
           valueFormatCustom: vDiffCount > 0 ? '+0,0.00' : '0',
-          subtitle: "Movie Production Delta per year"
+          subtitle: this.getTranslation("movieProductionDelta")
         },
         averageVotePerYearField: {
           loaded: true,
           value: vDiffCount > 0 ? vDiffAvg / vDiffCount : 0,
           valueFormat: MIValueNumeralFormat.Custom,
           valueFormatCustom: vDiffCount > 0 ? '+0,0.00000000' : '0',
-          subtitle: "Vote Delta per year"
+          subtitle: this.getTranslation("movieRatingsDelta")
         },
         averageVoteField: {
           loaded: true,
           value: this.props.movieInsights.averageRating,
           valueFormat: MIValueNumeralFormat.Custom,
           valueFormatCustom: '0,0.00',
-          subtitle: "Vote Average"
+          subtitle: this.getTranslation("averageRating")
         },
         averageRevenueBudgetFields: [
           {
             loaded: true,
             value: this.props.movieInsights.averageRevenue,
-            subtitle: "AVG Revenue",
+            subtitle: this.getTranslation("averageRevenue"),
             valueFormat: MIValueNumeralFormat.Money
           },
           {
             loaded: true,
             value: this.props.movieInsights.averageBudget,
-            subtitle: "AVG Budget",
+            subtitle: this.getTranslation("averageBudget"),
             valueFormat: MIValueNumeralFormat.Money
           }
         ],
@@ -307,47 +328,53 @@ class MISideInfoPane extends Component<MISideInfoPaneProps, MISideInfoPaneState>
           {
             loaded: true,
             value: this.props.movieInsights.totalMovies,
-            subtitle: "Movies",
+            subtitle: _totalMovieTranslation,
             valueFormat: MIValueNumeralFormat.Integer
           },
           {
             loaded: true,
             value: this.props.movieInsights.totalBudgetMovies,
-            subtitle: "Movies with Budget",
+            subtitle: _moviesWithBudgetTranslation,
             valueFormat: MIValueNumeralFormat.Integer
           },
           {
             loaded: true,
             value: this.props.movieInsights.totalRevenueMovies,
-            subtitle: "Movies with Revenue",
+            subtitle: _moviesWithRevenueTranslation,
             valueFormat: MIValueNumeralFormat.Integer
           },
+          {
+            loaded: true,
+            value: this.props.movieInsights.totalRatedMovies,
+            subtitle: _moviesWithRatingsTranslation,
+            valueFormat: MIValueNumeralFormat.Integer
+          }
         ],
         totalRevenueBudgetFields: [
           {
             loaded: true,
             value: this.props.movieInsights.totalRevenue,
-            subtitle: "Total Revenue",
+            subtitle: this.getTranslation("totalRevenue"),
             valueFormat: MIValueNumeralFormat.Money
           },
           {
             loaded: true,
             value: this.props.movieInsights.totalBudget,
-            subtitle: "Total Budget",
+            subtitle: this.getTranslation("totalBudget"),
             valueFormat: MIValueNumeralFormat.Money
           }
         ],
         averageNetProfitField: {
           loaded: true,
           value: this.props.movieInsights.averageRevenue - this.props.movieInsights.averageBudget,
-          subtitle: "Average net profit per year",
+          subtitle: this.getTranslation("averageNetProfit"),
           valueFormatCustom: '+0,0$',
           valueFormat: MIValueNumeralFormat.Custom
         },
         totalNetProfitField: {
           loaded: true,
           value: this.props.movieInsights.totalRevenue - this.props.movieInsights.totalBudget,
-          subtitle: "Total Net Profit",
+          subtitle: this.getTranslation("totalNetProfit"),
           valueFormatCustom: '+0,0$',
           valueFormat: MIValueNumeralFormat.Custom
         },
@@ -400,8 +427,9 @@ class MISideInfoPane extends Component<MISideInfoPaneProps, MISideInfoPaneState>
           });
         elem2 = (
           <div>
-            <CIcon className={"text-info"} name={'cil-globe-alt'} size="8xl"/>
-            <div className="text-value-lg font-5xl">Worldwide</div>
+            {/*<CIcon className={"text-info mi-sideinfo-header-icon"} name={'cil-globe-alt'}/>*/}
+            <FontAwesomeIcon className="text-info mi-sideinfo-header-icon"  icon={"globe-americas"}/>
+            <div className="text-value-lg font-5xl">{this.getTranslation("worldwide")}</div>
           </div>
         );
       } else if (isBaseEntity(entity)) {
@@ -409,8 +437,8 @@ class MISideInfoPane extends Component<MISideInfoPaneProps, MISideInfoPaneState>
           elem2 = (
             <div>
               {entity.profilePath ? (
-                  <img style={{borderRadius: "25%"}} onLoad={() => this.setState({logoLoaded: true})}
-                       src={`${BASE_IMAGE_URL}${BASE_IMAGE_PERSON_PATH}${entity.profilePath}`}/>) :
+                  <img  height="250px" style={{borderRadius: "25%"}} onLoad={() => this.setState({logoLoaded: true})}
+                       src={`${TMDB_IMAGE_URL}${BASE_IMAGE_PERSON_PATH}${entity.profilePath}`}/>) :
                 <div className="text-value-xl" style={{fontSize: "3rem"}}>{entity.name}</div>
               }
               <div className="text-value-lg font-3xl">{entity.name}</div>
@@ -420,8 +448,8 @@ class MISideInfoPane extends Component<MISideInfoPaneProps, MISideInfoPaneState>
           elem2 = (
             <>
               {entity.logoPath ? (
-                  <img onLoad={() => this.setState({logoLoaded: true})}
-                       src={`${BASE_IMAGE_URL}${BASE_IMAGE_COMPANY_PATH}${entity.logoPath}`}/>) :
+                  <img height="250px" onLoad={() => this.setState({logoLoaded: true})}
+                       src={`${TMDB_IMAGE_URL}${BASE_IMAGE_COMPANY_PATH}${entity.logoPath}`}/>) :
                 <div className="text-value-xl" style={{fontSize: "3rem"}}>{entity.name}</div>
               }
             </>
@@ -438,7 +466,7 @@ class MISideInfoPane extends Component<MISideInfoPaneProps, MISideInfoPaneState>
           elem2 = (
             <div>
               {flagName !== "cif" ? (
-                <CIcon className={"text-info"} name={flagName} size="8xl"/>
+                <CIcon className={"text-info mi-sideinfo-header-icon"} name={flagName}/>
               ) : null
               }
               <div className="text-value-lg font-5xl">{entity.name}</div>
@@ -462,8 +490,8 @@ class MISideInfoPane extends Component<MISideInfoPaneProps, MISideInfoPaneState>
     }
     if (this.props.movieInsights === movieInsightsDefaultValue || !this.state.logoLoaded) {
       elem = (
-        <div style={{position: "absolute"}}>
-          <Skeleton className="alt-skeleton" width={300} height={200}/>
+        <div >
+          <Skeleton className="alt-skeleton" width={300} height={250}/>
         </div>
       )
     }
@@ -495,6 +523,7 @@ class MISideInfoPane extends Component<MISideInfoPaneProps, MISideInfoPaneState>
                   {this.getHeader()}
                 </CCol>
               </CRow>
+              <CRow>&nbsp;</CRow>
               {this.props.creditSelector ? (
                 <>
                   <CRow>
@@ -518,7 +547,7 @@ class MISideInfoPane extends Component<MISideInfoPaneProps, MISideInfoPaneState>
                     inputProps={{
                       className: `form-control bg-gradient-dark `
                     }}
-                    value={this.props.isShowingPerYear?this.props.year+'':''}
+                    value={this.props.isShowingPerYear ? this.props.year + '' : ''}
                   />
                 </CCol>
               </CRow>
@@ -532,7 +561,7 @@ class MISideInfoPane extends Component<MISideInfoPaneProps, MISideInfoPaneState>
                   headerBackgroundClassName={'bg-gradient-info'}
                   chartProps={{
                     series: this.state.averageRevenueBudgetChartData,
-                    options: defaultChartOptions(this.getText("Average Revenue/Budget Per Year"), MIValueNumeralFormat.Money)
+                    options: defaultChartOptions(this.getTranslateText("averageRevenueAndBudgetPerYear"), MIValueNumeralFormat.Money) //// "Average Revenue/Budget Per Year"
                   }}
                   fields={this.state.averageRevenueBudgetFields}
                   footer={this.state.averageNetProfitField}
@@ -545,7 +574,7 @@ class MISideInfoPane extends Component<MISideInfoPaneProps, MISideInfoPaneState>
                   headerBackgroundClassName={'bg-gradient-info'}
                   chartProps={{
                     series: this.state.averageVoteChartData,
-                    options: defaultChartOptions(this.getText("Vote Average Per Year"), MIValueNumeralFormat.Decimal)
+                    options: defaultChartOptions(this.getTranslateText("voteAveragePerYear"), MIValueNumeralFormat.Decimal) // this.getText("Vote Average Per Year")
                   }}
                   fields={[this.state.averageVoteField]}
                   footer={this.state.averageVotePerYearField}
@@ -559,20 +588,21 @@ class MISideInfoPane extends Component<MISideInfoPaneProps, MISideInfoPaneState>
                   headerBackgroundClassName={'bg-gradient-info'}
                   chartProps={{
                     series: this.state.totalRevenueBudgetChartData,
-                    options: defaultChartOptions(this.getText("Total Revenue/Budget Per Year"), MIValueNumeralFormat.Money)
+                    options: defaultChartOptions(this.getTranslateText("totalRevenueAndBudgetPerYear"), MIValueNumeralFormat.Money) // this.getText("Total Revenue/Budget Per Year")
                   }}
                   fields={this.state.totalRevenueBudgetFields}
                   footer={this.state.totalNetProfitField}
                 />
               </CCol>
-              <MIDivider spacing={2}/>
+            </CRow>
+            <CRow>
               <CCol className="mi-chart-col" style={{minWidth: "450px"}}>
                 <MIChartCard
                   headerIcon={'cil-movie'}
                   headerBackgroundClassName={'bg-gradient-info'}
                   chartProps={{
                     series: this.state.totalMoviesChartData,
-                    options: defaultChartOptions(this.getText("Total Movies Per Year"), MIValueNumeralFormat.Integer)
+                    options: defaultChartOptions(this.getTranslateText("totalMoviesPerYear"), MIValueNumeralFormat.Integer) // this.getText("Total Movies Per Year")
                   }}
                   fields={this.state.totalMoviesFields}
                   footer={this.state.movieDifferencePerYearField}

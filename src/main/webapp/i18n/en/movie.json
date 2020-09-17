@@ -1,40 +1,17 @@
 {
   "movieInsightsApp": {
     "movie": {
-      "home": {
-        "title": "Movies",
-        "createLabel": "Create a new Movie",
-        "createOrEditLabel": "Create or edit a Movie",
-        "search": "Search for Movie",
-        "notFound": "No Movies found"
+      "movie": "Movie",
+      "movies": "Movies",
+      "card": {
+        "viewOn": "View on {{ service }}",
+        "wantToSeeMore": "Want to see more?"
       },
-      "created": "A new Movie is created with identifier {{ param }}",
-      "updated": "A Movie is updated with identifier {{ param }}",
-      "deleted": "A Movie is deleted with identifier {{ param }}",
-      "delete": {
-        "question": "Are you sure you want to delete Movie {{ id }}?"
-      },
-      "detail": {
-        "title": "Movie"
-      },
-      "tmdbId": "Tmdb Id",
-      "name": "Name",
-      "tagline": "Tagline",
-      "description": "Description",
       "revenue": "Revenue",
       "budget": "Budget",
-      "imdbId": "Imdb Id",
       "popularity": "Popularity",
       "runtime": "Runtime",
-      "posterPath": "Poster Path",
-      "backdropPath": "Backdrop Path",
-      "releaseDate": "Release Date",
-      "vote": "Vote",
-      "credits": "Credits",
-      "banReasons": "Ban Reasons",
-      "companies": "Companies",
-      "countries": "Countries",
-      "genres": "Genres"
+      "rating": "Rating"
     }
   }
 }

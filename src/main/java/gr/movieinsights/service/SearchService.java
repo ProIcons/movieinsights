@@ -74,7 +74,7 @@ public class SearchService {
         }
 
         NativeSearchQuery nativeSearchQuery = new NativeSearchQueryBuilder()
-            .withFields("id", "name", "popularity", "score", "logoPath", "profilePath")
+            .withFields("id", "name", "popularity", "score", "logoPath", "profilePath","iso31661")
             .withIndices(indices.toArray(String[]::new))
             .withPageable(PageRequest.of(0, (indices.size() + 1) * 2))
             .withQuery(parentQueryBuilder)
@@ -130,6 +130,7 @@ public class SearchService {
             case "person" -> TmdbEntityType.PERSON;
             case "company" -> TmdbEntityType.COMPANY;
             case "genre" -> TmdbEntityType.GENRE;
+            case "country" -> TmdbEntityType.COUNTRY;
             default -> null;
         };
     }

@@ -4,7 +4,6 @@ import {CCard, CCardBody, CCardFooter, CCardHeader} from "@coreui/react";
 import MILoadingCircle from "app/components/MILoadingCircle";
 import {IMovie} from "app/models/IMovie.Model";
 import numeral from "app/utils/numeral-utils";
-import {MIValueNumeralFormat} from "app/components/cards/MIChartCard";
 import {defaultValue as movieDefaultValue} from "app/models/IMovie.Model";
 import MIEntityNotFound from "app/components/MIEntityNotFound";
 import {NavLink} from "react-router-dom";
@@ -17,6 +16,7 @@ import {MOVIE_POSTER_PLACEHOLDER, TMDB_BACKDROP_SIZE, TMDB_POSTER_SIZE} from "ap
 import {TmdbUtils} from "app/utils/tmdb-utils";
 import {AppUtils} from "app/utils/app-utils";
 import {TmdbEntityType} from "app/models/enumerations";
+import {MIValueNumeralFormat} from "app/shared/enumerations/MIValueNumeralFormat";
 
 export interface MIMovieCardProps extends MIBaseLoadableCardProps<IMovie> {
   type: MIMovieCardType;

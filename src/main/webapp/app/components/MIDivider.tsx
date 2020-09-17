@@ -5,25 +5,16 @@ export interface MIDividerProps {
   spacing?: number;
 }
 
-export default class MIDivider extends Component<MIDividerProps, MIDividerProps> {
+export default class MIDivider extends Component<MIDividerProps> {
   constructor(props) {
     super(props);
-
-    this.state = {
-      spacing: this.props.spacing ? this.props.spacing : 10
-    }
-  }
-
-  componentDidUpdate(prevProps: Readonly<MIDividerProps>, prevState: Readonly<MIDividerProps>, snapshot?: any) {
-    if (prevState.spacing !== this.props.spacing) {
-      this.setState({spacing: this.props.spacing})
-    }
   }
 
   render() {
+    const spacing = this.props.spacing ? this.props.spacing : 10;
     return (
       <div className="mi-divider c-vr"
-           style={{marginLeft: `${this.state.spacing}px`, marginRight: `${this.state.spacing}px`}}/>
+           style={{marginLeft: `${spacing}px`, marginRight: `${spacing}px`}}/>
     );
   }
 }

@@ -1,0 +1,14 @@
+{
+  "movieInsightsApp": {
+    "card": {
+      "highestRatedMovie": "Highest Rated Movie",
+      "lowestRatedMovie": "Lowest Rated Movie",
+      "mostRevenueMovie": "Most Revenue Movie",
+      "leastRevenueMovie": "Least Revenue Movie",
+      "mostBudgetMovie": "Most Budget Movie",
+      "leastBudgetMovie": "Least Budget Movie",
+      "mostPopularEntity": "Most Popular {{entity}}",
+      "leastPopularEntity": "Least Popular {{entity}}"
+    }
+  }
+}

@@ -59,6 +59,9 @@ function getSuggestionImage(suggestion: ACEntity): JSX.Element {
       } else {
         return (<FontAwesomeIcon className="text-info" style={{marginTop: "-3px"}} icon={"user"} size={"3x"}/>)
       }
+    case EntityType.COUNTRY:
+      const flagName = 'cif' + suggestion.iso31661[0].toUpperCase() + suggestion.iso31661.substring(1).toLowerCase();
+      return (<CIcon name={flagName}/>)
     case EntityType.GENRE:
       return (<FontAwesomeIcon className="text-info" icon={"theater-masks"} size={"2x"}/>)
     default:

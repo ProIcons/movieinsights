@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {createRef} from 'react';
 import {Translate, translate} from 'app/translate';
 import {Link} from 'react-router-dom';
 import {CAlert, CButton, CCol, CModal, CModalBody, CModalFooter, CModalHeader, CRow} from "@coreui/react";

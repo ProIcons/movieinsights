@@ -7,11 +7,11 @@ import {IMovie, defaultValue as movieDefaultValue} from "app/models/IMovie.Model
 import React from "react";
 import {CButton, CCardFooter, CCol, CModal, CModalBody, CModalFooter, CModalHeader, CRow} from "@coreui/react";
 import numeral from "app/utils/numeral-utils";
-import {MIValueNumeralFormat} from "app/components/cards/MIChartCard";
 import moment from "moment";
 import CIcon from "@coreui/icons-react";
 import {TmdbUtils} from "app/utils/tmdb-utils";
 import {MOVIE_POSTER_PLACEHOLDER, TMDB_BACKDROP_SIZE, TMDB_POSTER_SIZE} from "app/config/constants";
+import {MIValueNumeralFormat} from "app/shared/enumerations/MIValueNumeralFormat";
 
 export interface MIMovieInfoModalState extends MIBaseLoadableCardState<IMovie> {
   open: boolean;

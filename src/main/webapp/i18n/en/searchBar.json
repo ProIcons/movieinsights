@@ -1,0 +1,7 @@
+{
+  "movieInsightsApp": {
+    "searchBar": {
+      "placeholder": "Search {{ companies }}, {{ countries }}, {{ people }}, {{ genres }}..."
+    }
+  }
+}

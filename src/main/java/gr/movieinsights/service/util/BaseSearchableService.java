@@ -200,9 +200,6 @@ public abstract class BaseSearchableService<TEntity extends IdentifiedEntity, TE
      */
     @Transactional(readOnly = true)
     public Page<TESEntity> search(String query, Pageable pageable) {
-
-        String _query = query.replaceAll("(\\S+)+", "*$1*");
-
         NativeSearchQuery nativeSearchQuery = new NativeSearchQueryBuilder()
             .withFields("id", "name", "popularity", "score", "logoPath", "profilePath")
             .withIndices(indexName)

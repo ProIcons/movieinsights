@@ -1,5 +1,6 @@
-import './MapComponent.scss';
+import './WorldMap.scss';
 import React, {Component, PropsWithRef, RefObject} from 'react'
+import {renderToString} from 'react-dom/server'
 import Highcharts, {
   Chart,
   Point,
@@ -12,38 +13,36 @@ import Highmaps from "highcharts/modules/map";
 import HighchartsReact from "highcharts-react-official";
 import worldMap from "./world.json";
 import {ICountryData} from "app/models/ICountryData";
-
-export enum ChartType {
-  MAP = "mapChart",
-  STOCK = "stockChart",
-  CHART = "chart"
-}
+import MILoadingCircle from "app/components/MILoadingCircle";
+import {HighchartsType} from "app/shared/interfaces/HighchartsType";
 
 Highmaps(Highcharts);
 
-
-type HighchartsType = { chart: Highcharts.Chart, container: React.RefObject<HTMLDivElement> };
-
-export interface IMapProps extends PropsWithRef<any> {
+export interface WorldMapProps extends PropsWithRef<any> {
   countryData: ICountryData[];
   countrySelected?: (data: ICountryData) => void;
   countryUnselected?: (data: ICountryData) => void;
 }
-interface IMapState {
+
+interface WorldMapState {
   countryData: ICountryData[];
-  chartObj:  Chart;
+  chartObj: Chart;
   pointClicked: ICountryData,
   pointUnselected: boolean,
   pointSelected: ICountryData,
   pending: PendingState;
   mapOptions: Highcharts.Options;
+  dataLoaded: boolean;
+  dataDrawn: boolean
 }
+
 interface PendingState {
   point: number;
 }
 
-export class MapComponent extends Component<IMapProps, IMapState> {
+export class WorldMap extends Component<WorldMapProps, WorldMapState> {
   private readonly chartComponent: RefObject<HighchartsType>;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -53,28 +52,32 @@ export class MapComponent extends Component<IMapProps, IMapState> {
       pointUnselected: false,
       pointSelected: null,
       pending: null,
-      mapOptions: this.getMapOptions()
+      mapOptions: this.getMapOptions(),
+      dataLoaded:false,
+      dataDrawn:false
     };
     this.chartComponent = React.createRef<HighchartsType>();
   }
 
 
-  componentDidUpdate(prevProps: Readonly<IMapProps>, prevState: Readonly<IMapState>, snapshot?: any) {
+  componentDidUpdate(prevProps: Readonly<WorldMapProps>, prevState: Readonly<WorldMapState>, snapshot?: any) {
     if (this.state.countryData.length !== this.props.countryData.length) {
       this.setState({
         countryData: this.props.countryData,
-        mapOptions: this.getMapOptions()
+        mapOptions: this.getMapOptions(),
+        dataLoaded:true
       });
+
     }
   }
 
 
   public selectCountry(id: number) {
-    if (this.state.chartObj && (this.state.chartObj.series[0] as any).valueData.filter(d=>d!==null).length > 0) {
+    if (this.state.chartObj && (this.state.chartObj.series[0] as any).valueData.filter(d => d !== null).length > 0) {
       const point: Point = this.state.chartObj.get(`${id}`) as Point;
       point.select(true);
     } else {
-      this.setState({pending:{point:id}});
+      this.setState({pending: {point: id}});
     }
   }
 
@@ -83,12 +86,12 @@ export class MapComponent extends Component<IMapProps, IMapState> {
       this.state.chartObj.getSelectedPoints().forEach(p => p.select(false));
       this.state.chartObj.zoomOut();
     } else {
-      this.setState({pending:null})
+      this.setState({pending: null})
     }
   }
 
   public getSelectedCountry() {
-   return this.getCountryDataFromPoint(this.state.chartObj.getSelectedPoints()[0])
+    return this.getCountryDataFromPoint(this.state.chartObj.getSelectedPoints()[0])
   }
 
 
@@ -97,7 +100,7 @@ export class MapComponent extends Component<IMapProps, IMapState> {
       e.preventDefault();
     }
     if (point.id === this.state.pointSelected?.id) {
-      this.setState({pointUnselected:true});
+      this.setState({pointUnselected: true});
     }
   }
 
@@ -115,13 +118,13 @@ export class MapComponent extends Component<IMapProps, IMapState> {
     }
     this.state.chartObj.zoomOut();
     const x = (point as any)._midX, y = (point as any)._midY;
-    this.state.chartObj.mapZoom(0.5,x,y)
+    this.state.chartObj.mapZoom(0.5, x, y)
   }
 
   private pointUnselected = (point: SeriesMapDataOptions, e: PointInteractionEventObject) => {
     if (this.state.pointUnselected) {
       const countryData = this.getCountryDataFromPoint(point);
-      this.setState({pointSelected: null,pointUnselected:false});
+      this.setState({pointSelected: null, pointUnselected: false});
       if (this.props.countryUnselected) {
         this.props.countryUnselected(countryData);
       }
@@ -136,7 +139,17 @@ export class MapComponent extends Component<IMapProps, IMapState> {
     const mainMapOptions: Highcharts.Options = {
       chart: {
         animation: true,
-        styledMode: true
+        styledMode: true,
+        events: {
+          redraw() {
+            if (_this.state.dataLoaded && !_this.state.dataDrawn) {
+              _this.setState({dataDrawn:true});
+            }
+            else if (_this.chartComponent.current && _this.state.dataLoaded) {
+              _this.chartComponent.current.chart.hideLoading();
+            }
+          }
+        }
       },
       title: {
         text: ''
@@ -149,13 +162,20 @@ export class MapComponent extends Component<IMapProps, IMapState> {
       tooltip: {
         useHTML: true,
         formatter: function formt() {
-          console.warn(this.point);
-          const name = (this.point as any).iso31661 === "MK"? "North Macedonia" : this.point.name;
+          const name = (this.point as any).iso31661 === "MK" ? "North Macedonia" : this.point.name;
           let str = `<div class="text-info" style="text-align: center;font-weight: bold;font-size:24px;">${name}</div>`;
           str += `<div style="text-align: center;font-weight: bold;font-size:20px;"><span class="text-warning">Movies</span> ${this.point.value}</div>`
-
           return str;
         }
+      },
+      colorAxis: {
+        min: 1,
+        max: 100000,
+        type: 'logarithmic',
+        showInLegend: false
+      },
+      loading: {
+        style: {opacity: 1}
       },
       mapNavigation: {
         enabled: true,
@@ -171,19 +191,12 @@ export class MapComponent extends Component<IMapProps, IMapState> {
           showInLegend: false,
           colorIndex: 5,
           cursor: 'pointer',
-          states: {
-            select: {
-              color: '#4283bd',
-              borderColor: 'black',
-            }
-          },
           dataLabels: {
             enabled: true,
             formatter: function format() {
-              return (this.point as any).iso31661 === "MK"? "North Macedonia" : this.point.name;
+              return (this.point as any).iso31661 === "MK" ? "North Macedonia" : this.point.name;
             },
             nullFormat: "",
-            // format: '{point.name}'*/
           },
           type: 'map',
           borderWidth: 0.05,
@@ -211,15 +224,16 @@ export class MapComponent extends Component<IMapProps, IMapState> {
     this.setState({chartObj: chart});
     if (this.state.pending) {
       this.selectCountry(this.state.pending.point)
-      this.setState({pending:null});
+      this.setState({pending: null});
     }
+    chart.showLoading(renderToString(<MILoadingCircle/>));
   }
 
   render() {
     return (
       <HighchartsReact
         ref={this.chartComponent}
-        constructorType={ChartType.MAP.toString()}
+        constructorType={"mapChart"}
         highcharts={Highcharts}
         options={this.state.mapOptions}
         callback={this.mapInitialized}
@@ -228,4 +242,4 @@ export class MapComponent extends Component<IMapProps, IMapState> {
   }
 }
 
-export default MapComponent;
+export default WorldMap;
