@@ -1,0 +1,11 @@
+{
+  "movieInsightsApp": {
+    "searchBar": {
+      "placeholder": "Αναζήτηση σε {#{movieInsightsApp.productionCompany.companies}}, {#{movieInsightsApp.productionCountry.countries}}, {#{movieInsightsApp.person.credits}}, {#{movieInsightsApp.genre.genres}}...",
+      "genre": "{#{movieInsightsApp.genre.genres}}",
+      "company": "{#{movieInsightsApp.productionCompany.companies}}",
+      "country": "{#{movieInsightsApp.productionCountry.countries}}",
+      "person": "{#{movieInsightsApp.person.credits}}"
+    }
+  }
+}

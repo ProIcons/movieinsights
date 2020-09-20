@@ -1,17 +1,13 @@
 import React, {Component, Ref} from "react";
 import {CCard, CCardBody, CCardHeader, CCol, CRow} from "@coreui/react";
-import MISearchBar from "app/components/MISearchBar";
 import MediaQuery from "react-responsive";
 import {MapChart} from "app/components/charts";
+import MISearchBar from "app/components/MISearchBar";
 import MISideInfoPane from "app/components/MISideInfoPane";
 import MIInsightsPanel from "app/components/MIInsightsPanel";
-import {ACEntity} from "app/models/AutoComplete.model";
-import {ICountryData} from "app/models/ICountryData";
-import {IMovieInsights} from "app/models/IMovieInsights.Model";
-import {BaseMovieInsightsPerYearContainer} from "app/models/BaseMovieInsights.Model";
-import {CreditRole, TmdbEntityType} from "app/models/enumerations";
 import {MIPersonRolePickerProps} from "app/components/MIPersonRolePicker";
-import {EntityType} from "app/models/enumerations/EntityType.enum";
+import {CreditRole,EntityType} from "app/models/enumerations";
+import {ACEntity, ICountryData, IMovieInsights,BaseMovieInsightsPerYearContainer} from "app/models";
 
 export interface MIDashboardProps {
   options: MIDashboardOptions;
@@ -34,6 +30,7 @@ export interface MIDashboardOptions {
   roles: CreditRole[];
   activeRole: CreditRole;
   entityType: EntityType;
+  currentLocale: string;
 }
 
 export default class MIDashboard extends Component<MIDashboardProps> {
@@ -67,6 +64,7 @@ export default class MIDashboard extends Component<MIDashboardProps> {
                     countrySelected={this.props.options.onMapSelected}
                     countryUnselected={this.props.options.onMapUnselected}
                     defaultSelectedCountry={this.props.options.selectedCountry}
+                    currentLocale={this.props.options.currentLocale}
                   />
                 </CCol>
                 <div className="c-vr d-md-none d-lg-block">&nbsp;</div>
@@ -80,6 +78,7 @@ export default class MIDashboard extends Component<MIDashboardProps> {
                   isShowingPerYear={this.props.options.isPerYear}
                   year={this.props.options.year}
                   creditSelector={creditSelector}
+                  currentLocale={this.props.options.currentLocale}
                 />
               </CCol>
             </CRow>

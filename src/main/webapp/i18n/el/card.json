@@ -1,0 +1,14 @@
+{
+  "movieInsightsApp": {
+    "card": {
+      "highestRatedMovie": "Ταινια με την Υψηλοτερη Βαθμολογια",
+      "lowestRatedMovie": "Ταινια με την Χαμηλοτερη Βαθμολογια",
+      "mostRevenueMovie": "Ταινια με τα περισσοτερα Εσοδα",
+      "leastRevenueMovie": "Ταινια με τα Λιγότερα Εσοδα",
+      "mostBudgetMovie": "Ταινια με τα περισσοτερα Εξοδα",
+      "leastBudgetMovie": "Ταινια με τα Λιγοτερα Εξοδα",
+      "mostPopularEntity": "Πιο δημοφιλης {{entity}}",
+      "leastPopularEntity": "Λιγοτερο δημοφιλης {{entity}}"
+    }
+  }
+}

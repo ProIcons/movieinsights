@@ -1,11 +1,11 @@
 import { MovieInsightsContainerState } from 'app/reducers/utils/base-movie-insights-container-state-manager.models';
-import { defaultValue as movieInsightsGeneralDefaultValue, IMovieInsightsGeneral } from 'app/models/IMovieInsightsGeneral.Model';
-import { defaultValue as movieInsightsDefaultValue } from 'app/models/IMovieInsights.Model';
 import { Service } from 'app/service';
 import BaseMovieInsightsContainerStateManager from 'app/reducers/utils/base-movie-insights-container-state-manager';
 import { IRootState } from 'app/shared/reducers';
-import { store_ } from '../index';
-import { EntityType } from 'app/models/enumerations/EntityType.enum';
+import { store } from '../index';
+import { EntityType } from 'app/models/enumerations';
+import { IMovieInsightsGeneral } from 'app/models';
+import { movieInsightsDefaultValue, movieInsightsGeneralDefaultValue } from 'app/models/defaultValues';
 
 export type MovieInsightsGeneralState = Readonly<MovieInsightsContainerState<IMovieInsightsGeneral>>;
 
@@ -42,7 +42,7 @@ export class MovieInsightsGeneralStateManager extends BaseMovieInsightsContainer
   });
 
   public getState: () => MovieInsightsGeneralState = () => {
-    return (store_.getState() as IRootState).movieInsightsGeneral;
+    return (store.getState() as IRootState).movieInsightsGeneral;
   };
 }
 

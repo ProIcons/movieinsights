@@ -1,9 +1,9 @@
 import React, {Component} from "react";
-import MIEntityCard from "app/components/cards/MIEntityCard";
 import CIcon from "@coreui/icons-react";
-import {IProductionCompany} from "app/models/IProductionCompany.Model";
-import {defaultValue as companyDefaultValue} from "app/models/IProductionCompany.Model";
+import {MIEntityCard} from "app/components/cards/MIEntityCard";
+import {IProductionCompany} from "app/models";
 import {TmdbEntityType} from "app/models/enumerations";
+import {productionCompanyDefaultValue} from "app/models/defaultValues";
 import {MIValueType} from "app/shared/enumerations/MIValueType";
 
 export interface MICompanyCardProps {
@@ -14,11 +14,11 @@ export interface MICompanyCardProps {
 }
 
 
-export default class MICompanyCard extends Component<MICompanyCardProps, any> {
+export class MICompanyCard extends Component<MICompanyCardProps, any> {
   render() {
     return (
       <MIEntityCard entityType={TmdbEntityType.COMPANY} valueType={this.props.valueType}
-                    isCooperative={this.props.coProducing} defaultEntity={companyDefaultValue}
+                    isCooperative={this.props.coProducing} defaultEntity={productionCompanyDefaultValue}
                     movieCount={this.props.movieCount} entity={this.props.company}
       >
         <CIcon className={"text-secondary"} name={'cid-building'} size={'5xl'}/>

@@ -1,6 +1,10 @@
 import axios from 'axios';
 
 import { TranslatorContext } from 'app/translate';
+import { store } from 'app/index';
+import { IRootState } from 'app/shared/reducers/index';
+import { patchAccountSettings } from 'app/modules/account/settings/settings.reducer';
+import { IUser } from 'app/models';
 
 export const ACTION_TYPES = {
   SET_LOCALE: 'locale/SET_LOCALE',
@@ -37,4 +41,14 @@ export const setLocale: (locale: string) => void = locale => async dispatch => {
     type: ACTION_TYPES.SET_LOCALE,
     locale,
   });
+  const state: IRootState = store.getState();
+  if (state.authentication.isAuthenticated) {
+    if (state.authentication.account.langKey !== locale) {
+      const user: IUser = {
+        ...state.authentication.account,
+        langKey: locale,
+      };
+      dispatch(patchAccountSettings(user));
+    }
+  }
 };

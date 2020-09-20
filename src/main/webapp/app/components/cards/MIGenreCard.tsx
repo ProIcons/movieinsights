@@ -1,10 +1,12 @@
 import React from "react";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import MIEntityCard from "app/components/cards/MIEntityCard";
-import {IGenre} from "app/models/IGenre.Model";
-import {defaultValue as genreDefaultValue} from "app/models/IGenre.Model";
+import {MIEntityCard} from "app/components/cards/MIEntityCard";
 import {TmdbEntityType} from "app/models/enumerations";
 import {MIValueType} from "app/shared/enumerations/MIValueType";
+import {IGenre} from "app/models";
+import {genreDefaultValue} from "app/models/defaultValues";
+import {TranslatableComponent} from "app/components/util";
+import _ from "lodash";
 
 export interface MIGenreCardProps {
   genre: IGenre;
@@ -13,7 +15,10 @@ export interface MIGenreCardProps {
   coProducing?: boolean;
 }
 
-export default class MIGenreCard extends React.Component<MIGenreCardProps, any> {
+export class MIGenreCard extends TranslatableComponent<MIGenreCardProps, any> {
+  constructor(props) {
+    super(props,"genre");
+  }
   render() {
     return (
       <MIEntityCard
@@ -23,6 +28,7 @@ export default class MIGenreCard extends React.Component<MIGenreCardProps, any> 
         movieCount={this.props.movieCount}
         entity={this.props.genre}
         isCooperative={this.props.coProducing}
+        customName={this.getTranslation(`translations.${_.camelCase(this.props.genre.name)}`)}
       >
         <FontAwesomeIcon className="text-info" icon={"theater-masks"} size={"5x"}/>
       </MIEntityCard>

@@ -1,18 +1,21 @@
 import './MIInsightsPanel.scss'
-import React, {Component} from "react";
+import React from "react";
 import {CCard, CCardBody, CCardHeader, CCol, CRow} from "@coreui/react";
 
-import MIMovieCard, {MIMovieCardType} from "app/components/cards/MIMovieCard";
-import MIDivider from "app/components/MIDivider";
-import MIPersonCard from "app/components/cards/MIPersonCard";
-import MICompanyCard from "app/components/cards/MICompanyCard";
-import MICountryCard from "app/components/cards/MICountryCard";
-import MIGenreCard from "app/components/cards/MIGenreCard";
-import {defaultValue as movieInsightsDefaultValue, IMovieInsights} from "app/models/IMovieInsights.Model";
-import {EntityType} from "app/models/enumerations/EntityType.enum";
-import {CreditRole} from "app/models/enumerations";
+import {CreditRole, EntityType} from "app/models/enumerations";
 import {MIValueType} from "app/shared/enumerations/MIValueType";
-
+import {IMovieInsights} from "app/models";
+import {movieInsightsDefaultValue} from "app/models/defaultValues";
+import {MIDivider, TranslatableComponent} from "app/components/util";
+import {
+  MICompanyCard,
+  MICountryCard,
+  MIGenreCard,
+  MIMovieCard,
+  MIMovieCardType,
+  MIPersonCard
+} from "app/components/cards";
+import {Translate} from "app/translate";
 
 export interface MIInsightsPanelState {
   movieInsights: IMovieInsights;
@@ -24,9 +27,8 @@ export interface MIInsightsPanelProps extends MIInsightsPanelState {
 
 }
 
-export class MIInsightsPanel extends Component<MIInsightsPanelProps, any> {
-
-  render() : JSX.Element {
+export class MIInsightsPanel extends TranslatableComponent<MIInsightsPanelProps, any> {
+  render(): JSX.Element {
     const movieInsights = this.props.movieInsights ? this.props.movieInsights : movieInsightsDefaultValue;
 
     return (
@@ -35,10 +37,10 @@ export class MIInsightsPanel extends Component<MIInsightsPanelProps, any> {
         <CCol className="entityCol">
           <CCard>
             <CCardHeader>
-              <h2 className="text-center">Movies</h2>
+              <h2 className="text-center"><Translate contentKey={"movieInsightsApp.movie.movies"}/></h2>
             </CCardHeader>
             <CCardBody>
-              <h4 className="text-center text-muted">Rating</h4>
+              <h4 className="text-center text-muted"><Translate contentKey={"movieInsightsApp.movie.rating"}/></h4>
               <hr/>
               <CRow className="justify-content-center ">
                 <MIMovieCard
@@ -51,7 +53,7 @@ export class MIInsightsPanel extends Component<MIInsightsPanelProps, any> {
                   type={MIMovieCardType.LeastVote}
                 />
               </CRow>
-              <h4 className="text-center text-muted">Revenue</h4>
+              <h4 className="text-center text-muted"><Translate contentKey={"movieInsightsApp.movie.revenue"}/></h4>
               <hr/>
               <CRow className="justify-content-center">
                 <MIMovieCard
@@ -63,7 +65,7 @@ export class MIInsightsPanel extends Component<MIInsightsPanelProps, any> {
                   type={MIMovieCardType.LeastRevenue}
                 />
               </CRow>
-              <h4 className="text-center text-muted">Budget</h4>
+              <h4 className="text-center text-muted"><Translate contentKey={"movieInsightsApp.movie.budget"}/></h4>
               <hr/>
               <CRow className="justify-content-center">
 
@@ -79,13 +81,13 @@ export class MIInsightsPanel extends Component<MIInsightsPanelProps, any> {
             </CCardBody>
           </CCard>
         </CCol>
-        <CCol  className="entityCol">
+        <CCol className="entityCol">
           <CCard>
             <CCardHeader>
-              <h2 className="text-center">Credits</h2>
+              <h2 className="text-center"><Translate contentKey={"movieInsightsApp.person.credits"}/></h2>
             </CCardHeader>
             <CCardBody>
-              <h4 className="text-center text-muted">Actors</h4>
+              <h4 className="text-center text-muted"><Translate contentKey={"movieInsightsApp.person.actors"}/></h4>
               <hr/>
               <CRow className="justify-content-center">
                 <MIPersonCard
@@ -104,7 +106,7 @@ export class MIInsightsPanel extends Component<MIInsightsPanelProps, any> {
                   isCooperative={this.props.parentType === EntityType.PERSON && this.props.activeRole === CreditRole.ACTOR}
                 />
               </CRow>
-              <h4 className="text-center text-muted">Directors</h4>
+              <h4 className="text-center text-muted"><Translate contentKey={"movieInsightsApp.person.directors"}/></h4>
               <hr/>
               <CRow className="justify-content-center">
                 <MIPersonCard
@@ -123,7 +125,7 @@ export class MIInsightsPanel extends Component<MIInsightsPanelProps, any> {
                   isCooperative={this.props.parentType === EntityType.PERSON && this.props.activeRole === CreditRole.DIRECTOR}
                 />
               </CRow>
-              <h4 className="text-center text-muted">Producers</h4>
+              <h4 className="text-center text-muted"><Translate contentKey={"movieInsightsApp.person.producers"}/></h4>
               <hr/>
               <CRow className="justify-content-center">
                 <MIPersonCard
@@ -142,7 +144,7 @@ export class MIInsightsPanel extends Component<MIInsightsPanelProps, any> {
                   isCooperative={this.props.parentType === EntityType.PERSON && this.props.activeRole === CreditRole.PRODUCER}
                 />
               </CRow>
-              <h4 className="text-center text-muted">Writers</h4>
+              <h4 className="text-center text-muted"><Translate contentKey={"movieInsightsApp.person.writers"}/></h4>
               <hr/>
               <CRow className="justify-content-center">
                 <MIPersonCard
@@ -165,15 +167,15 @@ export class MIInsightsPanel extends Component<MIInsightsPanelProps, any> {
             </CCardBody>
           </CCard>
         </CCol>
-        <CCol   className="entityCol">
+        <CCol className="entityCol">
           <CRow>
             <CCol>
               <CCard>
                 <CCardHeader>
-                  <h2 className="text-center">Production Companies</h2>
+                  <h2 className="text-center"><Translate contentKey={"movieInsightsApp.productionCompany.companies"}/></h2>
                 </CCardHeader>
                 <CCardBody>
-                  <h4 className="text-center text-muted">Popularity</h4>
+                  <h4 className="text-center text-muted"><Translate contentKey={"movieInsightsApp.movie.popularity"}/></h4>
                   <hr/>
                   <CRow className="justify-content-center ">
                     <MICompanyCard
@@ -198,10 +200,10 @@ export class MIInsightsPanel extends Component<MIInsightsPanelProps, any> {
             <CCol>
               <CCard>
                 <CCardHeader>
-                  <h2 className="text-center">Production Countries</h2>
+                  <h2 className="text-center"><Translate contentKey={"movieInsightsApp.productionCountry.countries"}/></h2>
                 </CCardHeader>
                 <CCardBody>
-                  <h4 className="text-center text-muted">Popularity</h4>
+                  <h4 className="text-center text-muted"><Translate contentKey={"movieInsightsApp.movie.popularity"}/></h4>
                   <hr/>
                   <CRow className="justify-content-center ">
                     <MICountryCard
@@ -226,10 +228,10 @@ export class MIInsightsPanel extends Component<MIInsightsPanelProps, any> {
             <CCol>
               <CCard>
                 <CCardHeader>
-                  <h2 className="text-center">Genres</h2>
+                  <h2 className="text-center"><Translate contentKey={"movieInsightsApp.genre.genres"}/></h2>
                 </CCardHeader>
                 <CCardBody>
-                  <h4 className="text-center text-muted">Popularity</h4>
+                  <h4 className="text-center text-muted"><Translate contentKey={"movieInsightsApp.movie.popularity"}/></h4>
                   <hr/>
                   <CRow className="justify-content-center ">
                     <MIGenreCard

@@ -1,9 +1,11 @@
-import { BaseMovieInsightsPerYearContainer, MovieInsightsEntityType } from 'app/models/BaseMovieInsights.Model';
-import { EntityType } from 'app/models/enumerations/EntityType.enum';
-import { IPersonMultiView } from 'app/models/IPersonMultiView';
-import { IMovieInsights } from 'app/models/IMovieInsights.Model';
-import { IMovieInsightsPerYear } from 'app/models/IMovieInsightsPerYear.Model';
-import { CreditRole } from 'app/models/enumerations';
+import { CreditRole, EntityType } from 'app/models/enumerations';
+import {
+  BaseMovieInsightsPerYearContainer,
+  IMovieInsights,
+  IMovieInsightsPerYear,
+  IPersonMultiView,
+  MovieInsightsEntityType,
+} from 'app/models';
 
 export type MovieInsightsContainerType<T extends MovieInsightsEntityType> = BaseMovieInsightsPerYearContainer<T> | IPersonMultiView;
 

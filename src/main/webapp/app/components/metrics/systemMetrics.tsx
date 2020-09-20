@@ -58,22 +58,14 @@ export class SystemMetrics extends React.Component<ISystemMetricsProps> {
             <TextFormat value={100 * systemMetrics['process.cpu.usage']} type="number" format={wholeNumberFormat} /> %
           </CCol>
         </CRow>
-        <CProgress animated value={100 * systemMetrics['process.cpu.usage']} color="success">
-          <span>
-            <TextFormat value={100 * systemMetrics['process.cpu.usage']} type="number" format={wholeNumberFormat} /> %
-          </span>
-        </CProgress>
+        <CProgress showValue showPercentage  animated value={100 * systemMetrics['process.cpu.usage']} color="success"/>
         <CRow>
           <CCol md="9">System CPU usage</CCol>
           <CCol md="3" className="text-right">
             <TextFormat value={100 * systemMetrics['system.cpu.usage']} type="number" format={wholeNumberFormat} /> %
           </CCol>
         </CRow>
-        <CProgress animated value={100 * systemMetrics['system.cpu.usage']} color="success">
-          <span>
-            <TextFormat value={100 * systemMetrics['system.cpu.usage']} type="number" format={wholeNumberFormat} /> %
-          </span>
-        </CProgress>
+        <CProgress showValue showPercentage  animated value={100 * systemMetrics['system.cpu.usage']} color="success"/>
         <CRow>
           <CCol md="9">System CPU count</CCol>
           <CCol md="3" className="text-right">

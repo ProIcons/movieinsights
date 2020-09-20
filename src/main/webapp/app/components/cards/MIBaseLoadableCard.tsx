@@ -1,8 +1,8 @@
 import React from "react";
 
 import {deepEqual} from "app/utils";
-import {BaseEntity} from "app/models/BaseEntity.Model";
-import TranslatableComponent from "app/components/TranslatableComponent";
+import {BaseEntity} from "app/models";
+import {TranslatableComponent} from "app/components/util";
 
 export interface MIBaseLoadableCardProps<T extends BaseEntity> {
   entity: T
@@ -14,7 +14,7 @@ export interface MIBaseLoadableCardState<T extends BaseEntity> extends MIBaseLoa
   subEntitiesLoaded: boolean
 }
 
-export default abstract class MIBaseLoadableCard<P extends MIBaseLoadableCardProps<T>, S extends MIBaseLoadableCardState<T>, T extends BaseEntity> extends TranslatableComponent<P, S> {
+export abstract class MIBaseLoadableCard<P extends MIBaseLoadableCardProps<T>, S extends MIBaseLoadableCardState<T>, T extends BaseEntity> extends TranslatableComponent<P, S> {
   private declare readonly entityDefaultValue: T;
   private declare entityStateMap: Map<string, boolean>;
 
@@ -37,7 +37,7 @@ export default abstract class MIBaseLoadableCard<P extends MIBaseLoadableCardPro
   private areLoaded: () => boolean = () => {
     let loadedEntities = 0;
     const totalEntities = this.entityStateMap.size;
-    this.entityStateMap.forEach((v, k) => {
+    this.entityStateMap.forEach((v) => {
       if (v)
         loadedEntities++;
     })

@@ -21,6 +21,7 @@ export class GarbageCollectorMetrics extends React.Component<IGarbageCollectorMe
     return (
       <div>
         <h3>Garbage Collection</h3>
+        <hr/>
         <CRow>
           <CCol md="4">
             <span>
@@ -31,17 +32,11 @@ export class GarbageCollectorMetrics extends React.Component<IGarbageCollectorMe
               />M /{' '}
               <TextFormat value={garbageCollectorMetrics['jvm.gc.max.data.size'] / 1048576} type={'number'} format={wholeNumberFormat} />M)
             </span>
-            <CProgress
+            <CProgress showValue showPercentage
               animated
               color="success"
               value={100 * garbageCollectorMetrics['jvm.gc.live.data.size'] / garbageCollectorMetrics['jvm.gc.max.data.size']}
-            >
-              <TextFormat
-                value={100 * garbageCollectorMetrics['jvm.gc.live.data.size'] / garbageCollectorMetrics['jvm.gc.max.data.size']}
-                type={'number'}
-                format={wholeNumberFormat}
-              />%
-            </CProgress>
+            />
           </CCol>
           <CCol md="4">
             <span>
@@ -52,17 +47,11 @@ export class GarbageCollectorMetrics extends React.Component<IGarbageCollectorMe
               />M /{' '}
               <TextFormat value={garbageCollectorMetrics['jvm.gc.memory.allocated'] / 1048576} type={'number'} format={wholeNumberFormat} />M)
             </span>
-            <CProgress
+            <CProgress showValue showPercentage
               animated
               color="success"
               value={100 * garbageCollectorMetrics['jvm.gc.memory.promoted'] / garbageCollectorMetrics['jvm.gc.memory.allocated']}
-            >
-              <TextFormat
-                value={100 * garbageCollectorMetrics['jvm.gc.memory.promoted'] / garbageCollectorMetrics['jvm.gc.memory.allocated']}
-                type={'number'}
-                format={wholeNumberFormat}
-              />%
-            </CProgress>
+            />
           </CCol>
           <CCol md="4">
             <CRow>

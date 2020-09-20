@@ -1,21 +1,21 @@
 import './MIEntityCard.scss'
 import React from "react";
 import {CCard, CCardBody, CCardHeader, CCol, CRow} from "@coreui/react";
-import MILoadingCircle from "app/components/MILoadingCircle";
+import MILoadingCircle from "app/components/util/MILoadingCircle";
 import CIcon from "@coreui/icons-react";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {NavLink} from "react-router-dom";
-import MIEntityNotFound from "app/components/MIEntityNotFound";
+import _ from "lodash";
 
-
-import MIBaseLoadableCard, {
+import {
+  MIBaseLoadableCard,
   MIBaseLoadableCardProps,
   MIBaseLoadableCardState
 } from "app/components/cards/MIBaseLoadableCard";
+import {MIEntityNotFound} from "app/components/util";
 import {AppUtils} from "app/utils/app-utils";
-import {BaseNamedEntity} from "app/models/BaseEntity.Model";
+import {BaseNamedEntity} from "app/models";
 import {TmdbEntityType} from "app/models/enumerations";
-import _ from "lodash";
 import {MIValueType} from "app/shared/enumerations/MIValueType";
 
 
@@ -26,12 +26,13 @@ export interface MIEntityCardProps<T extends BaseNamedEntity> extends MIBaseLoad
   defaultEntity: T;
   movieCount: number,
   children: CIcon | typeof FontAwesomeIcon,
+  customName?: string;
 }
 
 export type MIEntityCardState<T extends BaseNamedEntity> = MIBaseLoadableCardState<T>;
 
 
-export default class MIEntityCard<T extends BaseNamedEntity> extends MIBaseLoadableCard<MIEntityCardProps<T>, MIEntityCardState<T>, T> {
+export class MIEntityCard<T extends BaseNamedEntity> extends MIBaseLoadableCard<MIEntityCardProps<T>, MIEntityCardState<T>, T> {
   constructor(props) {
     super(props, props.defaultEntity);
   }
@@ -52,7 +53,7 @@ export default class MIEntityCard<T extends BaseNamedEntity> extends MIBaseLoada
   renderContent() {
     const str =this.props.entityType.split(' ').reverse().reduce(s=>s).toLowerCase();
     const indexName = _.camelCase(`${this.props.isCooperative?"co-":""}${str}`);
-    const translatedIndex = this.getPublicTranslation(`${_.camelCase(this.props.entityType)}.${indexName}`);
+    const translatedIndex = this.getAppTranslation(`${_.camelCase(this.props.entityType)}.${indexName}`);
     const title = `${this.getTranslation(`${this.props.valueType.toLowerCase()}PopularEntity`,{entity:translatedIndex})}`;
     return (
       <>
@@ -85,7 +86,7 @@ export default class MIEntityCard<T extends BaseNamedEntity> extends MIBaseLoada
                 &nbsp;
                 <CCol>
                   <div className="mi-entity-title-overlay"/>
-                  <div className="mi-entity-title align-middle">{this.state.entity?.name}</div>
+                  <div className="mi-entity-title align-middle">{this.props.customName || this.state.entity?.name}</div>
                 </CCol>
               </CRow>
               <CRow>&nbsp;</CRow>
@@ -97,7 +98,7 @@ export default class MIEntityCard<T extends BaseNamedEntity> extends MIBaseLoada
                       <CIcon name={`cil-movie`} height="36" className="my-4"/>
                     </td>
                     <td className="text-md-center text-value-lg">
-                      {this.props.movieCount} {this.getPublicTranslation("movie.movies")}
+                      {this.props.movieCount} {this.getAppTranslation(`movie.movie${this.props.movieCount>1?'s':''}`)}
                     </td>
                   </tr>
                   </tbody>
@@ -121,5 +122,4 @@ export default class MIEntityCard<T extends BaseNamedEntity> extends MIBaseLoada
       </CCard>
     );
   }
-
 }

@@ -4,6 +4,7 @@ import {CHeader, CHeaderBrand, CHeaderNav, CHeaderNavItem, CHeaderNavLink} from 
 import {IAppProps} from "app/App";
 import MediaQuery from "react-responsive";
 import LoadingBar from "react-redux-loading-bar";
+import DropdownMenu from "app/modules/layout/header/DropdownMenu";
 
 export interface IHeaderProps {
   appProps: IAppProps;
@@ -21,18 +22,18 @@ class Header extends Component<IHeaderProps, any> {
     const props = this.props;
     return (
       <>
-        <LoadingBar scope={"app"}  updateTime={100} maxProgress={95} progressIncrease={10}
+        <LoadingBar scope={"app"} updateTime={100} maxProgress={95} progressIncrease={10}
                     className="loading-bar"/>
-        <CHeader className="c-header-dark">
+        <CHeader withSubheader className="c-header-dark">
 
           <CHeaderBrand className="c-header-brand">
             <div className="logo-slice">
               <img className="img-slice" src="/content/images/logo-slice.png" alt="Logo"/>
             </div>
-            <MediaQuery  minDeviceWidth={575.98}>
+            <MediaQuery minDeviceWidth={575.98}>
               <img src="/content/images/logo-jhipster.png"/>
             </MediaQuery>
-            <MediaQuery  maxDeviceWidth={575.98}>
+            <MediaQuery maxDeviceWidth={575.98}>
               <img src="/content/images/logo-jhipster-collapsed.png"/>
             </MediaQuery>
 
@@ -47,19 +48,10 @@ class Header extends Component<IHeaderProps, any> {
             </CHeaderNavItem>
           </CHeaderNav>
 
+          <CHeaderNav className="px-3">
+            <DropdownMenu/>
+          </CHeaderNav>
 
-          {
-            props.appProps.isAdmin ? (
-              <CHeaderNav className="px-3">
-                {
-                  props.appProps.isAdmin ? (
-                    <CHeaderNavItem className="px-3">
-                      <CHeaderNavLink to="/admin">Admin</CHeaderNavLink>
-                    </CHeaderNavItem>
-                  ) : null
-                }
-              </CHeaderNav>) : null
-          }
           {/* <CSubheader className="px-3 justify-content-between">
           <CBreadcrumbRouter
             className="border-0 c-subheader-nav m-0 px-0 px-md-3"

@@ -1,0 +1,24 @@
+{
+  "movieInsightsApp": {
+    "sideInfoPane": {
+      "worldwide": "Παγκόσμια",
+      "averageRevenueAndBudgetPerYear": "Μέσα Έσοδα/Εξοδα ανα Χρόνο",
+      "voteAveragePerYear": "Βαθμολογιες ταινιών ανα Χρόνο",
+      "totalRevenueAndBudgetPerYear": "Συνολικά Εσόδα/Εξόδα ανα Χρόνο",
+      "totalMoviesPerYear": "Αριθμός Ταινιών ανα Χρόνο",
+      "averageRevenue": "Μέσα Έσοδα",
+      "totalRevenue": "Συνολικά Έσοδα",
+      "averageBudget": "Μέσα Έξοδα",
+      "totalBudget": "Συνολικά Έξοδα",
+      "averageRating": "Μέση Βαθμολογία",
+      "moviesWithBudget": "Ταινίες με Έσοδα",
+      "moviesWithRevenue": "Ταινίες με Έξοδα",
+      "moviesWithRatings": "Ταινίες με Βαθμολογίες",
+      "movieProductionDelta": "Διαφορά της παραγωγής ταινιών ανα Χρόνο",
+      "movieRatingsDelta": "Διαφορά βαθμολογίας ταινιών ανα Χρόνο",
+      "totalMovies": "Ταινίες",
+      "averageNetProfit": "Μέσα καθαρά έσοδα ανα Χρόνο",
+      "totalNetProfit": "Συνολικά καθαρά έσοδα"
+    }
+  }
+}

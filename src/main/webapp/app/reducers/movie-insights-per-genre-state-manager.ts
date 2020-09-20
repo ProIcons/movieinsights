@@ -1,12 +1,11 @@
 import { MovieInsightsContainerState } from 'app/reducers/utils/base-movie-insights-container-state-manager.models';
 import { Service } from 'app/service';
 import BaseMovieInsightsContainerStateManager from 'app/reducers/utils/base-movie-insights-container-state-manager';
-import { store_ } from 'app/index';
+import { store } from 'app/index';
 import { IRootState } from 'app/shared/reducers';
-import { EntityType } from 'app/models/enumerations/EntityType.enum';
-import { defaultValue as movieInsightsDefaultValue } from 'app/models/IMovieInsights.Model';
-import { IMovieInsightsPerGenre, defaultValue as movieInsightsPerGenreDefaultValue } from 'app/models/IMovieInsightsPerGenre.Model';
-import { IGenre } from 'app/models/IGenre.Model';
+import { EntityType } from 'app/models/enumerations';
+import { IGenre, IMovieInsightsPerGenre } from 'app/models';
+import { movieInsightsDefaultValue, movieInsightsPerGenreDefaultValue } from 'app/models/defaultValues';
 
 export type MovieInsightsPerGenreState = Readonly<MovieInsightsContainerState<IMovieInsightsPerGenre>>;
 
@@ -33,7 +32,7 @@ export class MovieInsightsPerGenreStateManager extends BaseMovieInsightsContaine
   }
 
   public getState: () => MovieInsightsPerGenreState = () => {
-    return (store_.getState() as IRootState).movieInsightsPerGenre;
+    return (store.getState() as IRootState).movieInsightsPerGenre;
   };
 
   fetch = (id: number) => ({

@@ -72,8 +72,6 @@ class AdminRouteComponent extends Component<IAdminRouteProps, any> {
       ...rest
     } = this.props as IAdminRouteProps;
 
-    const NewComponent = !ComponentT ? this.props.render as ComponentType : ComponentT;
-
     if (!ComponentT) throw new Error(`A component needs to be specified for private route for path ${(this.props as any).path}`);
 
     return (

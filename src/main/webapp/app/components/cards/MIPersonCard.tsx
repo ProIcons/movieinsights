@@ -2,19 +2,20 @@ import './MIPersonCard.scss'
 import React from "react";
 import {CCard, CCardBody, CCardHeader, CCol, CRow} from "@coreui/react";
 import CIcon from "@coreui/icons-react";
-import MILoadingCircle from "app/components/MILoadingCircle";
-import {defaultValue as personDefaultValue, IPerson} from "app/models/IPerson.Model";
-import MIEntityNotFound from "app/components/MIEntityNotFound";
 import {NavLink} from "react-router-dom";
-import {normalizeText} from "app/utils";
-import MIBaseLoadableCard, {
+
+import {
+  MIBaseLoadableCard,
   MIBaseLoadableCardProps,
   MIBaseLoadableCardState
 } from "app/components/cards/MIBaseLoadableCard";
+import {MIEntityNotFound, MILoadingCircle} from "app/components/util";
 import {PERSON_PROFILE_PLACEHOLDER} from "app/config/constants";
+import {IPerson} from "app/models";
+import {personDefaultValue} from "app/models/defaultValues";
 import {CreditRole, TmdbEntityType} from "app/models/enumerations";
 import {MIValueType} from "app/shared/enumerations/MIValueType";
-
+import {normalizeText} from "app/utils";
 
 export interface MIPersonCardProps extends MIBaseLoadableCardProps<IPerson> {
   movieCount: number;
@@ -40,7 +41,7 @@ const indexByProps = (props: MIPersonCardProps) => {
   }
 }
 
-export default class MIPersonCard extends MIBaseLoadableCard<MIPersonCardProps, MIPersonCardState, IPerson> {
+export class MIPersonCard extends MIBaseLoadableCard<MIPersonCardProps, MIPersonCardState, IPerson> {
 
   constructor(props) {
     super(props, personDefaultValue);
@@ -66,15 +67,16 @@ export default class MIPersonCard extends MIBaseLoadableCard<MIPersonCardProps, 
     if (this.state.entity !== personDefaultValue && this.state.entity) {
       if (!this.state.entity.profilePath) {
         return (
-          <img onLoad={() => this.loaded("profile")} style={{backgroundColor: "var(--secondary)"}} height={"150px"}
+          <img alt={""} onLoad={() => this.loaded("profile")} style={{backgroundColor: "var(--secondary)"}}
+               height={"150px"}
                width={"100px"} src={PERSON_PROFILE_PLACEHOLDER}/>)
       } else {
-        return (<img onLoad={() => this.loaded("profile")} height={"185x"}
+        return (<img alt={""} onLoad={() => this.loaded("profile")} height={"185x"}
                      src={`https://image.tmdb.org/t/p/w185/${this.state.entity?.profilePath}`}/>);
       }
     } else {
       this.loaded("profile");
-      return (<img height={"150px"} width={"100px"}/>);
+      return (<img alt={""} height={"150px"} width={"100px"}/>);
     }
   }
 
@@ -98,14 +100,14 @@ export default class MIPersonCard extends MIBaseLoadableCard<MIPersonCardProps, 
         </CRow>
         <CRow>&nbsp;</CRow>
         <CRow>
-          <table style={{marginLeft: "-20px"}} width="200px">
+          <table style={{marginLeft: "-5px"}} width="150px">
             <tbody>
             <tr>
               <td className={"text-warning"}>
                 <CIcon name={`cil-movie`} height="36" className="my-4"/>
               </td>
               <td className="text-md-center text-value-lg">
-                {this.props.movieCount} Movies
+                {this.props.movieCount} {this.getAppTranslation(`movie.movie${this.props.movieCount>1?'s':''}`)}
               </td>
             </tr>
             </tbody>
@@ -139,7 +141,7 @@ export default class MIPersonCard extends MIBaseLoadableCard<MIPersonCardProps, 
   }
 
   renderCard() {
-    const translatedIndex = this.getPublicTranslation(`person.${indexByProps(this.props)}`);
+    const translatedIndex = this.getAppTranslation(`person.${indexByProps(this.props)}`);
     const title = `${this.getTranslation(`${this.props.valueType.toLowerCase()}PopularEntity`, {entity: translatedIndex})}`;
     return (
       <>

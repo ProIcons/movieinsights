@@ -1,18 +1,18 @@
 import { MovieInsightsContainerState, YearDataPerId } from 'app/reducers/utils/base-movie-insights-container-state-manager.models';
 
-import {
-  BaseMovieInsightsContainer,
-  BaseMovieInsightsPerYearContainer,
-  MovieInsightsContainerType,
-  MovieInsightsEntityType,
-} from 'app/models/BaseMovieInsights.Model';
 import { FAILURE, REQUEST, SUCCESS } from 'app/shared/reducers/action-type.util';
 import { IMovieInsightsContainerGetAction, IMovieInsightsContainerGetYearAction } from 'app/utils/redux-action-types';
 import _ from 'lodash';
 import { AxiosResponse } from 'axios';
-import { BaseEntity } from 'app/models/BaseEntity.Model';
-import { IMovieInsightsPerYear } from 'app/models/IMovieInsightsPerYear.Model';
-import { IPersonMultiView } from 'app/models/IPersonMultiView';
+import {
+  BaseEntity,
+  BaseMovieInsightsContainer,
+  BaseMovieInsightsPerYearContainer,
+  IMovieInsightsPerYear,
+  IPersonMultiView,
+  MovieInsightsContainerType,
+  MovieInsightsEntityType,
+} from 'app/models';
 import { CreditRole } from 'app/models/enumerations';
 
 export type ActionTypes = {
@@ -88,10 +88,10 @@ export default abstract class BaseMovieInsightsContainerStateManager<
 
     return _state;
   };
-  protected preProcess = (state: TStateType = this.initialState, action): TStateType => {
+  protected preProcess: (s: TStateType, a: any) => TStateType = (state: TStateType = this.initialState): TStateType => {
     return state;
   };
-  protected postProcess = (state: TStateType = this.initialState, action): TStateType => {
+  protected postProcess: (s: TStateType, a: any) => TStateType = (state: TStateType = this.initialState): TStateType => {
     return state;
   };
 
@@ -153,7 +153,7 @@ export default abstract class BaseMovieInsightsContainerStateManager<
       yearEntities,
     };
   };
-  protected onFetchState: OnStateType<TStateType, AxiosResponse<any>> = (state, payload) => {
+  protected onFetchState: OnStateType<TStateType, AxiosResponse> = (state, payload) => {
     const entity = payload.data as BaseMovieInsightsPerYearContainer<TEntity>;
     return {
       ...state,
@@ -203,12 +203,12 @@ export default abstract class BaseMovieInsightsContainerStateManager<
   public abstract readonly fetch: IMovieInsightsContainerGetAction<TContainer | IPersonMultiView>;
 
   public abstract readonly fetchYear: IMovieInsightsContainerGetYearAction<IMovieInsightsPerYear | IPersonMultiView>;
-  public readonly setActive = (id?: number | string, role?: CreditRole): any => ({
+  public readonly setActive: (id?: number | string, r?: CreditRole) => any = (id?) => ({
     type: this.actionTypes.SET_ACTIVE,
     payload: id,
   });
 
-  public readonly setActiveYear = (year: number, role?: CreditRole): any => ({
+  public readonly setActiveYear: (y: number, r?: CreditRole) => any = year => ({
     type: this.actionTypes.SET_ACTIVE_YEAR,
     payload: year,
   });

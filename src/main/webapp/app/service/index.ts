@@ -1,13 +1,14 @@
-import { IMovieInsightsPerGenre } from 'app/models/IMovieInsightsPerGenre.Model';
-import { IMovieInsightsPerCompany } from 'app/models/IMovieInsightsPerCompany.Model';
-import { IMovieInsightsPerCountry } from 'app/models/IMovieInsightsPerCountry.Model';
-import { IMovieInsightsGeneral } from 'app/models/IMovieInsightsGeneral.Model';
 import axios, { AxiosResponse } from 'axios';
-
-import { ICountryData } from 'app/models/ICountryData';
-import { IPersonMultiView } from 'app/models/IPersonMultiView';
-import { IMovieInsightsPerYear } from 'app/models/IMovieInsightsPerYear.Model';
-import { AutoComplete } from 'app/models/AutoComplete.model';
+import {
+  AutoComplete,
+  ICountryData,
+  IMovieInsightsGeneral,
+  IMovieInsightsPerCompany,
+  IMovieInsightsPerCountry,
+  IMovieInsightsPerGenre,
+  IMovieInsightsPerYear,
+  IPersonMultiView,
+} from 'app/models';
 
 export const SERVICE_URIS = {
   MOVIEINSIGHTS_GENERAL: '/api/m/ge',

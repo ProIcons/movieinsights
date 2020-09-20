@@ -1,40 +1,17 @@
 {
   "movieInsightsApp": {
     "movie": {
-      "home": {
-        "title": "Movies",
-        "createLabel": "Δημιουργήστε ένα νέο Movie",
-        "createOrEditLabel": "Δημιουργήστε η επεξεργαστείτε ένα Movie",
-        "search": "Αναζήτηση για Movie",
-        "notFound": "No Movies found"
+      "movie": "Ταινία",
+      "movies": "Ταινίες",
+      "card": {
+        "viewOn": "Προβολή στο {{ service }}",
+        "wantToSeeMore": "Θες να δείς παραπάνω;"
       },
-      "created": "Ένα νέο Movie έχει δημιουργηθεί με αναγνωριστικό {{ param }}",
-      "updated": "Ένα Movie έχει ενημερωθεί με αναγνωριστικό {{ param }}",
-      "deleted": "Ένα Movie έχει διαγραφτεί με αναγνωριστικό {{ param }}",
-      "delete": {
-        "question": "Είστε βέβαιοι όταν θέλετε να διαγράψετε το ακόλουθο Movie {{ id }};"
-      },
-      "detail": {
-        "title": "Movie"
-      },
-      "tmdbId": "Tmdb Id",
-      "name": "Name",
-      "tagline": "Tagline",
-      "description": "Description",
-      "revenue": "Revenue",
-      "budget": "Budget",
-      "imdbId": "Imdb Id",
-      "popularity": "Popularity",
-      "runtime": "Runtime",
-      "posterPath": "Poster Path",
-      "backdropPath": "Backdrop Path",
-      "releaseDate": "Release Date",
-      "vote": "Vote",
-      "credits": "Credits",
-      "banReasons": "Ban Reasons",
-      "companies": "Companies",
-      "countries": "Countries",
-      "genres": "Genres"
+      "revenue": "Έσσοδα",
+      "budget": "Έξοδα",
+      "popularity": "Δημοτικότητα",
+      "runtime": "Χρόνος",
+      "rating": "Βαθμολογία"
     }
   }
 }

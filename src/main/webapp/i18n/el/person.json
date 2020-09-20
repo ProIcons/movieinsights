@@ -1,31 +1,19 @@
 {
   "movieInsightsApp": {
     "person": {
-      "home": {
-        "title": "People",
-        "createLabel": "Δημιουργήστε ένα νέο Person",
-        "createOrEditLabel": "Δημιουργήστε η επεξεργαστείτε ένα Person",
-        "search": "Αναζήτηση για Person",
-        "notFound": "No People found"
-      },
-      "created": "Ένα νέο Person έχει δημιουργηθεί με αναγνωριστικό {{ param }}",
-      "updated": "Ένα Person έχει ενημερωθεί με αναγνωριστικό {{ param }}",
-      "deleted": "Ένα Person έχει διαγραφτεί με αναγνωριστικό {{ param }}",
-      "delete": {
-        "question": "Είστε βέβαιοι όταν θέλετε να διαγράψετε το ακόλουθο Person {{ id }};"
-      },
-      "detail": {
-        "title": "Person"
-      },
-      "tmdbId": "Tmdb Id",
-      "name": "Name",
-      "imdbId": "Imdb Id",
-      "popularity": "Popularity",
-      "biography": "Biography",
-      "birthDay": "Birth Day",
-      "profilePath": "Profile Path",
-      "credits": "Credits",
-      "banReasons": "Ban Reasons"
+      "credits": "Συντελεστές",
+      "actor": "Ηθοποιός",
+      "coStar": "Συμπρωταγωνιστής",
+      "actors": "Ηθοποιοί",
+      "director": "Σκηνοθέτης",
+      "coDirector": "Συν-Σκηνοθέτης",
+      "directors": "Σκηνοθέτες",
+      "producer": "Παραγωγός",
+      "coProducer": "Συμπαραγωγός",
+      "producers": "Παραγωγοί",
+      "writer": "Συγγραφέας",
+      "coWriter": "Συν-Συγγραφέας",
+      "writers": "Συγγραφείς"
     }
   }
 }

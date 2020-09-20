@@ -11,33 +11,36 @@ import {BrowserRouter as Router} from "react-router-dom";
 import Layout from "app/modules/layout";
 
 const baseHref = document.querySelector('base').getAttribute('href').replace(/\/$/, '');
-export interface IAppProps extends StateProps, DispatchProps {}
+
+export interface IAppProps extends StateProps, DispatchProps {
+}
+
 class App extends Component<IAppProps, any> {
-    componentDidMount() {
-      this.updateSessionAndProfile();
-    }
+  componentDidMount() {
+    this.updateSessionAndProfile();
+  }
 
-    componentDidUpdate(prevProps: Readonly<IAppProps>, prevState: Readonly<any>, snapshot?: any) {
-      this.updateSessionAndProfile();
-    }
+  componentDidUpdate(prevProps: Readonly<IAppProps>, prevState: Readonly<any>, snapshot?: any) {
+    // this.updateSessionAndProfile();
+  }
 
-    updateSessionAndProfile() {
-    /*  this.props.getSession();
-      this.props.getProfile();*/
-    }
+  updateSessionAndProfile() {
+    this.props.getSession();
+    this.props.getProfile();
+  }
 
-    render() {
-      const props = this.props;
-      return (
-        <Router basename={baseHref}>
-          <Layout appProps={props}/>
-        </Router>
-      );
-    }
+  render() {
+    const props = this.props;
+    return (
+      <Router basename={baseHref}>
+        <Layout appProps={props}/>
+      </Router>
+    );
+  }
 }
 
 
-const mapStateToProps = ({ authentication, applicationProfile, locale }: IRootState) => ({
+const mapStateToProps = ({authentication, applicationProfile, locale}: IRootState) => ({
   currentLocale: locale.currentLocale,
   isAuthenticated: authentication.isAuthenticated,
   isAdmin: hasAnyAuthority(authentication.account.authorities, [AUTHORITIES.ADMIN]),
@@ -46,7 +49,7 @@ const mapStateToProps = ({ authentication, applicationProfile, locale }: IRootSt
   isSwaggerEnabled: applicationProfile.isSwaggerEnabled,
 });
 
-const mapDispatchToProps = { setLocale, getSession, getProfile };
+const mapDispatchToProps = {setLocale, getSession, getProfile};
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;

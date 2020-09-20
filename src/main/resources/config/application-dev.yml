@@ -23,7 +23,7 @@ logging:
 management:
   health:
     elasticsearch:
-      enabled: false
+      enabled: true
 
 spring:
   profiles:
@@ -75,10 +75,10 @@ spring:
     # Remove 'faker' if you do not want the sample data to be loaded automatically
     contexts: dev
   mail:
-    host: localhost
-    port: 25
-    username:
-    password:
+    host: ${MOVIEINSIGHTS_DEV_MAIL_HOST}
+    port: ${MOVIEINSIGHTS_DEV_MAIL_PORT}
+    username: ${MOVIEINSIGHTS_DEV_MAIL_USERNAME}
+    password: ${MOVIEINSIGHTS_DEV_MAIL_PASSWORD}
   messages:
     cache-duration: PT1S # 1 second, see the ISO 8601 standard
   thymeleaf:
@@ -115,7 +115,7 @@ jhipster:
         token-validity-in-seconds: 86400
         token-validity-in-seconds-for-remember-me: 2592000
   mail: # specific JHipster mail property, for standard properties see MailProperties
-    base-url: http://127.0.0.1:8080
+    base-url: http://localhost:8080
   metrics:
     logs: # Reports metrics in the logs
       enabled: true

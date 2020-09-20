@@ -6,17 +6,13 @@ import {
 } from 'app/reducers/utils/base-movie-insights-container-state-manager.models';
 import { Service } from 'app/service';
 import BaseMovieInsightsContainerStateManager, { OnStateType } from 'app/reducers/utils/base-movie-insights-container-state-manager';
-import { store_ } from 'app/index';
+import { store } from 'app/index';
 import { IRootState } from 'app/shared/reducers';
 import { AxiosResponse } from 'axios';
 import _ from 'lodash';
-import { EntityType } from 'app/models/enumerations/EntityType.enum';
-import { CreditRole } from 'app/models/enumerations';
-import { IMovieInsightsPerPerson, defaultValue as movieInsightsPerPersonDefaultValue } from 'app/models/IMovieInsightsPerPerson.Model';
-import { IPersonMultiView, defaultValue as personMultiViewDefaultValue } from 'app/models/IPersonMultiView';
-import { IMovieInsights, defaultValue as movieInsightsDefaultValue } from 'app/models/IMovieInsights.Model';
-import { IMovieInsightsPerYear } from 'app/models/IMovieInsightsPerYear.Model';
-import { IPerson } from 'app/models/IPerson.Model';
+import { CreditRole, EntityType } from 'app/models/enumerations';
+import { IMovieInsights, IMovieInsightsPerPerson, IMovieInsightsPerYear, IPerson, IPersonMultiView } from 'app/models';
+import { movieInsightsDefaultValue, movieInsightsPerPersonDefaultValue, personMultiViewDefaultValue } from 'app/models/defaultValues';
 
 type SetActiveType = {
   num: number;
@@ -165,6 +161,7 @@ const getMovieInsightsPerYear = (yearEntities: YearDataPerId[], state: MovieInsi
   }
   return undefined;
 };
+
 //  endregion
 
 export class MovieInsightsPerPersonStateManager extends BaseMovieInsightsContainerStateManager<
@@ -177,7 +174,7 @@ export class MovieInsightsPerPersonStateManager extends BaseMovieInsightsContain
   }
 
   public getState: () => MovieInsightsPerPersonState = () => {
-    return (store_.getState() as IRootState).movieInsightsPerPerson;
+    return (store.getState() as IRootState).movieInsightsPerPerson;
   };
 
   public hasYear = (year: number) => {

@@ -1,38 +1,32 @@
 import './MISideInfoPane.scss'
-
 import variables from './MISideInfoPane.scss'
 import React from "react";
+import {NavLink} from "react-router-dom";
+import {connect} from "react-redux";
+import Skeleton from "react-loading-skeleton";
 import CIcon from "@coreui/icons-react";
 import {CCard, CCardHeader, CCol, CRow} from "@coreui/react";
-import {connect} from "react-redux";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {SeriesSplineOptions} from "highcharts";
-import {numeral} from "app/utils";
-
-import deepEqual from 'fast-deep-equal';
-
-import MIChartCard, {
+import {
   fieldDefaults,
   footerFieldDefaults,
+  MIChartCard,
   MIChartCardField,
   MIChartCardFooterField
-} from "app/components/cards/MIChartCard";
+} from "app/components/cards";
 import MIYearPicker from "app/components/MIYearPicker";
-import Skeleton from "react-loading-skeleton";
 import MIPersonRolePicker, {MIPersonRolePickerProps} from "app/components/MIPersonRolePicker";
-import {isGenre} from "app/models/IGenre.Model";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {NavLink} from "react-router-dom";
-import MIDivider from "app/components/MIDivider";
-import {defaultValue as movieInsightsDefaultValue, IMovieInsights} from "app/models/IMovieInsights.Model";
-import {BaseMovieInsightsPerYearContainer} from "app/models/BaseMovieInsights.Model";
-import {BaseEntity, isBaseEntity} from "app/models/BaseEntity.Model";
-import {TmdbEntityType} from "app/models/enumerations";
-import {isPerson} from "app/models/IPerson.Model";
-import {isCompany} from "app/models/IProductionCompany.Model";
-import {isCountry} from "app/models/IProductionCountry.Model";
-import TranslatableComponent from "app/components/TranslatableComponent";
-import {MIValueNumeralFormat} from "app/shared/enumerations/MIValueNumeralFormat";
+import {MIDivider, TranslatableComponent} from "app/components/util";
+import {deepEqual, numeral} from "app/utils";
 import {TMDB_IMAGE_URL} from "app/config/constants";
+import {BaseEntity, BaseMovieInsightsPerYearContainer, IMovieInsights} from "app/models";
+import {TmdbEntityType} from "app/models/enumerations";
+import {movieInsightsDefaultValue} from "app/models/defaultValues";
+import {isBaseEntity, isCompany, isCountry, isGenre, isPerson} from 'app/models/utils';
+import {MIValueNumeralFormat} from "app/shared/enumerations/MIValueNumeralFormat";
+import _ from "lodash";
+
 
 const BASE_IMAGE_PERSON_PATH = "/w185"
 const BASE_IMAGE_COMPANY_PATH = "/w300"
@@ -45,7 +39,7 @@ const defaultChartOptions = (title: string, format: MIValueNumeralFormat) => {
       useHTML: true,
       formatter() {
         let str = `<div style="text-align: center;font-weight: bold;font-size:20px" class="text-secondary">${this.x}</div><table><tbody>`;
-        this.points.forEach((p, i) => {
+        this.points.forEach((p) => {
           const mon = numeral()(p.y).format(format);
           str += `<tr><td style="color: ${variables.colors.split(' ')[p.series.colorIndex]} !important;">${p.series.name}</td><td class="text-secondary">${mon}</td></tr>`
         })
@@ -88,6 +82,7 @@ export interface MISideInfoPaneProps extends StateProps {
   movieInsightsData?: BaseMovieInsightsPerYearContainer<any>;
   creditSelector: MIPersonRolePickerProps;
   year: number;
+  currentLocale: string;
 }
 
 export interface MISideInfoPaneDataGroup {
@@ -137,31 +132,27 @@ class MISideInfoPane extends TranslatableComponent<MISideInfoPaneProps, MISideIn
   }
 
   componentDidMount() {
-    this.updateData(false);
+    this.updateData();
   }
 
   componentDidUpdate(prevProps: Readonly<MISideInfoPaneProps>, prevState: Readonly<MISideInfoPaneState>, snapshot?: any) {
     const movieInsightsDataIsSame = deepEqual(this.state.movieInsightsData, this.props.movieInsightsData);
-    if (!movieInsightsDataIsSame || !deepEqual(this.state.movieInsights, this.props.movieInsights)) {
+    if (!movieInsightsDataIsSame || !deepEqual(this.state.movieInsights, this.props.movieInsights) || this.props.currentLocale !== prevProps.currentLocale) {
       this.setState({
         isReset: false,
         movieInsightsData: this.props.movieInsightsData,
         movieInsights: this.props.movieInsights,
         updateCauseIsYear: movieInsightsDataIsSame
       })
-      this.updateData(movieInsightsDataIsSame);
+      this.updateData();
     }
-  }
-
-  private getText(text: string) {
-    return this.state.movieInsights && !this.props.isShowingPerYear && this.props.movieInsights !== movieInsightsDefaultValue ? text : "";
   }
 
   private getTranslateText(key: string) {
     return this.state.movieInsights && !this.props.isShowingPerYear && this.props.movieInsights !== movieInsightsDefaultValue ? this.getTranslation(key) : "";
   }
 
-  private updateData(updateCauseIsYear: boolean) {
+  private updateData() {
     if (this.props.movieInsightsData.yearData?.length > 0 && this.props.movieInsights && this.props.movieInsights !== movieInsightsDefaultValue) {
       let
         vDiffAvg = 0,
@@ -169,13 +160,13 @@ class MISideInfoPane extends TranslatableComponent<MISideInfoPaneProps, MISideIn
         mDiff = 0,
         mDiffCount = 0;
 
-      const _budgetTranslation = this.getPublicTranslation("movie.budget");
-      const _revenueTranslation = this.getPublicTranslation("movie.revenue");
-      const _ratingTranslation = this.getPublicTranslation("movie.rating");
+      const _budgetTranslation = this.getAppTranslation("movie.budget");
+      const _revenueTranslation = this.getAppTranslation("movie.revenue");
+      const _ratingTranslation = this.getAppTranslation("movie.rating");
       const _totalMovieTranslation = this.getTranslation("totalMovies");
       const _moviesWithBudgetTranslation = this.getTranslation("moviesWithBudget");
       const _moviesWithRevenueTranslation = this.getTranslation("moviesWithRevenue");
-      const _moviesWithRatingsTranslation  = this.getTranslation("moviesWithRatings");
+      const _moviesWithRatingsTranslation = this.getTranslation("moviesWithRatings");
 
 
       const averageRevenueBudgetChartData: SeriesSplineOptions[] = [];
@@ -398,11 +389,12 @@ class MISideInfoPane extends TranslatableComponent<MISideInfoPaneProps, MISideIn
   }
 
   private isLogoImage: () => boolean = () => {
+    //   TODO: implement me
 
-    /*const entity = this.props.movieInsightsData.entity;
+    /*  const entity = this.props.movieInsightsData.entity;
     if (isCountry(entity) || isGenre(entity)) {
 
-    }*/
+    }  */
     return false;
   }
 
@@ -427,8 +419,7 @@ class MISideInfoPane extends TranslatableComponent<MISideInfoPaneProps, MISideIn
           });
         elem2 = (
           <div>
-            {/*<CIcon className={"text-info mi-sideinfo-header-icon"} name={'cil-globe-alt'}/>*/}
-            <FontAwesomeIcon className="text-info mi-sideinfo-header-icon"  icon={"globe-americas"}/>
+            <FontAwesomeIcon className="text-info mi-sideinfo-header-icon" icon={"globe-americas"}/>
             <div className="text-value-lg font-5xl">{this.getTranslation("worldwide")}</div>
           </div>
         );
@@ -437,7 +428,8 @@ class MISideInfoPane extends TranslatableComponent<MISideInfoPaneProps, MISideIn
           elem2 = (
             <div>
               {entity.profilePath ? (
-                  <img  height="250px" style={{borderRadius: "25%"}} onLoad={() => this.setState({logoLoaded: true})}
+                  <img alt={""} height="250px" style={{borderRadius: "25%"}}
+                       onLoad={() => this.setState({logoLoaded: true})}
                        src={`${TMDB_IMAGE_URL}${BASE_IMAGE_PERSON_PATH}${entity.profilePath}`}/>) :
                 <div className="text-value-xl" style={{fontSize: "3rem"}}>{entity.name}</div>
               }
@@ -448,7 +440,7 @@ class MISideInfoPane extends TranslatableComponent<MISideInfoPaneProps, MISideIn
           elem2 = (
             <>
               {entity.logoPath ? (
-                  <img height="250px" onLoad={() => this.setState({logoLoaded: true})}
+                  <img alt={""} height="250px" onLoad={() => this.setState({logoLoaded: true})}
                        src={`${TMDB_IMAGE_URL}${BASE_IMAGE_COMPANY_PATH}${entity.logoPath}`}/>) :
                 <div className="text-value-xl" style={{fontSize: "3rem"}}>{entity.name}</div>
               }
@@ -463,13 +455,12 @@ class MISideInfoPane extends TranslatableComponent<MISideInfoPaneProps, MISideIn
                 this.setState({logoLoaded: true});
               }, 10);
             });
+          const name = this.getAppTranslation(`productionCountry.translations.${entity.iso31661.toUpperCase()}`);
           elem2 = (
             <div>
               {flagName !== "cif" ? (
-                <CIcon className={"text-info mi-sideinfo-header-icon"} name={flagName}/>
-              ) : null
-              }
-              <div className="text-value-lg font-5xl">{entity.name}</div>
+                <CIcon className={"text-info mi-sideinfo-header-icon"} name={flagName}/>) : null}
+              <div className="text-value-lg font-5xl">{name}</div>
             </div>
           );
         } else if (isGenre(entity)) {
@@ -479,10 +470,11 @@ class MISideInfoPane extends TranslatableComponent<MISideInfoPaneProps, MISideIn
                 this.setState({logoLoaded: true});
               }, 10);
             });
+          const name = this.getAppTranslation(`genre.translations.${_.camelCase(entity.name)}`);
           elem2 = (
             <div>
               <FontAwesomeIcon className="text-info" icon={"theater-masks"} size={"8x"}/>
-              <div className="text-value-lg font-5xl">{entity.name}</div>
+              <div className="text-value-lg font-5xl">{name}</div>
             </div>
           );
         }
@@ -490,7 +482,7 @@ class MISideInfoPane extends TranslatableComponent<MISideInfoPaneProps, MISideIn
     }
     if (this.props.movieInsights === movieInsightsDefaultValue || !this.state.logoLoaded) {
       elem = (
-        <div >
+        <div style={{position: "absolute"}}>
           <Skeleton className="alt-skeleton" width={300} height={250}/>
         </div>
       )
@@ -518,7 +510,7 @@ class MISideInfoPane extends TranslatableComponent<MISideInfoPaneProps, MISideIn
               <CRow>
                 <CCol
                   className="text-center justify-content-center align-middle"
-                  style={{minHeight: "200px", display: "flex", alignItems: "center", flexWrap: "wrap"}}
+                  style={{minHeight: "250px", display: "flex", alignItems: "center", flexWrap: "wrap"}}
                 >
                   {this.getHeader()}
                 </CCol>
@@ -561,7 +553,7 @@ class MISideInfoPane extends TranslatableComponent<MISideInfoPaneProps, MISideIn
                   headerBackgroundClassName={'bg-gradient-info'}
                   chartProps={{
                     series: this.state.averageRevenueBudgetChartData,
-                    options: defaultChartOptions(this.getTranslateText("averageRevenueAndBudgetPerYear"), MIValueNumeralFormat.Money) //// "Average Revenue/Budget Per Year"
+                    options: defaultChartOptions(this.getTranslateText("averageRevenueAndBudgetPerYear"), MIValueNumeralFormat.Money) // "Average Revenue/Budget Per Year"
                   }}
                   fields={this.state.averageRevenueBudgetFields}
                   footer={this.state.averageNetProfitField}

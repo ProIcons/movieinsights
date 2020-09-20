@@ -1,121 +1,70 @@
-/**
- * Adapted from https://github.com/jhipster/react-jhipster
- * licenced under Apache License 2.0 Copyright 2013-2020 Deepu KS and the respective JHipster contributors
- * Modified by Nikolas Mavropoulos for MovieInsights Project
- */
 import * as React from 'react';
-import { TextFormat } from 'app/utils/text-format-utils';
-import {Table} from "react-bootstrap";
+import {Translate} from "app/translate";
+import {TranslatableComponent} from "app/components/util";
+import _ from "lodash";
+import {CDataTable} from "@coreui/react";
+import {getScopedSlots} from "app/utils/data-table-utils";
 
 export interface IDatasourceMetricsProps {
   datasourceMetrics: any;
   twoDigitAfterPointFormat: string;
 }
 
-export class DatasourceMetrics extends React.Component<IDatasourceMetricsProps> {
-  filterNaN = input => (isNaN(input) ? 0 : input);
+export class DatasourceMetrics extends TranslatableComponent<IDatasourceMetricsProps, any> {
+  constructor(props) {
+    super(props, "metrics", true);
+  }
+
+  getData = () => {
+    const {datasourceMetrics} = this.props;
+    return Object
+      .keys(datasourceMetrics)
+      .sort((c1, c2) => c1.localeCompare(c2))
+      .filter(k => ['acquire', 'creation', 'usage'].includes(k))
+      .map(key => ({
+        name: _.capitalize(key),
+        count: datasourceMetrics[key]['count'],
+        mean: datasourceMetrics[key]['mean'],
+        max: datasourceMetrics[key]['max'],
+        totalTime: datasourceMetrics[key]['totalTime'],
+        '0.0': datasourceMetrics[key]['0.0'],
+        '0.5': datasourceMetrics[key]['0.5'],
+        '0.75': datasourceMetrics[key]['0.75'],
+        '0.95': datasourceMetrics[key]['0.95'],
+        '0.99': datasourceMetrics[key]['0.99'],
+      }));
+  }
+
+  getFields = () => ([
+    {
+      key: 'name',
+      label: `${this.getTranslation("datasource.usage")} (active: ${this.props.datasourceMetrics.active.value}, min: ${this.props.datasourceMetrics.min.value}, max: ${this.props.datasourceMetrics.max.value}, idle: ${this.props.datasourceMetrics.idle.value})`
+    },
+    {key: 'count', label: this.getTranslation("datasource.count")},
+    {key: 'mean', _format: this.props.twoDigitAfterPointFormat, label: this.getTranslation("datasource.mean")},
+    {key: '0.0', _format: this.props.twoDigitAfterPointFormat, label: this.getTranslation("datasource.min")},
+    {key: '0.5', _format: this.props.twoDigitAfterPointFormat, label: this.getTranslation("datasource.p50")},
+    {key: '0.75', _format: this.props.twoDigitAfterPointFormat, label: this.getTranslation("datasource.p75")},
+    {key: '0.95', _format: this.props.twoDigitAfterPointFormat, label: this.getTranslation("datasource.p95")},
+    {key: '0.99', _format: this.props.twoDigitAfterPointFormat, label: this.getTranslation("datasource.p99")},
+    {key: 'max', _format: this.props.twoDigitAfterPointFormat, label: this.getTranslation("datasource.max")},
+    {key: 'totalTime', _format: this.props.twoDigitAfterPointFormat, label: this.getTranslation("datasource.totalTime")}
+  ]);
 
   render() {
-    const { datasourceMetrics, twoDigitAfterPointFormat } = this.props;
     return (
       <div>
-        <h3>DataSource statistics (time in millisecond)</h3>
-        <Table>
-          <thead>
-            <tr>
-              <th>
-                <span>Connection Pool Usage </span>
-                (active: {datasourceMetrics.active.value}, min: {datasourceMetrics.min.value}, max: {datasourceMetrics.max.value}, idle:{' '}
-                {datasourceMetrics.idle.value})
-              </th>
-              <th className="text-right">Count</th>
-              <th className="text-right">Mean</th>
-              <th className="text-right">Min</th>
-              <th className="text-right">p50</th>
-              <th className="text-right">p75</th>
-              <th className="text-right">p95</th>
-              <th className="text-right">p99</th>
-              <th className="text-right">Max</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Acquire</td>
-              <td className="text-right">{datasourceMetrics.acquire.count}</td>
-              <td className="text-right">
-                <TextFormat value={datasourceMetrics.acquire.mean} type={'number'} format={twoDigitAfterPointFormat} />
-              </td>
-              <td className="text-right">
-                <TextFormat value={datasourceMetrics.acquire['0.0']} type={'number'} format={twoDigitAfterPointFormat} />
-              </td>
-              <td className="text-right">
-                <TextFormat value={datasourceMetrics.acquire['0.5']} type={'number'} format={twoDigitAfterPointFormat} />
-              </td>
-              <td className="text-right">
-                <TextFormat value={datasourceMetrics.acquire['0.75']} type={'number'} format={twoDigitAfterPointFormat} />
-              </td>
-              <td className="text-right">
-                <TextFormat value={datasourceMetrics.acquire['0.95']} type={'number'} format={twoDigitAfterPointFormat} />
-              </td>
-              <td className="text-right">
-                <TextFormat value={datasourceMetrics.acquire['0.99']} type={'number'} format={twoDigitAfterPointFormat} />
-              </td>
-              <td className="text-right">
-                <TextFormat value={datasourceMetrics.acquire.max} type={'number'} format={twoDigitAfterPointFormat} />
-              </td>
-            </tr>
-            <tr>
-              <td>Creation</td>
-              <td className="text-right">{datasourceMetrics.creation.count}</td>
-              <td className="text-right">
-                <TextFormat value={datasourceMetrics.creation.mean} type={'number'} format={twoDigitAfterPointFormat} />
-              </td>
-              <td className="text-right">
-                <TextFormat value={datasourceMetrics.creation['0.0']} type={'number'} format={twoDigitAfterPointFormat} />
-              </td>
-              <td className="text-right">
-                <TextFormat value={datasourceMetrics.creation['0.5']} type={'number'} format={twoDigitAfterPointFormat} />
-              </td>
-              <td className="text-right">
-                <TextFormat value={datasourceMetrics.creation['0.75']} type={'number'} format={twoDigitAfterPointFormat} />
-              </td>
-              <td className="text-right">
-                <TextFormat value={datasourceMetrics.creation['0.95']} type={'number'} format={twoDigitAfterPointFormat} />
-              </td>
-              <td className="text-right">
-                <TextFormat value={datasourceMetrics.creation['0.99']} type={'number'} format={twoDigitAfterPointFormat} />
-              </td>
-              <td className="text-right">
-                <TextFormat value={datasourceMetrics.creation.max} type={'number'} format={twoDigitAfterPointFormat} />
-              </td>
-            </tr>
-            <tr>
-              <td>Usage</td>
-              <td className="text-right">{datasourceMetrics.usage.count}</td>
-              <td className="text-right">
-                <TextFormat value={datasourceMetrics.usage.mean} type={'number'} format={twoDigitAfterPointFormat} />
-              </td>
-              <td className="text-right">
-                <TextFormat value={datasourceMetrics.usage['0.0']} type={'number'} format={twoDigitAfterPointFormat} />
-              </td>
-              <td className="text-right">
-                <TextFormat value={datasourceMetrics.usage['0.5']} type={'number'} format={twoDigitAfterPointFormat} />
-              </td>
-              <td className="text-right">
-                <TextFormat value={datasourceMetrics.usage['0.75']} type={'number'} format={twoDigitAfterPointFormat} />
-              </td>
-              <td className="text-right">
-                <TextFormat value={datasourceMetrics.usage['0.95']} type={'number'} format={twoDigitAfterPointFormat} />
-              </td>
-              <td className="text-right">
-                <TextFormat value={datasourceMetrics.usage['0.99']} type={'number'} format={twoDigitAfterPointFormat} />
-              </td>
-              <td className="text-right">
-                <TextFormat value={datasourceMetrics.usage.max} type={'number'} format={twoDigitAfterPointFormat} />
-              </td>
-            </tr>
-          </tbody>
-        </Table>
+        <Translate component="h3" contentKey={"metrics.datasource.title"}>DataSource statistics (time in
+          millisecond)</Translate>
+        <hr/>
+        <CDataTable
+          items={this.getData()}
+          fields={this.getFields()}
+          scopedSlots={getScopedSlots(this.getFields())}
+          striped
+          hover
+          dark
+        />
       </div>
     );
   }

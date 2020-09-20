@@ -1,7 +1,7 @@
 import {CCard, CCardHeader, CCol, CContainer, CRow} from '@coreui/react'
 import React, {Component} from 'react'
 import MISearchBar from "app/components/MISearchBar";
-import {AppUtils} from "app/utils/app-utils";
+import {AppUtils} from "app/utils";
 
 class Page404 extends Component<any, any> {
   render() {

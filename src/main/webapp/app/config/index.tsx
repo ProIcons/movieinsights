@@ -5,10 +5,8 @@ import {registerLocale} from "app/config/translation";
 import {clearAuthentication} from "app/shared/reducers/authentication";
 import setupAxiosInterceptors from "./axios-interceptor";
 import {loadIcons} from "./icon-loader";
-import DevTools from './devtools'
 export interface ApplicationConfiguration {
   store: Store;
-  devTools?: JSX.Element;
 }
 
 const initApp = (): ApplicationConfiguration => {

@@ -2,12 +2,11 @@ import { MovieInsightsContainerState } from 'app/reducers/utils/base-movie-insig
 
 import { Service } from 'app/service';
 import BaseMovieInsightsContainerStateManager from 'app/reducers/utils/base-movie-insights-container-state-manager';
-import { store_ } from 'app/index';
+import { store } from 'app/index';
 import { IRootState } from 'app/shared/reducers';
-import { EntityType } from 'app/models/enumerations/EntityType.enum';
-import { IMovieInsightsPerCompany, defaultValue as movieInsightsPerCompanyDefaultValue } from 'app/models/IMovieInsightsPerCompany.Model';
-import { IProductionCompany } from 'app/models/IProductionCompany.Model';
-import { defaultValue as movieInsightsDefaultValue } from 'app/models/IMovieInsights.Model';
+import { EntityType } from 'app/models/enumerations';
+import { IMovieInsightsPerCompany, IProductionCompany } from 'app/models';
+import { movieInsightsDefaultValue, movieInsightsPerCompanyDefaultValue } from 'app/models/defaultValues';
 export type MovieInsightsPerCompanyState = Readonly<MovieInsightsContainerState<IMovieInsightsPerCompany>>;
 
 export const initialMovieInsightsPerCompanyState: MovieInsightsPerCompanyState = {
@@ -33,7 +32,7 @@ export class MovieInsightsPerCompanyStateManager extends BaseMovieInsightsContai
   }
 
   public getState: () => MovieInsightsPerCompanyState = () => {
-    return (store_.getState() as IRootState).movieInsightsPerCompany;
+    return (store.getState() as IRootState).movieInsightsPerCompany;
   };
 
   fetch = (id: number) => ({

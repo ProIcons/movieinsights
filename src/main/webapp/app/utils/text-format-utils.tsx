@@ -3,6 +3,8 @@ import numeral from 'numeral';
 import moment from 'moment';
 import { TranslatorContext } from 'app/translate';
 import 'numeral/locales';
+import 'app/utils/numeral/el.ts'
+
 
 export type ITextFormatTypes = 'date' | 'number';
 

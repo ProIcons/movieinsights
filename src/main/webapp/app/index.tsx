@@ -6,8 +6,8 @@ import ErrorBoundary from './shared/error/error-boundary';
 import App from "./App";
 import initApp from "app/config";
 
-const {store} = initApp();
-export const store_ = store;
+export const {store} = initApp();
+
 const rootEl = document.getElementById('root');
 
 const render = Component =>
@@ -16,8 +16,6 @@ const render = Component =>
     <ErrorBoundary>
       <Provider store={store}>
         <div>
-          {/* If this slows down the app in dev disable it and enable when required  */}
-          {/*{devTools}*/}
           <Component/>
         </div>
       </Provider>

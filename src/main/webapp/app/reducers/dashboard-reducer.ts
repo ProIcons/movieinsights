@@ -8,8 +8,8 @@ import BaseMovieInsightsContainerStateManager from 'app/reducers/utils/base-movi
 
 import { Service } from 'app/service';
 import { ICrudGetAllAction } from 'app/utils/redux-action-types';
-import { ICountryData } from 'app/models/ICountryData';
 import { FAILURE, REQUEST, SUCCESS } from 'app/shared/reducers/action-type.util';
+import { ICountryData } from 'app/models';
 import { CreditRole } from 'app/models/enumerations';
 
 export const ACTION_TYPES = {
@@ -27,10 +27,6 @@ export interface DashboardState {
   errorMessage: string;
   countryData: ICountryData[];
 }
-
-const initialState = {
-  activeView: null,
-};
 
 export const Views = {
   MOVIEINSIGHTS_GENERAL: movieInsightsGeneralStateManager,

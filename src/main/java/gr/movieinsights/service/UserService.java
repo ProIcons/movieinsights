@@ -223,6 +223,24 @@ public class UserService {
         });
     }
 
+    public void disableUser(String login) {
+        userRepository.findOneByLogin(login).ifPresent(user -> {
+            user.setDisabled(true);
+            userRepository.save(user);
+            this.clearUserCaches(user);
+            log.debug("Disabled User: {}", user);
+        });
+    }
+
+    public void enableUser(String login) {
+        userRepository.findOneByLogin(login).ifPresent(user -> {
+            user.setDisabled(false);
+            userRepository.save(user);
+            this.clearUserCaches(user);
+            log.debug("Deleted User: {}", user);
+        });
+    }
+
     /**
      * Update basic information (first name, last name, email, language) for the current user.
      *
@@ -246,6 +264,36 @@ public class UserService {
                 userSearchRepository.save(user);
                 this.clearUserCaches(user);
                 log.debug("Changed Information for User: {}", user);
+            });
+    }
+
+    /**
+     * Patches basic information (first name, last name, email, language) for the current user.
+     *
+     * @param userDTO user to patch.
+     */
+    public void patchUser(UserDTO userDTO) {
+        SecurityUtils.getCurrentUserLogin()
+            .flatMap(userRepository::findOneByLogin)
+            .ifPresent(user -> {
+                if (userDTO.getFirstName() != null)
+                user.setFirstName(userDTO.getFirstName());
+
+                if (userDTO.getLastName() != null)
+                user.setLastName(userDTO.getLastName());
+
+                if (userDTO.getEmail() != null) {
+                    user.setEmail(userDTO.getEmail().toLowerCase());
+                }
+
+                if (userDTO.getLangKey() != null)
+                user.setLangKey(userDTO.getLangKey());
+
+                if (userDTO.getImageUrl() != null)
+                user.setImageUrl(userDTO.getImageUrl() );
+                userSearchRepository.save(user);
+                this.clearUserCaches(user);
+                log.debug("Patched Information for User: {}", user);
             });
     }
 

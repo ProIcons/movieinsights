@@ -1,6 +1,6 @@
 {
   "metrics": {
-    "title": "Application Metrics",
+    "title": "Control Center",
     "refresh.button": "Refresh",
     "updating": "Updating...",
     "jvm": {
@@ -43,7 +43,7 @@
         "active": "Active requests:",
         "total": "Total requests:",
         "table": {
-          "code": "Code",
+          "code": "Response Code",
           "count": "Count",
           "mean": "Mean",
           "average": "Average",
@@ -55,6 +55,13 @@
           "servererror": "Server Error"
         }
       }
+    },
+    "endpoints": {
+      "title": "Endpoints requests (time in milliseconds)",
+      "url": "Endpoint Url",
+      "method": "Method",
+      "count": "Count",
+      "mean": "Mean"
     },
     "servicesstats": {
       "title": "Services statistics (time in millisecond)",
@@ -96,7 +103,8 @@
       "p50": "p50",
       "p75": "p75",
       "p95": "p95",
-      "p99": "p99"
+      "p99": "p99",
+      "totalTime": "Total Time"
     }
   }
 }

@@ -5,6 +5,7 @@ import gr.movieinsights.domain.User;
 import gr.movieinsights.repository.UserRepository;
 import gr.movieinsights.repository.search.UserSearchRepository;
 import gr.movieinsights.security.AuthoritiesConstants;
+import gr.movieinsights.security.SecurityUtils;
 import gr.movieinsights.service.MailService;
 import gr.movieinsights.service.UserService;
 import gr.movieinsights.service.dto.UserDTO;
@@ -22,6 +23,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -199,8 +201,40 @@ public class UserResource {
     @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
     public ResponseEntity<Void> deleteUser(@PathVariable String login) {
         log.debug("REST request to delete User: {}", login);
+        String userLogin = SecurityUtils.getCurrentUserLogin().orElseThrow(() -> new AccountResource.AccountResourceException("Current user login not found"));
+        if (userLogin.toLowerCase().equals(login.toLowerCase())) {
+            throw new AccessDeniedException("You cannot delete your account");
+        }
         userService.deleteUser(login);
         return ResponseEntity.noContent().headers(HeaderUtil.createAlert(applicationName,  "userManagement.deleted", login)).build();
+    }
+
+    /**
+     * {@code POST /users/disable/:login} : disable the "login" User.
+     *
+     * @param login the login of the user to disable.
+     * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
+     */
+    @PostMapping("/users/disable/{login:" + Constants.LOGIN_REGEX + "}")
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
+    public ResponseEntity<Void> disableUser(@PathVariable String login) {
+        log.debug("REST request to disable User: {}", login);
+        userService.disableUser(login);
+        return ResponseEntity.noContent().headers(HeaderUtil.createAlert(applicationName,  "userManagement.disabled", login)).build();
+    }
+
+    /**
+     * {@code POST /users/:login} : enable the "login" User.
+     *
+     * @param login the login of the user to enable.
+     * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
+     */
+    @PostMapping("/users/enable/{login:" + Constants.LOGIN_REGEX + "}")
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
+    public ResponseEntity<Void> enableUser(@PathVariable String login) {
+        log.debug("REST request to enable User: {}", login);
+        userService.enableUser(login);
+        return ResponseEntity.noContent().headers(HeaderUtil.createAlert(applicationName,  "userManagement.enabled", login)).build();
     }
 
     /**

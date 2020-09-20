@@ -1,5 +1,4 @@
 export * from './numeral-utils';
-export * from './route-utils';
 export * from './object-utils';
 export * from './tmdb-utils';
 export * from './browser-utils';

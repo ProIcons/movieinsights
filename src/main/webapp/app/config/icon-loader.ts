@@ -22,14 +22,25 @@ import { cilPen } from '@coreui/icons-pro/js/linear/cil-pen';
 import { cilX } from '@coreui/icons-pro/js/linear/cil-x';
 import { cisEuro } from '@coreui/icons-pro/js/solid/cis-euro';
 import { cisGripLines } from '@coreui/icons-pro/js/solid/cis-grip-lines';
+import { cidAccountLogout } from '@coreui/icons-pro/js/duotone/cid-account-logout';
+import { cilCog } from '@coreui/icons-pro/js/linear/cil-cog';
+import { cilSpeedometer } from '@coreui/icons-pro/js/linear/cil-speedometer';
+import { cilNote } from '@coreui/icons-pro/js/linear/cil-note';
 
 import { cifSu } from 'app/config/icons/cifSu';
 import { cifIo } from 'app/config/icons/cifIo';
 import { cibTmdb } from 'app/config/icons/cibTmdb';
 import { cifGl } from 'app/config/icons/cifGl';
 import { cifPr } from 'app/config/icons/cifPr';
+import { cidColumns } from '@coreui/icons-pro/js/duotone/cid-columns';
+import { faSync } from '@fortawesome/free-solid-svg-icons/faSync';
+import { faSignInAlt } from '@fortawesome/free-solid-svg-icons/faSignInAlt';
+import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons/faSignOutAlt';
+import { faSlidersH } from '@fortawesome/free-solid-svg-icons/faSlidersH';
+import { cibElasticSearch } from '@coreui/icons-pro/js/brand/cib-elastic-search';
+import { cibPostgresql } from '@coreui/icons-pro/js/brand/cib-postgresql';
 
-const icons = Object.assign({}, flagSet, {
+const coreUiIcons = Object.assign({}, flagSet, {
   cibImdb,
   cidBuilding,
   cilFlag,
@@ -43,10 +54,17 @@ const icons = Object.assign({}, flagSet, {
   cilChevronDoubleUp,
   cisGripLines,
   cidUser,
+  cilCog,
   cilGlobe,
   cilGlobeAlt,
+  cilSpeedometer,
+  cilNote,
+  cidAccountLogout,
   cibTmdb,
+  cibElasticSearch,
+  cibPostgresql,
   cidMagnifyingGlass,
+  cidColumns,
   cifGl,
   cifPr,
   cifSu,
@@ -54,6 +72,15 @@ const icons = Object.assign({}, flagSet, {
 });
 
 export const loadIcons = () => {
-  library.add(faUser, faSearch, faTheaterMasks, faGlobeAmericas);
-  (React as any).icons = icons;
+  library.add(faUser, faSync, faSearch, faTheaterMasks, faGlobeAmericas, faSignInAlt, faSignOutAlt, faSlidersH);
+  (React as any).icons = coreUiIcons;
+};
+
+export const icons = {
+  faUser,
+  faSync,
+  faSearch,
+  faTheaterMasks,
+  faGlobeAmericas,
+  ...coreUiIcons,
 };

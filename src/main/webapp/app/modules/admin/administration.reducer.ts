@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { FAILURE, REQUEST, SUCCESS } from 'app/shared/reducers/action-type.util';
+import { FAILURE, REQUEST, SUCCESS, WS } from 'app/shared/reducers/action-type.util';
 
 export const ACTION_TYPES = {
   FETCH_LOGS: 'administration/FETCH_LOGS',
@@ -11,7 +11,10 @@ export const ACTION_TYPES = {
   FETCH_CONFIGURATIONS: 'administration/FETCH_CONFIGURATIONS',
   FETCH_ENV: 'administration/FETCH_ENV',
   FETCH_AUDITS: 'administration/FETCH_AUDITS',
+  WEBSOCKET_METRICS_SUBSCRIBE: 'administration/WEBSOCKET_METRICS_SUBSCRIBE',
+  WEBSOCKET_METRICS_UNSUBSCRIBE: 'administration/WEBSOCKET_METRICS_UNSUBSCRIBE',
   WEBSOCKET_ACTIVITY_MESSAGE: 'administration/WEBSOCKET_ACTIVITY_MESSAGE',
+  WEBSOCKET_LOST_CONNECTION: 'administration/WEBSOCKET_LOST_CONNECTION',
 };
 
 const initialState = {
@@ -70,10 +73,20 @@ export default (state: AdministrationState = initialState, action): Administrati
         loading: false,
         metrics: action.payload.data,
       };
+    case WS(ACTION_TYPES.FETCH_METRICS):
+      return {
+        ...state,
+        metrics: action.payload.data,
+      };
     case SUCCESS(ACTION_TYPES.FETCH_THREAD_DUMP):
       return {
         ...state,
         loading: false,
+        threadDump: action.payload.data,
+      };
+    case WS(ACTION_TYPES.FETCH_THREAD_DUMP):
+      return {
+        ...state,
         threadDump: action.payload.data,
       };
     case SUCCESS(ACTION_TYPES.FETCH_LOGS):
@@ -114,6 +127,16 @@ export default (state: AdministrationState = initialState, action): Administrati
         ...state,
         loading: false,
         health: action.payload.data,
+      };
+    case WS(ACTION_TYPES.FETCH_HEALTH):
+      return {
+        ...state,
+        health: action.payload.data,
+      };
+    case ACTION_TYPES.WEBSOCKET_LOST_CONNECTION:
+      return {
+        ...state,
+        errorMessage: 'Websocket Lost Connection',
       };
     case ACTION_TYPES.WEBSOCKET_ACTIVITY_MESSAGE: {
       // filter out activities from the same session
@@ -162,7 +185,12 @@ export const changeLogLevel: (name, configuredLevel) => void = (name, configured
     dispatch(getLoggers());
   };
 };
-
+export const subscribeToMetrics = () => ({
+  type: ACTION_TYPES.WEBSOCKET_METRICS_SUBSCRIBE,
+});
+export const unsubscribeFromMetrics = () => ({
+  type: ACTION_TYPES.WEBSOCKET_METRICS_UNSUBSCRIBE,
+});
 export const getConfigurations = () => ({
   type: ACTION_TYPES.FETCH_CONFIGURATIONS,
   payload: axios.get('management/configprops'),

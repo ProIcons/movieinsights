@@ -3,9 +3,10 @@
     "title": "Logs",
     "nbloggers": "There are {{ total }} loggers.",
     "filter": "Filter",
+    "itemsPerPage": "Items per Page",
     "table": {
-      "name": "Name",
-      "level": "Level"
+      "name": "Logger Name",
+      "level": "Logging Level"
     }
   }
 }

@@ -72,6 +72,10 @@ public class User extends AbstractAuditingEntity implements Serializable {
     @Column(nullable = false)
     private boolean activated = false;
 
+    @NotNull
+    @Column(nullable = false, columnDefinition = "boolean default false")
+    private boolean disabled = false;
+
     @Size(min = 2, max = 10)
     @Column(name = "lang_key", length = 10)
     private String langKey;
@@ -163,6 +167,14 @@ public class User extends AbstractAuditingEntity implements Serializable {
 
     public boolean getActivated() {
         return activated;
+    }
+
+    public boolean isDisabled() {
+        return disabled;
+    }
+
+    public void setDisabled(boolean deactivated) {
+        this.disabled = deactivated;
     }
 
     public void setActivated(boolean activated) {

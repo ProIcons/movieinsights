@@ -3,12 +3,10 @@ import React, {Component, HTMLProps} from "react";
 import SplineChart, {SplineChartProps} from "app/components/charts/SplineChart/SplineChart";
 import {CCard, CCardBody, CCardFooter, CCardHeader, CCol, CRow} from "@coreui/react";
 import CIcon from "@coreui/icons-react";
-import numeral from '../../utils/numeral-utils';
-import {deepObjectsMerge} from '@coreui/utils/src'
 import Skeleton, {SkeletonTheme} from "react-loading-skeleton";
-import deepEqual from 'fast-deep-equal';
 import {MIValueNumeralFormat} from "app/shared/enumerations/MIValueNumeralFormat";
-
+import {deepEqual, merge } from "app/utils";
+import numeral from 'app/utils/numeral-utils';
 export interface MIChartCardField {
   valueFormat?: MIValueNumeralFormat;
   valueFormatCustom?: string;
@@ -77,14 +75,8 @@ export const footerFieldDefaults = (): MIChartCardFooterField => {
   }
 }
 
-const merge = (target, source) => {
-  if (source) {
-    return deepObjectsMerge(target, source);
-  }
-  return source;
-}
 
-class MIChartCard extends Component<MIChartCardProps, MIChartCardState> {
+export class MIChartCard extends Component<MIChartCardProps, MIChartCardState> {
   constructor(props) {
     super(props);
     this.state = {
@@ -109,10 +101,10 @@ class MIChartCard extends Component<MIChartCardProps, MIChartCardState> {
   }
 
   private getFooterConsts() {
-    let background = '';
+    let background;
     const arrowBackground = this.state.footer.arrowBackground;
-    let icon = '';
-    let iconColor = '';
+    let icon;
+    let iconColor;
 
     if (this.state.footer.value > 0) {
       icon = this.state.footer.arrowPositive;
@@ -246,5 +238,3 @@ class MIChartCard extends Component<MIChartCardProps, MIChartCardState> {
     );
   }
 }
-
-export default MIChartCard;

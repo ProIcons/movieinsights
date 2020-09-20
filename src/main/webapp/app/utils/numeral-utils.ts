@@ -1,27 +1,9 @@
 import _numeral from 'numeral';
+import 'app/utils/numeral/el.ts';
 
-const ordinalFn = (number: number): string => {
-  return number === 1 ? 'er' : 'ème';
-};
-_numeral.register('locale', 'gr', {
-  delimiters: {
-    thousands: '.',
-    decimal: ',',
-  },
-  abbreviations: {
-    thousand: 'k',
-    million: 'm',
-    billion: 'b',
-    trillion: 't',
-  },
-  ordinal: ordinalFn,
-  currency: {
-    symbol: '€',
-  },
-});
 export const numeral = () => {
   // switch between locales
-  _numeral.locale('gr');
+  _numeral.locale('el');
   return _numeral;
 };
 

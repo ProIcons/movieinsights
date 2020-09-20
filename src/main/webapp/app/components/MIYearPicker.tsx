@@ -1,9 +1,9 @@
 import './MIYearPicker.scss'
 import React, {Component, HTMLProps} from "react";
 import DateTime from 'react-datetime';
-import moment, {Moment} from "moment";
 import {CButton, CInputGroup, CInputGroupAppend, CInputGroupPrepend, CInputGroupText} from "@coreui/react";
 import CIcon from "@coreui/icons-react";
+import moment, {Moment} from "moment";
 
 export interface MIYearPickerProps extends HTMLProps<any> {
   inputProps?: HTMLProps<any>
@@ -37,8 +37,8 @@ class MIYearPicker extends Component<MIYearPickerProps, MIYearPickerState> {
     }
   }
 
-  private renderInput = (props, oc, cc) => {
-    const {onChange, ...rest} = props;
+  private renderInput = (props) => {
+    const {onChange} = props;
     if (this.onChange !== onChange) {
       this.onChange = onChange;
     }

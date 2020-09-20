@@ -3,9 +3,7 @@ import React, {Component} from "react";
 import {WorldMap} from "app/components/charts";
 import {connect} from "react-redux";
 import {RouteComponentProps} from 'react-router-dom'
-import {defaultValue as countryDefaultValue} from 'app/models/IProductionCountry.Model'
-import {defaultValue as movieInsightsDefaultValue} from "app/models/IMovieInsights.Model";
-import {deepEqual, normalizeText} from "app/utils";
+import {AppUtils,deepEqual, normalizeText} from "app/utils";
 import {match, matchPath} from "react-router";
 import {
   clearView,
@@ -22,13 +20,11 @@ import BaseMovieInsightsContainerStateManager, {hasYear} from "app/reducers/util
 import {MovieInsightsPerPersonState} from "app/reducers/movie-insights-per-person-state-manager";
 import {MovieInsightsContainerState} from "app/reducers/utils/base-movie-insights-container-state-manager.models";
 import animateScrollTo from "animated-scroll-to";
-import {ACEntity} from "app/models/AutoComplete.model";
-import {EntityType} from "app/models/enumerations/EntityType.enum";
-import {AppUtils} from "app/utils/app-utils";
-import {ICountryData} from "app/models/ICountryData";
 import {MovieInsightsPerCountryState} from "app/reducers/movie-insights-per-country-state-manager";
-import {CreditRole, TmdbEntityType} from "app/models/enumerations";
+import {CreditRole, EntityType, TmdbEntityType} from "app/models/enumerations";
 import MIDashboard, {MIDashboardOptions} from "app/components/MIDashboard";
+import {ACEntity, ICountryData} from "app/models";
+import {movieInsightsDefaultValue, productionCountryDefaultValue} from "app/models/defaultValues";
 
 
 export interface DashboardProps extends StateProps, DispatchProps, RouteComponentProps {
@@ -301,7 +297,7 @@ export class Dashboard extends Component<DashboardProps, DashboardState> {
     window.requestAnimationFrame(() => {
       setTimeout(() => {
         void animateScrollTo(0, {
-          minDuration: 1400
+          minDuration: 500
         });
       }, 750);
     });
@@ -353,7 +349,7 @@ export class Dashboard extends Component<DashboardProps, DashboardState> {
   countrySelected = (data: ICountryData) => {
     this.props.history.push(`/app/country/${data._id}-${normalizeText(data.name)}`)
   }
-  countryUnselected = (data: ICountryData) => {
+  countryUnselected = () => {
     this.props.history.push(`/app`)
   }
 
@@ -385,7 +381,7 @@ export class Dashboard extends Component<DashboardProps, DashboardState> {
     const data = this.getCountryData();
     if (this.props.rootState.dashboardState.activeView().entityType === EntityType.COUNTRY) {
       const activeView: MovieInsightsPerCountryState = this.props.rootState.dashboardState.activeView();
-      if (activeView.activeEntity.entity !== countryDefaultValue) {
+      if (activeView.activeEntity.entity !== productionCountryDefaultValue) {
         return data.filter((country) => country?.iso31661 === activeView.activeEntity?.entity?.iso31661)[0];
       }
     }
@@ -427,7 +423,8 @@ export class Dashboard extends Component<DashboardProps, DashboardState> {
       countryData: this.getCountryData(),
       selectedCountry: this.getSelectedCountry(),
       mapReference: this.mapComponent,
-      entityType: activeView.entityType
+      entityType: activeView.entityType,
+      currentLocale: this.props.rootState.locale.currentLocale
     }
     return (
       <MIDashboard options={options}/>

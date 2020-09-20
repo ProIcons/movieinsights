@@ -37,7 +37,7 @@ export default class MIPersonRolePicker extends Component<MIPersonRolePickerProp
   getOptions = () => {
     return Object
       .keys(CreditRole)
-      .map((k, v) => {
+      .map((k) => {
           return {
             name: CreditRole[k],
             value: k,

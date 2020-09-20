@@ -1,0 +1,44 @@
+.progress-header {
+  margin-top: -35px;
+  margin-left: -10px;
+  top: 0;
+  font-size: 20px;
+}
+.overlay-progress-bar {
+  position: absolute;
+  min-height: 300px;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  z-index: 1;
+
+  & + div {
+    margin-top: 0 !important;
+    height: 300px !important;
+    .content {
+      margin-top: 30px;
+      line-height: 11px;
+      width: 65px;
+      .text-cpu {
+        font-size: 11px;
+      }
+      .text-percent {
+        line-height: 25px;
+      }
+    }
+  }
+  &.memory {
+    margin-top: 0px;
+    margin-left: 25px;
+    height: 252px;
+    width: 252px;
+    z-index: 3;
+  }
+  &.cpu {
+    z-index: 1;
+  }
+  &.cpu-service {
+    z-index: 2;
+  }
+}

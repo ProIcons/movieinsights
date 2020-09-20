@@ -10,6 +10,8 @@ import {clearView, fetch, fetchYear, setActive, setActiveView, setActiveYear} fr
 import {MIPersonRolePickerProps} from "app/components/MIPersonRolePicker";
 import MISearchBar from "app/components/MISearchBar";
 import {CRow} from "@coreui/react";
+import {ThreadsModal} from "app/components/metrics";
+import data from './data.json'
 
 interface PlaygroundState {
   creditSelector: MIPersonRolePickerProps;
@@ -29,7 +31,7 @@ class Playground extends Component<StateProps & DispatchProps, PlaygroundState> 
   render() {
     return (<>
 
-
+        <ThreadsModal showModal={true} threadDump={data} handleClose={()=>{}}/>
         <CRow className="justify-content-md-center">
           <MISearchBar onSelected={()=>{}}/>
         </CRow>

@@ -1,7 +1,7 @@
 import { deepObjectsMerge } from '@coreui/utils/src';
 
 export { default as deepEqual } from 'fast-deep-equal';
-export * from '@coreui/utils/src';
+export { deepObjectsMerge, getColor, getStyle, hexToRgb, hexToRgba, makeUid, omitByKeys, pickByKeys, rgbToHex } from '@coreui/utils/src';
 
 export const normalizeText = (text: string): string => {
   let _text = text;

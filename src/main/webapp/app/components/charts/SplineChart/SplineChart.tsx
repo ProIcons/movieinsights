@@ -1,7 +1,7 @@
 import './SplineChart.scss'
-import React, {Component, createRef, HTMLProps, Ref, RefObject} from 'react'
+import React, {Component, HTMLProps} from 'react'
 import HighchartsReact from "highcharts-react-official";
-import Highcharts, {Chart} from 'highcharts/highcharts';
+import Highcharts from 'highcharts/highcharts';
 import {deepObjectsMerge} from '@coreui/utils/src'
 import {deepEqual} from "app/utils";
 
@@ -106,8 +106,8 @@ class SplineChart extends Component<SplineChartProps, SplineChartState> {
   }
 
 
-  componentDidUpdate = (prevProps: Readonly<SplineChartProps>, prevState: Readonly<SplineChartState>, snapshot?: any) => {
-    const {series, dataMapper, options, namesMapper, ...restProps} = this.props;
+  componentDidUpdate = (prevProps: Readonly<SplineChartProps>, prevState: Readonly<SplineChartState>) => {
+    const {series, options} = this.props;
 
     const _options = this.injectOptionsToDefaults(options);
     this.injectSeriesToOptions(_options, series);

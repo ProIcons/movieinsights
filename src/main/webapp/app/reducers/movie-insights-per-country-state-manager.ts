@@ -1,12 +1,11 @@
 import { MovieInsightsContainerState } from 'app/reducers/utils/base-movie-insights-container-state-manager.models';
 import { Service } from 'app/service';
 import BaseMovieInsightsContainerStateManager from 'app/reducers/utils/base-movie-insights-container-state-manager';
-import { store_ } from '../index';
+import { store } from '../index';
 import { IRootState } from 'app/shared/reducers';
-import { EntityType } from 'app/models/enumerations/EntityType.enum';
-import { IMovieInsightsPerCountry, defaultValue as movieInsightsPerCountryDefaultValue } from 'app/models/IMovieInsightsPerCountry.Model';
-import { IProductionCountry } from 'app/models/IProductionCountry.Model';
-import { defaultValue as movieInsightsDefaultValue } from 'app/models/IMovieInsights.Model';
+import { EntityType } from 'app/models/enumerations';
+import { IMovieInsightsPerCountry, IProductionCountry } from 'app/models';
+import { movieInsightsDefaultValue, movieInsightsPerCountryDefaultValue } from 'app/models/defaultValues';
 
 export type MovieInsightsPerCountryState = Readonly<MovieInsightsContainerState<IMovieInsightsPerCountry>>;
 
@@ -33,7 +32,7 @@ export class MovieInsightsPerCountryStateManager extends BaseMovieInsightsContai
   }
 
   public getState: () => MovieInsightsPerCountryState = () => {
-    return (store_.getState() as IRootState).movieInsightsPerCountry;
+    return (store.getState() as IRootState).movieInsightsPerCountry;
   };
 
   fetch = (iso: string) => ({

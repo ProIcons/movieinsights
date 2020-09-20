@@ -12,12 +12,7 @@
         "directors": "Directors",
         "writers": "Writers",
         "producers": "Producers"
-      },
-      "actor": "Actor",
-      "director": "Director",
-      "producer": "Producer",
-      "writer": "Writer",
-      "movie": "Movie"
+      }
     }
   }
 }

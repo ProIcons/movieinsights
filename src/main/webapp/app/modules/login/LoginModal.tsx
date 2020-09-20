@@ -1,8 +1,7 @@
-import React, {createRef} from 'react';
+import React, {EventHandler, FormEvent, FormEventHandler} from 'react';
 import {Translate, translate} from 'app/translate';
-import {Link} from 'react-router-dom';
 import {CAlert, CButton, CCol, CModal, CModalBody, CModalFooter, CModalHeader, CRow} from "@coreui/react";
-import {Form, InputGroup} from "react-bootstrap";
+import {Form} from "react-bootstrap";
 
 export interface ILoginModalProps {
   showModal: boolean;
@@ -30,15 +29,16 @@ class LoginModal extends React.Component<ILoginModalProps, LoginModalState> {
     }
   }
 
-  handleSubmit = (event) => {
-
-    if (event.currentTarget.checkValidity()) {
+  handleSubmit : EventHandler<FormEvent> = (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    event.nativeEvent.stopImmediatePropagation();
+    event.nativeEvent.preventDefault();
+    event.nativeEvent.stopPropagation();
+    if ((event.currentTarget as any).checkValidity()) {
       const {handleLogin} = this.props;
       handleLogin(this.state.username,this.state.password,this.state.rememberMe);
     }
-
-    event.preventDefault();
-    event.stopPropagation();
     this.setState({validated:true});
   };
 
@@ -48,7 +48,7 @@ class LoginModal extends React.Component<ILoginModalProps, LoginModalState> {
     return (
       <CModal show={this.props.showModal} id="login-page" onClosed={handleClose} autoFocus={false}>
         <Form noValidate validated={this.state.validated} onSubmit={this.handleSubmit}>
-          <CModalHeader id="login-title" closeButton>
+          <CModalHeader id="login-title">
             <Translate contentKey="login.title">Sign in</Translate>
           </CModalHeader>
           <CModalBody>

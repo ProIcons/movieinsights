@@ -1,46 +1,18 @@
 {
   "movieInsightsApp": {
     "movieInsights": {
-      "home": {
-        "title": "Movie Insights",
-        "createLabel": "Δημιουργήστε ένα νέο Movie Insights",
-        "createOrEditLabel": "Δημιουργήστε η επεξεργαστείτε ένα Movie Insights",
-        "search": "Αναζήτηση για Movie Insights",
-        "notFound": "No Movie Insights found"
-      },
-      "created": "Ένα νέο Movie Insights έχει δημιουργηθεί με αναγνωριστικό {{ param }}",
-      "updated": "Ένα Movie Insights έχει ενημερωθεί με αναγνωριστικό {{ param }}",
-      "deleted": "Ένα Movie Insights έχει διαγραφτεί με αναγνωριστικό {{ param }}",
-      "delete": {
-        "question": "Είστε βέβαιοι όταν θέλετε να διαγράψετε το ακόλουθο Movie Insights {{ id }};"
-      },
-      "detail": {
-        "title": "Movie Insights"
-      },
-      "averageRating": "Average Rating",
-      "averageBudget": "Average Budget",
-      "averageRevenue": "Average Revenue",
-      "totalMovies": "Total Movies",
-      "mostPopularGenreMovieCount": "Most Popular Genre Movie Count",
-      "mostPopularActorMovieCount": "Most Popular Actor Movie Count",
-      "mostPopularWriterMovieCount": "Most Popular Writer Movie Count",
-      "mostPopularProducerMovieCount": "Most Popular Producer Movie Count",
-      "mostPopularDirectorMovieCount": "Most Popular Director Movie Count",
-      "mostPopularProductionCompanyMovieCount": "Most Popular Production Company Movie Count",
-      "mostPopularProductionCountryMovieCount": "Most Popular Production Country Movie Count",
-      "highestRatedMovie": "Highest Rated Movie",
-      "lowestRatedMovie": "Lowest Rated Movie",
-      "highestBudgetMovie": "Highest Budget Movie",
-      "lowestBudgetMovie": "Lowest Budget Movie",
-      "highestRevenueMovie": "Highest Revenue Movie",
-      "lowestRevenueMovie": "Lowest Revenue Movie",
-      "mostPopularGenre": "Most Popular Genre",
-      "mostPopularActor": "Most Popular Actor",
-      "mostPopularProducer": "Most Popular Producer",
-      "mostPopularWriter": "Most Popular Writer",
-      "mostPopularDirector": "Most Popular Director",
-      "mostPopularProductionCountry": "Most Popular Production Country",
-      "mostPopularProductionCompany": "Most Popular Production Company"
+      "worldwide": "Παγκόσμια",
+      "categories": {
+        "genres": "Είδη ταινιών",
+        "movies": "Ταινίες",
+        "productionCompanies": "Εταιρίες Παραγωγής",
+        "productionCountries": "Χώρες Παραγωγής",
+        "credits": "Συντελεστές",
+        "actors": "Ηθοποιοί",
+        "directors": "Σκηνοθέτες",
+        "writers": "Συγγραφείς",
+        "producers": "Παραγωγοί"
+      }
     }
   }
 }

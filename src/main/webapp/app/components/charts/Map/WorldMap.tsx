@@ -5,16 +5,16 @@ import Highcharts, {
   Chart,
   Point,
   PointClickEventObject,
-  PointInteractionEventObject,
   SeriesMapDataOptions,
   SeriesMapOptions
 } from "highcharts";
 import Highmaps from "highcharts/modules/map";
 import HighchartsReact from "highcharts-react-official";
 import worldMap from "./world.json";
-import {ICountryData} from "app/models/ICountryData";
-import MILoadingCircle from "app/components/MILoadingCircle";
+import {ICountryData} from "app/models";
+import MILoadingCircle from "app/components/util/MILoadingCircle";
 import {HighchartsType} from "app/shared/interfaces/HighchartsType";
+import {TranslatableComponent} from "app/components/util";
 
 Highmaps(Highcharts);
 
@@ -22,6 +22,7 @@ export interface WorldMapProps extends PropsWithRef<any> {
   countryData: ICountryData[];
   countrySelected?: (data: ICountryData) => void;
   countryUnselected?: (data: ICountryData) => void;
+  currentLocale?:string;
 }
 
 interface WorldMapState {
@@ -40,11 +41,11 @@ interface PendingState {
   point: number;
 }
 
-export class WorldMap extends Component<WorldMapProps, WorldMapState> {
+export class WorldMap extends TranslatableComponent<WorldMapProps, WorldMapState> {
   private readonly chartComponent: RefObject<HighchartsType>;
 
   constructor(props) {
-    super(props);
+    super(props,"productionCountry");
     this.state = {
       countryData: this.props.countryData,
       chartObj: null,
@@ -61,7 +62,7 @@ export class WorldMap extends Component<WorldMapProps, WorldMapState> {
 
 
   componentDidUpdate(prevProps: Readonly<WorldMapProps>, prevState: Readonly<WorldMapState>, snapshot?: any) {
-    if (this.state.countryData.length !== this.props.countryData.length) {
+    if (this.state.countryData.length !== this.props.countryData.length || this.props.currentLocale !== prevProps.currentLocale) {
       this.setState({
         countryData: this.props.countryData,
         mapOptions: this.getMapOptions(),
@@ -110,7 +111,7 @@ export class WorldMap extends Component<WorldMapProps, WorldMapState> {
     return null;
   }
 
-  private pointSelected = (point: SeriesMapDataOptions, e: PointInteractionEventObject) => {
+  private pointSelected = (point: SeriesMapDataOptions) => {
     const countryData = this.getCountryDataFromPoint(point);
     this.setState({pointSelected: countryData});
     if (this.props.countrySelected) {
@@ -121,7 +122,7 @@ export class WorldMap extends Component<WorldMapProps, WorldMapState> {
     this.state.chartObj.mapZoom(0.5, x, y)
   }
 
-  private pointUnselected = (point: SeriesMapDataOptions, e: PointInteractionEventObject) => {
+  private pointUnselected = (point: SeriesMapDataOptions) => {
     if (this.state.pointUnselected) {
       const countryData = this.getCountryDataFromPoint(point);
       this.setState({pointSelected: null, pointUnselected: false});
@@ -162,9 +163,9 @@ export class WorldMap extends Component<WorldMapProps, WorldMapState> {
       tooltip: {
         useHTML: true,
         formatter: function formt() {
-          const name = (this.point as any).iso31661 === "MK" ? "North Macedonia" : this.point.name;
-          let str = `<div class="text-info" style="text-align: center;font-weight: bold;font-size:24px;">${name}</div>`;
-          str += `<div style="text-align: center;font-weight: bold;font-size:20px;"><span class="text-warning">Movies</span> ${this.point.value}</div>`
+          //  const name = (this.point as any).iso31661 === "MK" ? "North Macedonia" : this.point.name;
+          let str = `<div class="text-info" style="text-align: center;font-weight: bold;font-size:24px;">${_this.getTranslation(`translations.${(this.point as any).iso31661.toUpperCase()}`)}</div>`;
+          str += `<div style="text-align: center;font-weight: bold;font-size:20px;"><span class="text-warning">${_this.getAppTranslation("movie.movies")}</span> ${this.point.value}</div>`
           return str;
         }
       },
@@ -194,7 +195,7 @@ export class WorldMap extends Component<WorldMapProps, WorldMapState> {
           dataLabels: {
             enabled: true,
             formatter: function format() {
-              return (this.point as any).iso31661 === "MK" ? "North Macedonia" : this.point.name;
+              return _this.getTranslation(`translations.${(this.point as any).iso31661.toUpperCase()}`)// (this.point as any).iso31661 === "MK" ? "North Macedonia" : this.point.name;
             },
             nullFormat: "",
           },
@@ -205,11 +206,11 @@ export class WorldMap extends Component<WorldMapProps, WorldMapState> {
               click(e) {
                 _this.pointClick(this, e);
               },
-              select(e) {
-                _this.pointSelected(this, e)
+              select() {
+                _this.pointSelected(this)
               },
-              unselect(e) {
-                _this.pointUnselected(this, e)
+              unselect() {
+                _this.pointUnselected(this)
               },
             }
           },

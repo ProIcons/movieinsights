@@ -1,22 +1,21 @@
 import './MIMovieCard.scss';
 import React, {SyntheticEvent} from "react";
 import {CCard, CCardBody, CCardFooter, CCardHeader} from "@coreui/react";
-import MILoadingCircle from "app/components/MILoadingCircle";
-import {IMovie} from "app/models/IMovie.Model";
-import numeral from "app/utils/numeral-utils";
-import {defaultValue as movieDefaultValue} from "app/models/IMovie.Model";
-import MIEntityNotFound from "app/components/MIEntityNotFound";
 import {NavLink} from "react-router-dom";
-import MIBaseLoadableCard, {
+import {
+  MIBaseLoadableCard,
   MIBaseLoadableCardProps,
   MIBaseLoadableCardState
 } from "app/components/cards/MIBaseLoadableCard";
-import MIMovieInfoModal from "app/components/cards/MIMovieInfoModal";
+import {MIMovieInfoModal} from "app/components/modals";
+import {MIEntityNotFound, MILoadingCircle} from 'app/components/util';
 import {MOVIE_POSTER_PLACEHOLDER, TMDB_BACKDROP_SIZE, TMDB_POSTER_SIZE} from "app/config/constants";
-import {TmdbUtils} from "app/utils/tmdb-utils";
-import {AppUtils} from "app/utils/app-utils";
+import {IMovie} from "app/models";
+import {movieDefaultValue} from "app/models/defaultValues";
 import {TmdbEntityType} from "app/models/enumerations";
 import {MIValueNumeralFormat} from "app/shared/enumerations/MIValueNumeralFormat";
+import {AppUtils, TmdbUtils} from "app/utils";
+import numeral from "app/utils/numeral-utils";
 
 export interface MIMovieCardProps extends MIBaseLoadableCardProps<IMovie> {
   type: MIMovieCardType;
@@ -27,12 +26,12 @@ export interface MIMovieCardState extends MIBaseLoadableCardState<IMovie> {
 }
 
 export enum MIMovieCardType {
-  MostRevenue = "Most Revenue Movie",
-  LeastRevenue = "Least Revenue Movie",
-  MostBudget = "Most Budget Movie",
-  LeastBudget = "Least Budget Movie",
-  MostVote = "Highest Rated Movie",
-  LeastVote = "Lowest Rated Movie"
+  MostRevenue = "mostRevenueMovie",
+  LeastRevenue = "leastRevenueMovie",
+  MostBudget = "mostBudgetMovie",
+  LeastBudget = "leastBudgetMovie",
+  MostVote = "highestRatedMovie",
+  LeastVote = "lowestRatedMovie"
 }
 
 type MovieView = {
@@ -86,7 +85,8 @@ const LOADABLE_ENTITIES = {
   POSTER: "poster",
   BACKDROP: "backdrop"
 }
-export default class MIMovieCard extends MIBaseLoadableCard<MIMovieCardProps, MIMovieCardState, IMovie> {
+
+export class MIMovieCard extends MIBaseLoadableCard<MIMovieCardProps, MIMovieCardState, IMovie> {
   constructor(props) {
     super(props, movieDefaultValue);
 
@@ -125,7 +125,7 @@ export default class MIMovieCard extends MIBaseLoadableCard<MIMovieCardProps, MI
     const viewConfig = getViewConfig(this.props.type, this.state.entity);
     return (
       <div>
-        {viewConfig.title}
+        {this.getTranslation(viewConfig.title)}
       </div>
     );
   }
@@ -151,7 +151,7 @@ export default class MIMovieCard extends MIBaseLoadableCard<MIMovieCardProps, MI
           <div className="mi-movie-title font-weight-bold">{this.state.entity?.name}</div>
         </div>
         <div className="mi-movie-poster">
-          <img onLoad={() => this.posterLoaded()} height={150} width={100}
+          <img alt={""} onLoad={() => this.posterLoaded()} height={150} width={100}
                src={this.state.entityLoaded ? posterUrl : ""}/>
         </div>
       </React.Fragment>
@@ -163,7 +163,7 @@ export default class MIMovieCard extends MIBaseLoadableCard<MIMovieCardProps, MI
     const viewConfig = getViewConfig(this.props.type, this.state.entity);
     return (
       <>
-        <div className="mi-movie-prop font-weight-bold">{viewConfig.valueText}</div>
+        <div className="mi-movie-prop font-weight-bold">{this.getAppTranslation(`movie.${viewConfig.valueText.toLowerCase()}`)}</div>
         {this.state.entity ? (
           <div className="mi-movie-val text-value-md">{getFieldValue(viewConfig)}</div>
         ) : null}

@@ -6,6 +6,7 @@ const BrotliPlugin = require('brotli-webpack-plugin');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const MergeJsonWebpackPlugin = require('merge-jsons-webpack-plugin');
 const utils = require('./utils.js');
+const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 
 const getTsLoaderRule = env => {
   const rules = [
@@ -140,6 +141,7 @@ module.exports = options => ({
       threshold: 10240,
       minRatio: 0.8
     }),*/
+    new BundleAnalyzerPlugin(),
     new MergeJsonWebpackPlugin({
       output: {
         groupBy: [

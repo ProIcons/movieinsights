@@ -15,3 +15,8 @@ export const SUCCESS = actionType => `${actionType}_FULFILLED`;
  */
 
 export const FAILURE = actionType => `${actionType}_REJECTED`;
+
+/**
+ * Appends WEBSOCKET async action type
+ */
+export const WS = actionType => `${actionType}_WEBSOCKET`;
